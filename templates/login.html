@@ -1,20 +1,13 @@
+{% from "_formhelpers.html" import render_field %}
 <html>
-<title>
-</title>
 <body>
-<h2>Login Page</h2>
-<h3>Please login into your account</h3>
-<ul>
-	<form name="login" method="post">
-	<div>
-		<label for"Username">Username</label>
-		<input type="text" name="username" id="username">
-	</div>
-	<div>
-		<label for"Password">Password</label>
-		<input type="password" name="password" id="password">
-	</ul>
-	<button type="submit" class="btn" name="login" value="login">Sign In</button>
-	<button type="sumbit" class="btn" name="register" value="register">Register</button
-</body>
+	<h3>Login Page</h3>
+	<h4>Please Login to your account</h4>
+	<form method='POST' action="">
+		{{ form.csrf_token }}
+		{{ render_field(form.username) }}
+		{{ render_field(form.password) }}
+		<input type='submit' value='Login'>
+	</form>
+<body>
 </html>
