@@ -1,32 +1,18 @@
 {% from "_formhelpers.html" import render_field %}
 <html>
-<title>
-</title>
 <body>
-<h2>Register Page</h2>
-<h3>Please register an account</h3>
-<ul>
-	<form name="register" method="post">
-		{{ form.csrf_toekn }}
-	<div>
+	<h3>Register Page</h3>
+	<h4>Please Register your account</h4>
+	<form method='POST' action="">
+		{{ form.csrf_token }}
 		{{ render_field(form.firstname) }}
-	</div>
-	<div>
 		{{ render_field(form.lastname) }}
-	</div>
-	<div>
 		{{ render_field(form.email) }}
-	</div>
-	<div>
 		{{ render_field(form.username) }}
-	</div>
-	<div>
 		{{ render_field(form.password) }}
-	</div>
-	<div>
-		{{ render_field(form.reenterpassword) }}
-	</div>
-	</ul>
-	<button type="sumbit" class="btn" name="register" value="register">Register</button
-</body>
+		{{ render_field(form.confirm) }}
+		<div>
+		<input type='submit' value='Login'></input>
+	</form>
+<body>
 </html>

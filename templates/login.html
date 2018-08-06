@@ -7,7 +7,9 @@
 		{{ form.csrf_token }}
 		{{ render_field(form.username) }}
 		{{ render_field(form.password) }}
-		<input type='submit' value='Login'>
+		<div>
+		<input type='submit' value='Login'></input>
 	</form>
+	<button type='submit' name='Register' action='/register/'>Register</button>
 <body>
 </html>
