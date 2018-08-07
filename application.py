@@ -13,22 +13,6 @@ db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-class LoginForm(Form):
-    username = StringField('Username', validators=[InputRequired()])
-    password = PasswordField('Password', validators=[InputRequired()])
-
-class RegisterForm(Form):
-    firstname = StringField('Please enter your First Name', validators=[InputRequired()])
-    lastname = StringField('Please Enter your Last Name', validators=[InputRequired()])
-    username = StringField('Please enter your Username', validators=[InputRequired()])
-    email = StringField('Please enter your Email', validators=[InputRequired(), Email(message='Error')])    
-    password = PasswordField('Please enter your Password', validators=[InputRequired(), validators.EqualTo('confirm', message='Passwords MUst Match')])
-    confirm = PasswordField('Please re-enter your Password', validators=[InputRequired()])
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.filter(User.id == int(user_id)).first()
-
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     firstname = db.Column('firstname', db.String(20), index=True)
@@ -49,9 +33,26 @@ class User(db.Model):
 
     def is_active(self):
         return true
-    
+
     def get_id(self):
         return str(self.email)
+
+@login_manager.user_loader
+def load_user(username):
+    return User.query.filter_by(username = username).first()
+
+
+class LoginForm(Form):
+    username = StringField('Username', validators=[InputRequired()])
+    password = PasswordField('Password', validators=[InputRequired()])
+
+class RegisterForm(Form):
+    firstname = StringField('Please enter your First Name', validators=[InputRequired()])
+    lastname = StringField('Please Enter your Last Name', validators=[InputRequired()])
+    username = StringField('Please enter your Username', validators=[InputRequired()])
+    email = StringField('Please enter your Email', validators=[InputRequired(), Email(message='Error')])    
+    password = PasswordField('Please enter your Password', validators=[InputRequired(), validators.EqualTo('confirm', message='Passwords MUst Match')])
+    confirm = PasswordField('Please re-enter your Password', validators=[InputRequired()])
 
 @app.route("/")
 def route():
@@ -79,7 +80,7 @@ def register():
         elif User.query.filter_by(username=form.username.data).first():
             return 'Username already exists'
         else:
-            user = User(form.firstname.data, form.lastname.data, form.email.data, form.username.data, sha256_crypt.encrypt(str(form.password.data)))       
+            user = User(form.firstname.data, form.lastname.data, form.email.data, form.username.data, (form.password.data))       
             db.session.add(user)
             db.session.commit()
             return "Account Creation Successful"
