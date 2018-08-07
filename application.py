@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash, session, redirect, abort
+from flask import Flask, render_template, request, flash, session, redirect, abort, url_for
 from flask_wtf import Form
 from flask_login import LoginManager, login_user, login_required, logout_user
 from wtforms import StringField, PasswordField, validators
@@ -66,7 +66,7 @@ def login():
         if user:
             if user.password == form.password.data:
                 login_user(user)
-                return "Login Successful %s" % user.username
+                return redirect(url_for('.dashboard', username=user.username))
             else:
                 return "Not Successful"
     return render_template('login.html', form=form)
