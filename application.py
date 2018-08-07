@@ -86,6 +86,11 @@ def register():
             return "Account Creation Successful"
     return render_template('register.html', form=form)
 
+@app.route('/dashboard/<username>/')
+def dashboard(username):
+    user = User.query.filter_by(username=username).first()
+    return render_template('dashboard.html', user=user)
+
 
 @app.errorhandler(404)
 def error_page(error):
