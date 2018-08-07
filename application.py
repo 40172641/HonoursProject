@@ -66,7 +66,7 @@ def login():
         if user:
             if user.password == form.password.data:
                 login_user(user)
-                return "Login Successful"
+                return "Login Successful %s" % user.username
             else:
                 return "Not Successful"
     return render_template('login.html', form=form)
