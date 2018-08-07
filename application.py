@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, flash, session, redirect, abo
 from flask_wtf import Form
 from wtforms import StringField, PasswordField, validators
 from wtforms.validators import InputRequired, Email
+from passlib.hash import sha256_crypt
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -30,13 +31,12 @@ class User(db.Model):
     username = db.Column('username', db.String(20), unique=True, index=True)
     password = db.Column('password', db.String(20))
 
-    def __init__(self, firstname, lastname, password, email, username):
+    def __init__(self, firstname, lastname, email, username, password):
         self.firstname = firstname
         self.lastname = lastname
-        self.password = password
         self.email = email
         self.username = username
-
+        self.password = password
 
 @app.route("/")
 def route():
@@ -53,10 +53,15 @@ def login():
 def register():
     form = RegisterForm()
     if request.method == 'POST' and form.validate():
-        user = User(form.firstname.data, form.lastname.data, form.email.data, form.username.data, form.password.data) 
-        db.session.add(user)
-        db.session.commit()
-        return "Account Creation Successful"
+        if User.query.filter_by(email=form.email.data).first():
+            return 'Email already exists'
+        elif User.query.filter_by(username=form.username.data).first():
+            return 'Username already exists'
+        else:
+            user = User(form.firstname.data, form.lastname.data, form.email.data, form.username.data, sha256_crypt.encrypt(str(form.password.data)))       
+            db.session.add(user)
+            db.session.commit()
+            return "Account Creation Successful"
     return render_template('register.html', form=form)
 
 
