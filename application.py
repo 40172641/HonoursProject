@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, flash, session, redirect, abort
 from flask_wtf import Form
+from flask_login import LoginManager, login_user, login_required, logout_user
 from wtforms import StringField, PasswordField, validators
 from wtforms.validators import InputRequired, Email
 from passlib.hash import sha256_crypt
@@ -9,6 +10,8 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/kevin/HonoursProject/database.db'
 app.config['SECRET_KEY'] = 'SecretKey'
 db = SQLAlchemy(app)
+login_manager = LoginManager()
+login_manager.init_app(app)
 
 class LoginForm(Form):
     username = StringField('Username', validators=[InputRequired()])
@@ -22,6 +25,9 @@ class RegisterForm(Form):
     password = PasswordField('Please enter your Password', validators=[InputRequired(), validators.EqualTo('confirm', message='Passwords MUst Match')])
     confirm = PasswordField('Please re-enter your Password', validators=[InputRequired()])
 
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.filter(User.id == int(user_id)).first()
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -38,6 +44,15 @@ class User(db.Model):
         self.username = username
         self.password = password
 
+    def is_authenticated(self):
+        return true
+
+    def is_active(self):
+        return true
+    
+    def get_id(self):
+        return str(self.email)
+
 @app.route("/")
 def route():
     return render_template('main.html')
@@ -46,7 +61,13 @@ def route():
 def login():
     form = LoginForm()
     if request.method == 'POST' and form.validate():
-        return "Login Successful"
+        user=User.query.filter_by(username=form.username.data).first()
+        if user:
+            if user.password == form.password.data:
+                login_user(user)
+                return "Login Successful"
+            else:
+                return "Not Successful"
     return render_template('login.html', form=form)
 
 @app.route('/register/', methods=['POST', 'GET'])
