@@ -91,6 +91,9 @@ def dashboard(username):
     user = User.query.filter_by(username=username).first()
     return render_template('dashboard.html', user=user)
 
+@app.route('/dashboard/template/')
+def template():
+    return render_template('template.html')
 
 @app.errorhandler(404)
 def error_page(error):
