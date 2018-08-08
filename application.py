@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, flash, session, redirect, abort, url_for
 from flask_wtf import Form
-from flask_login import LoginManager, login_user, login_required, logout_user
+from flask_login import LoginManager
+from flask_login import current_user, login_user, login_required, UserMixin, logout_user
 from wtforms import StringField, PasswordField, validators
 from wtforms.validators import InputRequired, Email
 from passlib.hash import sha256_crypt
@@ -12,8 +13,9 @@ app.config['SECRET_KEY'] = 'SecretKey'
 db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
+login_manager.login_view = 'login'
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     firstname = db.Column('firstname', db.String(20), index=True)
     lastname = db.Column('lastname', db.String(20), index=True)
@@ -33,14 +35,16 @@ class User(db.Model):
 
     def is_active(self):
         return true
+    
+    def is_anonymous(self):
+        return False
 
     def get_id(self):
-        return str(self.email)
+        return str(self.id)
 
 @login_manager.user_loader
-def load_user(username):
-    return User.query.filter_by(username = username).first()
-
+def load_user(user_id):
+    return User.query.filter(User.id == int (user_id)).first()
 
 class LoginForm(Form):
     username = StringField('Username', validators=[InputRequired()])
@@ -55,20 +59,21 @@ class RegisterForm(Form):
     confirm = PasswordField('Please re-enter your Password', validators=[InputRequired()])
 
 @app.route("/")
-def route():
+def main():
     return render_template('main.html')
 
 @app.route('/login/', methods=['POST', 'GET'])
 def login():
-    form = LoginForm()
+    if current_user.is_authenticated:
+        return "Already logged in"
+    form = LoginForm()   
     if request.method == 'POST' and form.validate():
-        user=User.query.filter_by(username=form.username.data).first()
-        if user:
-            if user.password == form.password.data:
-                login_user(user)
-                return redirect(url_for('.dashboard', username=user.username))
-            else:
-                return "Not Successful"
+        user= User.query.filter_by(username=form.username.data).first()
+        if user is not None and user.password == form.password.data:
+            login_user(user)
+            return redirect(url_for('.dashboard', username=user.username))
+        else:
+            return "Not Successful"
     return render_template('login.html', form=form)
 
 @app.route('/register/', methods=['POST', 'GET'])
@@ -87,13 +92,22 @@ def register():
     return render_template('register.html', form=form)
 
 @app.route('/dashboard/<username>/')
+@login_required
 def dashboard(username):
     user = User.query.filter_by(username=username).first()
+    if username != current_user.username:
+        return redirect(url_for('.main'))
     return render_template('dashboard.html', user=user)
 
 @app.route('/dashboard/template/')
 def template():
     return render_template('template.html')
+
+@app.route('/logout/')
+def logout():
+    logout_user()
+    return redirect(url_for('.main'))
+
 
 @app.errorhandler(404)
 def error_page(error):
