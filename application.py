@@ -64,8 +64,9 @@ def main():
 
 @app.route('/login/', methods=['POST', 'GET'])
 def login():
+    username = current_user.username
     if current_user.is_authenticated:
-        return "Already logged in"
+        return redirect(url_for('.dashboard', username=username))    
     form = LoginForm()   
     if request.method == 'POST' and form.validate():
         user= User.query.filter_by(username=form.username.data).first()
