@@ -1,4 +1,7 @@
 <html>
+	<head>
+	{{ codemirror.include_codemirror() }}
+	</head>
 <style>
 
 body, html 
@@ -40,7 +43,10 @@ body, html
 	<p>Lesson Stuff</p>
 </div>
 <div class="middle">
-	<p>Potential Code Runner</p>
+	<form method="Post">
+	{{ form.source_code }}
+	<input type="submit" value="OK">
+	</form>
 </div>
 <div class="right">
 <div>

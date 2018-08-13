@@ -1,16 +1,20 @@
 from flask import Flask, render_template, request, flash, session, redirect, abort, url_for
 from flask_wtf import Form
+from flask_codemirror import CodeMirror
+from flask_codemirror.fields import CodeMirrorField
 from flask_login import LoginManager
 from flask_login import current_user, login_user, login_required, UserMixin, logout_user
-from wtforms import StringField, PasswordField, validators
+from wtforms import SubmitField, StringField, PasswordField, validators
 from wtforms.validators import InputRequired, Email
 from passlib.hash import sha256_crypt
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
+app.config['CODEMIRROR_LANGUAGES'] = ['python', 'html']
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/kevin/HonoursProject/database.db'
 app.config['SECRET_KEY'] = 'SecretKey'
 db = SQLAlchemy(app)
+codemirror = CodeMirror(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
@@ -58,6 +62,11 @@ class RegisterForm(Form):
     password = PasswordField('Please enter your Password', validators=[InputRequired(), validators.EqualTo('confirm', message='Passwords MUst Match')])
     confirm = PasswordField('Please re-enter your Password', validators=[InputRequired()])
 
+class MyForm(Form):
+    source_code = CodeMirrorField(language='python', config={'lineNumbers' : 'true'})
+    submit = SubmitField('Submit')
+
+
 @app.route("/")
 def main():
     return render_template('main.html')
@@ -100,9 +109,12 @@ def dashboard(username):
         return redirect(url_for('.main'))
     return render_template('dashboard.html', user=user)
 
-@app.route('/dashboard/template/')
+@app.route('/dashboard/template/', methods=['GET', 'POST'])
 def template():
-    return render_template('template.html')
+    form = MyForm()
+    if form.validate_on_submit():
+        text = form.source_code.data
+    return render_template('template.html', form=form)
 
 @app.route('/logout/')
 def logout():
