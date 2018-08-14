@@ -69,7 +69,7 @@ class RegisterForm(Form):
 class MyForm(Form):
     source_code = CodeMirrorField(language='python', config={'lineNumbers' : 'true'})
     body = StringField('Text', widget=TextArea(), default='Please add content')
-    text = TinyMceField('My WTF TinyMCEField',tinymce_options={'toolbar': 'false'})
+    text = TinyMceField('My WTF TinyMCEField',tinymce_options={'toolbar': 'false', 'readonly':'1'})
 
 @app.route("/")
 def main():
