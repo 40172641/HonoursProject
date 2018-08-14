@@ -1,6 +1,12 @@
+{% import 'wtf_tinymce/editor.html' as tinymce with context %}
 <html>
 	<head>
 	{{ codemirror.include_codemirror() }}
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+	<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+	<script type="text/javascript">
+		tinymce.activeEditor.setContent(html, {format: 'raw'});
+	</script>
 	</head>
 <style>
 
@@ -51,10 +57,18 @@ body, html
 		</div>
         </form>
 </div>
-<div class="right">
+<div class="right" contentEditable=true>
 <div>
-	{{ form.body(cols="50", rows="20", readonly=true) }}
+	{% block tail %}
+                {{ tinymce.init_wtf_tinymce() }}
+        {% endblock %}
+	{{ form.text }}
+	
 </div>
 </div>
 </body>
+
+	<script type="text/javascript">
+	$('.right').html(sample)
+	</script>
 </html>

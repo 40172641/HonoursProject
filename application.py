@@ -9,8 +9,11 @@ from wtforms.widgets import TextArea
 from wtforms.validators import InputRequired, Email
 from passlib.hash import sha256_crypt
 from flask_sqlalchemy import SQLAlchemy
+from wtf_tinymce import wtf_tinymce
+from wtf_tinymce.forms.fields import TinyMceField
 
 app = Flask(__name__)
+wtf_tinymce.init_app(app)
 app.config['CODEMIRROR_LANGUAGES'] = ['python', 'html']
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/kevin/HonoursProject/database.db'
 app.config['SECRET_KEY'] = 'SecretKey'
@@ -66,6 +69,7 @@ class RegisterForm(Form):
 class MyForm(Form):
     source_code = CodeMirrorField(language='python', config={'lineNumbers' : 'true'})
     body = StringField('Text', widget=TextArea(), default='Please add content')
+    text = TinyMceField('My WTF TinyMCEField',tinymce_options={'toolbar': 'false'})
 
 @app.route("/")
 def main():
@@ -114,7 +118,7 @@ def template():
     form = MyForm()
     if form.validate_on_submit():
         text = form.source_code.data
-        form.body.data = text
+        form.text.data = text
     return render_template('template.html', form=form)
 
 @app.route('/logout/')
