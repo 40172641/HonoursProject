@@ -53,9 +53,7 @@ body, html
 </div>
 <div class="right">
 <div>
-	<textarea  rows="5" cols="50" name="comment" readonly>
-	Output of Editor
-	</textarea>
+	{{ form.body(cols="50", rows="20", readonly=true) }}
 </div>
 </div>
 </body>

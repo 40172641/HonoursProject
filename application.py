@@ -5,6 +5,7 @@ from flask_codemirror.fields import CodeMirrorField
 from flask_login import LoginManager
 from flask_login import current_user, login_user, login_required, UserMixin, logout_user
 from wtforms import SubmitField, StringField, PasswordField, validators
+from wtforms.widgets import TextArea
 from wtforms.validators import InputRequired, Email
 from passlib.hash import sha256_crypt
 from flask_sqlalchemy import SQLAlchemy
@@ -64,7 +65,7 @@ class RegisterForm(Form):
 
 class MyForm(Form):
     source_code = CodeMirrorField(language='python', config={'lineNumbers' : 'true'})
-#    username = StringField('Username', validators=[InputRequired()])
+    body = StringField('Text', widget=TextArea(), default='Please add content')
 
 @app.route("/")
 def main():
@@ -113,7 +114,7 @@ def template():
     form = MyForm()
     if form.validate_on_submit():
         text = form.source_code.data
-        return text
+        form.body.data = text
     return render_template('template.html', form=form)
 
 @app.route('/logout/')
