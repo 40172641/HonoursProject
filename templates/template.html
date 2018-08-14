@@ -43,14 +43,19 @@ body, html
 	<p>Lesson Stuff</p>
 </div>
 <div class="middle">
-	<form method="Post">
-	{{ form.source_code }}
-	<input type="submit" value="OK">
-	</form>
+	<form method='POST' action="">
+                {{ form.csrf_token }}
+                {{ form.source_code }}
+                <div>
+                <input type='submit' value='Login'></input>
+		</div>
+        </form>
 </div>
 <div class="right">
 <div>
-	<p>Output</p>
+	<textarea  rows="5" cols="50" name="comment" readonly>
+	Output of Editor
+	</textarea>
 </div>
 </div>
 </body>

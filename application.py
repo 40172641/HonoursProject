@@ -64,8 +64,7 @@ class RegisterForm(Form):
 
 class MyForm(Form):
     source_code = CodeMirrorField(language='python', config={'lineNumbers' : 'true'})
-    submit = SubmitField('Submit')
-
+#    username = StringField('Username', validators=[InputRequired()])
 
 @app.route("/")
 def main():
@@ -114,6 +113,7 @@ def template():
     form = MyForm()
     if form.validate_on_submit():
         text = form.source_code.data
+        return text
     return render_template('template.html', form=form)
 
 @app.route('/logout/')
