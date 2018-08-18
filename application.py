@@ -14,7 +14,8 @@ from wtf_tinymce.forms.fields import TinyMceField
 
 app = Flask(__name__)
 wtf_tinymce.init_app(app)
-app.config['CODEMIRROR_LANGUAGES'] = ['python', 'html']
+app.config['CODEMIRROR_LANGUAGES'] = ['python', 'htmlmixed']
+app.config['CODEMIRROR_THEME'] = 'ambiance'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////home/kevin/HonoursProject/database.db'
 app.config['SECRET_KEY'] = 'SecretKey'
 db = SQLAlchemy(app)
@@ -69,7 +70,7 @@ class RegisterForm(Form):
 class MyForm(Form):
     source_code = CodeMirrorField(language='python', config={'lineNumbers' : 'true'})
     body = StringField('Text', widget=TextArea(), default='Please add content')
-    text = TinyMceField('My WTF TinyMCEField',tinymce_options={'toolbar': 'false', 'readonly':'1'})
+    text = TinyMceField('My WTF TinyMCEField',tinymce_options={'toolbar': 'false', 'readonly':'1', 'height':'490','allow_script_urls':'true', 'width':'435', 'extended_valid_elements':'pre[*],script[*],style[*]', 'valid_children':"+body[style|script],pre[script|div|p|br|span|img|style|h1|h2|h3|h4|h5],*[*]", 'valid_elements' : '*[*]' })
 
 @app.route("/")
 def main():

@@ -3,9 +3,9 @@
 	<head>
 	{{ codemirror.include_codemirror() }}
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
-	<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+	<script type="text/javascript" src="//cdn.tinymce.com/4/tinymce.min.js"></script>
 	<script type="text/javascript">
-		tinymce.activeEditor.setContent(html, {format: 'raw'});
+		tinymce.activeEditor.setContent({format: 'raw'});
 	</script>
 
 	</head>
@@ -24,23 +24,28 @@ body, html
 }
 .left
 {
-	width:38%;
+	width:35%;
 	height:100%;
 	float:left;
 	overflow:auto;
 }
 .middle
 {
-	width:32%;
+	width:30%;
 	height:100%;
 	float:left;
 }
 .right
 {
-	width:30%;
+	width:35%;
 	height:100%;
 	float:right
 }
+.CodeMirror
+{
+	height:80%;
+}
+
 
 </style>
 <body>
@@ -54,7 +59,7 @@ body, html
                 {{ form.csrf_token }}
                 {{ form.source_code }}
                 <div>
-                <input type='submit' value='Login'></input>
+              	<input type='submit' value='Run Code'></input>
 		</div>
         </form>
 </div>
