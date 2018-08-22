@@ -70,15 +70,16 @@ class RegisterForm(Form):
 class MyForm(Form):
     source_code = CodeMirrorField(language='python', config={'lineNumbers' : 'true'})
     body = StringField('Text', widget=TextArea(), default='Please add content')
-    text = TinyMceField('My WTF TinyMCEField',tinymce_options={'toolbar': 'false', 'readonly':'1', 'height':'490','allow_script_urls':'true', 'width':'435', 'extended_valid_elements':'pre[*],script[*],style[*]', 'valid_children':"+body[style|script],pre[script|div|p|br|span|img|style|h1|h2|h3|h4|h5],*[*]", 'valid_elements' : '*[*]' })
+    text = TinyMceField('My WTF TinyMCEField',tinymce_options={'toolbar': 'false', 'readonly':'1', 'height':'493', 'width':'435'})
+
 
 @app.route("/")
 def main():
-    return render_template('main.html')
+    return render_template('template1.html')
 
 @app.route('/login/', methods=['POST', 'GET'])
 def login():
-    username = current_user.username
+    #username = current_user.username
     if current_user.is_authenticated:
         return redirect(url_for('.dashboard', username=username))    
     form = LoginForm()   
@@ -118,8 +119,12 @@ def dashboard(username):
 def template():
     form = MyForm()
     if form.validate_on_submit():
-        text = form.source_code.data
-        form.text.data = text
+        userInput = form.source_code.data
+        form.text.data = userInput
+        text = "hello"
+        answer = "<h1>" + text + "</h1>"
+        if answer in userInput:
+            return userInput
     return render_template('template.html', form=form)
 
 @app.route('/logout/')

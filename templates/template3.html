@@ -3,18 +3,20 @@
 	<head>
 	{{ codemirror.include_codemirror() }}
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
-	<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
-	<script type="text/javascript">
-		tinymce.activeEditor.setContent(html, {format: 'raw'});
+	<script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
+	<script>
+		tinymce.activeEditor.setContent({format: 'raw'});
 	</script>
 
 	</head>
 <style>
+
 body, html 
 {
 	width: 100%;
 	height: 100%;
 }
+
 .container 
 {
 	width: 100%;
@@ -22,27 +24,28 @@ body, html
 }
 .left
 {
-	width:38%;
+	width:35%;
 	height:100%;
 	float:left;
 	overflow:auto;
 }
 .middle
 {
-	width:32%;
+	width:30%;
 	height:100%;
 	float:left;
 }
 .right
 {
-	width:30%;
+	width:35%;
 	height:100%;
 	float:right
 }
 .CodeMirror
 {
-        height:80%;
+	height:80%;
 }
+
 
 </style>
 <body>
@@ -51,20 +54,16 @@ body, html
 <div class='left'>
 	<p>Lesson Stuff</p>
 	<h3>Filler text currently however this will be a task for the user to complete. Underneath there will be checkboxes, which when the user inputs and runs certain code, the checkbox should tick, indicating to the student that the task has been completed</h3>
-        <br>This would act like the question </br>
-        <input type="checkbox" name="task1" value="task1" onclick="return false;"/>
-	<br>This would be another question</br>
-	<input type="checkbox" name="task2" value="task2" onclick="return false;"/>
-
+	<br>This would act like the question </br>
+	<input type="checkbox" name="task1" value="task1" onclick="return false;"/>
 </div>
 <div class="middle">
-	<form method='POST' action="">
-                {{ form.csrf_token }}
+		{{ form.csrf_token }}
                 {{ form.source_code }}
                 <div>
-                <input type='submit' value='Run Code'></input>
+              	<input type='submit' value='Run Code'></input>
 		</div>
-        </form>
+	</form>
 </div>
 <div class="right" contentEditable=true>
 <div>
