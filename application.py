@@ -9,6 +9,7 @@ from wtforms.widgets import TextArea
 from wtforms.validators import InputRequired, Email
 from passlib.hash import sha256_crypt
 from flask_sqlalchemy import SQLAlchemy
+from bs4 import BeautifulSoup 
 from wtf_tinymce import wtf_tinymce
 from wtf_tinymce.forms.fields import TinyMceField
 
@@ -121,10 +122,17 @@ def template():
     if form.validate_on_submit():
         userInput = form.source_code.data
         form.text.data = userInput
-        text = "hello"
-        answer = "<h1>" + text + "</h1>"
-        if answer in userInput:
-            return userInput
+        soup = BeautifulSoup(userInput)
+        text = soup.text.replace('\n','')
+        answer1 = "<h1>" + text + "</h1>"
+        answer2 = "<h2>" + text + "</h2>"
+        #checkbox = request.form.get("task1")
+        if answer1 in userInput:
+            flash("Task 1 Complete")
+        else:
+            flash("Code is incorrect")
+        if answer2 in userInput:
+            flash("Task 2 Complete")
     return render_template('template.html', form=form)
 
 @app.route('/logout/')

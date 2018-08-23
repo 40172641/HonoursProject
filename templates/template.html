@@ -7,7 +7,10 @@
 	<script type="text/javascript">
 		tinymce.activeEditor.setContent(html, {format: 'raw'});
 	</script>
-
+	<script>
+		var value = '<h1>hello</h1>'
+		$('input:checkbox[value="' + value + '"]').attr('checked',true);
+	</script>
 	</head>
 <style>
 body, html 
@@ -52,9 +55,8 @@ body, html
 	<p>Lesson Stuff</p>
 	<h3>Filler text currently however this will be a task for the user to complete. Underneath there will be checkboxes, which when the user inputs and runs certain code, the checkbox should tick, indicating to the student that the task has been completed</h3>
         <br>This would act like the question </br>
-        <input type="checkbox" name="task1" value="task1" onclick="return false;"/>
 	<br>This would be another question</br>
-	<input type="checkbox" name="task2" value="task2" onclick="return false;"/>
+	
 
 </div>
 <div class="middle">
@@ -63,6 +65,14 @@ body, html
                 {{ form.source_code }}
                 <div>
                 <input type='submit' value='Run Code'></input>
+		{% with messages = get_flashed_messages() %}
+        {% if messages %}
+                {% for message in messages %}
+                <p>{{ message }}</p>
+                {% endfor %}
+        {% endif %}
+        {% endwith %}
+
 		</div>
         </form>
 </div>
