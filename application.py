@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, flash, session, redirect, abort, url_for
 from flask_wtf import Form
+import copy
 from flask_codemirror import CodeMirror
 from flask_codemirror.fields import CodeMirrorField
 from flask_login import LoginManager
@@ -73,6 +74,13 @@ class MyForm(Form):
     body = StringField('Text', widget=TextArea(), default='Please add content')
     text = TinyMceField('My WTF TinyMCEField',tinymce_options={'toolbar': 'false', 'readonly':'1', 'height':'493', 'width':'435'})
 
+quiz_questions = {
+        'What would this Be?':['Answer1','Answer2'],
+        'Test Question?!':['Answer 3','Answer 4']
+
+}
+
+questions = copy.deepcopy(quiz_questions)
 
 @app.route("/")
 def main():
@@ -116,8 +124,9 @@ def dashboard(username):
         return redirect(url_for('.main'))
     return render_template('dashboard.html', user=user)
 
+
 @app.route('/dashboard/template/', methods=['GET', 'POST'])
-def template():
+def template(): 
     form = MyForm()
     if form.validate_on_submit():
         userInput = form.source_code.data
@@ -126,7 +135,8 @@ def template():
         text = soup.text.replace('\n','')
         answer1 = "<h1>" + text + "</h1>"
         answer2 = "<h2>" + text + "</h2>"
-        #checkbox = request.form.get("task1")
+        checkbox = request.form.get("task1")
+        print text
         if answer1 in userInput:
             flash("Task 1 Complete")
         else:
@@ -134,6 +144,17 @@ def template():
         if answer2 in userInput:
             flash("Task 2 Complete")
     return render_template('template.html', form=form)
+
+@app.route('/dashboard/quiz/', methods=['GET', 'POST'])
+def quizTemplate():
+    if request.method == "POST":
+        correct = 0
+        for i in questions.keys():
+            answered = request.form[i]
+            if quiz_questions[i][1] == answered:
+                correct = correct + 1
+        return str(correct)
+    return render_template('quiz.html', questions=questions)
 
 @app.route('/logout/')
 def logout():

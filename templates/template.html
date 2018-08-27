@@ -54,7 +54,9 @@ body, html
 <div class='left'>
 	<p>Lesson Stuff</p>
 	<h3>Filler text currently however this will be a task for the user to complete. Underneath there will be checkboxes, which when the user inputs and runs certain code, the checkbox should tick, indicating to the student that the task has been completed</h3>
-        <br>This would act like the question </br>
+	<form method='POST' action ="">
+	</form>
+	<br>This would act like the question </br>
 	<br>This would be another question</br>
 	
 
@@ -64,7 +66,7 @@ body, html
                 {{ form.csrf_token }}
                 {{ form.source_code }}
                 <div>
-                <input type='submit' value='Run Code'></input>
+			<input type="submit" value="Run Code" />
 		{% with messages = get_flashed_messages() %}
         {% if messages %}
                 {% for message in messages %}
