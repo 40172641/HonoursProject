@@ -158,8 +158,11 @@ def template(username):
         if task1 == True:
             print "Task 1 Complete"
             lesson = Lesson(current_user.username, userInput)
-            db.session.add(lesson)
-            db.session.commit()
+            if  Lesson.query.filter_by(username=current_user.username).scalar() is None:
+                db.session.add(lesson)
+                db.session.commit()
+            else:
+                print "User Exists"
     return render_template('template.html', form=form, username=username)
 
 @app.route('/dashboard/quiz/', methods=['GET', 'POST'])
