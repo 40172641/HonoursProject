@@ -141,6 +141,11 @@ def dashboard(username):
 def template(username): 
     username = User.query.filter_by(username=username).first()
     form = MyForm()
+    if  Lesson.query.filter_by(username=current_user.username).scalar() is not None:
+        print "User has already done this tutorial"
+        loadData = Lesson.query.filter_by(username=current_user.username).first()
+        form.source_code.data = loadData.excercise1
+        form.text.data = loadData.excercise1
     if form.validate_on_submit():
         userInput = form.source_code.data
         form.text.data = userInput
@@ -163,6 +168,9 @@ def template(username):
                 db.session.commit()
             else:
                 print "User Exists"
+                update = Lesson.query.filter_by(username=current_user.username).first()
+                update.excercise1 = userInput
+                db.session.commit()
     return render_template('template.html', form=form, username=username)
 
 @app.route('/dashboard/quiz/', methods=['GET', 'POST'])
