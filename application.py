@@ -27,6 +27,7 @@ login_manager.init_app(app)
 login_manager.login_view = 'login'
 
 class User(UserMixin, db.Model):
+    #__tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     firstname = db.Column('firstname', db.String(20), index=True)
     lastname = db.Column('lastname', db.String(20), index=True)
@@ -40,6 +41,15 @@ class User(UserMixin, db.Model):
         self.email = email
         self.username = username
         self.password = password
+
+class Lesson(db.Model):
+    __tablename__ = 'lesson'
+    username = db.Column('username', db.String(20), unique=True, index=True, primary_key=True)
+    excercise1 = db.Column('excercise1', db.String(100))
+
+    def __init__(self, username, excercise1):
+        self.username = username
+        self.excercise1 = excercise1
 
     def is_authenticated(self):
         return true
@@ -88,9 +98,8 @@ def main():
 
 @app.route('/login/', methods=['POST', 'GET'])
 def login():
-    #username = current_user.username
     if current_user.is_authenticated:
-        return redirect(url_for('.dashboard', username=username))    
+        return redirect(url_for('.dashboard', username=current_user.username))      
     form = LoginForm()   
     if request.method == 'POST' and form.validate():
         user= User.query.filter_by(username=form.username.data).first()
@@ -110,7 +119,7 @@ def register():
         elif User.query.filter_by(username=form.username.data).first():
             return 'Username already exists'
         else:
-            user = User(form.firstname.data, form.lastname.data, form.email.data, form.username.data, (form.password.data))       
+            user = User(form.firstname.data, form.lastname.data, form.email.data, form.username.data, form.password.data)       
             db.session.add(user)
             db.session.commit()
             return "Account Creation Successful"
@@ -125,8 +134,10 @@ def dashboard(username):
     return render_template('dashboard.html', user=user)
 
 
-@app.route('/dashboard/template/', methods=['GET', 'POST'])
-def template(): 
+@app.route('/dashboard/<username>/template/', methods=['GET', 'POST'])
+@login_required
+def template(username): 
+    username = User.query.filter_by(username=username).first()
     form = MyForm()
     if form.validate_on_submit():
         userInput = form.source_code.data
@@ -134,16 +145,20 @@ def template():
         soup = BeautifulSoup(userInput)
         text = soup.text.replace('\n','')
         answer1 = "<h1>" + text + "</h1>"
-        answer2 = "<h2>" + text + "</h2>"
-        checkbox = request.form.get("task1")
         print text
+        task1 = None
         if answer1 in userInput:
             flash("Task 1 Complete")
+            task1 = True
         else:
             flash("Code is incorrect")
-        if answer2 in userInput:
-            flash("Task 2 Complete")
-    return render_template('template.html', form=form)
+            task1 = False
+        if task1 == True:
+            print "Task 1 Complete"
+            lesson = Lesson(current_user.username, userInput)
+            db.session.add(lesson)
+            db.session.commit()
+    return render_template('template.html', form=form, username=username)
 
 @app.route('/dashboard/quiz/', methods=['GET', 'POST'])
 def quizTemplate():
