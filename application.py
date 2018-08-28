@@ -94,7 +94,7 @@ questions = copy.deepcopy(quiz_questions)
 
 @app.route("/")
 def main():
-    return render_template('template1.html')
+    return render_template('main.html')
 
 @app.route('/login/', methods=['POST', 'GET'])
 def login():
@@ -112,6 +112,8 @@ def login():
 
 @app.route('/register/', methods=['POST', 'GET'])
 def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('.dashboard', username=current_user.username))
     form = RegisterForm()
     if request.method == 'POST' and form.validate():
         if User.query.filter_by(email=form.email.data).first():
