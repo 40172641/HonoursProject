@@ -7,7 +7,7 @@ from flask_login import LoginManager
 from flask_login import current_user, login_user, login_required, UserMixin, logout_user
 from wtforms import SubmitField, StringField, PasswordField, validators
 from wtforms.widgets import TextArea
-from wtforms.validators import InputRequired, Email
+from wtforms.validators import InputRequired, Email, Length
 from passlib.hash import sha256_crypt
 from flask_sqlalchemy import SQLAlchemy
 from bs4 import BeautifulSoup 
@@ -72,12 +72,12 @@ class LoginForm(Form):
     password = PasswordField('Password', validators=[InputRequired()])
 
 class RegisterForm(Form):
-    firstname = StringField('Please enter your First Name', validators=[InputRequired()])
-    lastname = StringField('Please Enter your Last Name', validators=[InputRequired()])
-    username = StringField('Please enter your Username', validators=[InputRequired()])
+    firstname = StringField('Please enter your First Name', validators=[InputRequired(), Length(min=3, max=20, message='Please enter your First Name')])
+    lastname = StringField('Please Enter your Last Name', validators=[InputRequired(), Length(min=3, max=20, message='Please enter your Last Name')])
+    username = StringField('Please enter your Username', validators=[InputRequired(), Length(min=3, max=20)])
     email = StringField('Please enter your Email', validators=[InputRequired(), Email(message='Error')])    
-    password = PasswordField('Please enter your Password', validators=[InputRequired(), validators.EqualTo('confirm', message='Passwords MUst Match')])
-    confirm = PasswordField('Please re-enter your Password', validators=[InputRequired()])
+    password = PasswordField('Please enter your Password', validators=[InputRequired(), Length(min=3, max=20), validators.EqualTo('confirm', message='Passwords Must Match')])
+    confirm = PasswordField('Please re-enter your Password', validators=[InputRequired(), Length(min=3, max=20)])
 
 class MyForm(Form):
     source_code = CodeMirrorField(language='python', config={'lineNumbers' : 'true'})
@@ -152,7 +152,7 @@ def template(username):
         soup = BeautifulSoup(userInput)
         text = soup.text.replace('\n','')
         answer1 = "<h1>" + text + "</h1>"
-        print text
+        #print text
         task1 = None
         if answer1 in userInput:
             flash("Task 1 Complete")
