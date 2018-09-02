@@ -1,6 +1,7 @@
 {% import 'wtf_tinymce/editor.html' as tinymce with context %}
 <html>
 	<head>
+	<title>Lesson |</title>
 	{{ codemirror.include_codemirror() }}
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
 	<script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
@@ -11,6 +12,11 @@
 		var value = '<h1>hello</h1>'
 		$('input:checkbox[value="' + value + '"]').attr('checked',true);
 	</script>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	</head>
 <style>
 body, html 
@@ -49,6 +55,27 @@ body, html
 
 </style>
 <body>
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <div class="container-fluid">
+    <div class="navbar-header">
+	    <a class="navbar-brand">LEARN</a>
+    </div>
+    <ul class="nav navbar-nav">
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+    <li class="dropdown">
+	    <a class="dropdown-toggle" data-toggle="dropdown">{{username.username}}</>
+        <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+		<li><a href="/dashboard/{{username.username}}">Dashboard</a></li>
+          <li><a href="#">second</a></li>
+          <li><a href="/logout">Logout</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>
+
 <h1>Template page for Lesson Page</h1>
 <div class="container">
 <div class='left'>

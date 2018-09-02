@@ -144,8 +144,8 @@ def template(username):
     if  Lesson.query.filter_by(username=current_user.username).scalar() is not None:
         print "User has already done this tutorial"
         loadData = Lesson.query.filter_by(username=current_user.username).first()
-        form.source_code.data = loadData.excercise1
-        form.text.data = loadData.excercise1
+        #form.source_code.data = loadData.excercise1
+        #form.text.data = loadData.excercise1
     if form.validate_on_submit():
         userInput = form.source_code.data
         form.text.data = userInput

@@ -1,9 +1,23 @@
 <html>
+<head>
+	<title>Dashboard | {{user.username}}</title>
+</head>
+<style>
+
+body {
+	width: 60%;
+	position: absolute;
+	left: 250px;
+	}
+</style>
 <body>
 
-	<h3>User Page</h3>
-	<p>{{ user.firstname }}</p>
-	<p>{{ user.lastname }} </p>
-	<p> {{ user.username }} </p>
+	<h3>{{ user.username}}</h3>
+	<p> Welcome to the Dashboard, {{ user.firstname }} {{user.lastname}}, this is the hub for the learning application. From this section you will be able to see the Available Courses</p>
+
+	<div></div>
+	<h4>Avaliable Courses</h4>
+	<h5><a href='#'>HTML Basics: Introduction</a></h5>
+	<h5>HTML: Multimedia</h5>
 </body>
 </html>
