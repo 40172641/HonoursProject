@@ -1,17 +1,51 @@
 <html>
 <head>
 	<title>Dashboard | {{user.username}}</title>
+	<meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <style>
 
-body {
+.body {
 	width: 60%;
 	position: absolute;
 	left: 250px;
 	}
 </style>
 <body>
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <div class="container-fluid">
+    <div class="navbar-header">
+            <a class="navbar-brand">LEARN</a>
+    </div>
+    <ul class="nav navbar-nav">
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+    <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown">{{user.username}}</>
+        <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+                <li><a href="/dashboard/{{user.username}}">Dashboard</a></li>
+          <li><a href="#">second</a></li>
+          <li><a href="/logout">Logout</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>
 
+	
+{% with messages = get_flashed_messages() %}
+        {% if messages %}
+                {% for message in messages %}
+                <p>{{ message }}</p>
+                {% endfor %}
+        {% endif %}
+        {% endwith %}
+	<div class="body">
 	<h3>{{ user.username}}</h3>
 	<p> Welcome to the Dashboard, {{ user.firstname }} {{user.lastname}}, this is the hub for the learning application. From this section you will be able to see the Available Courses</p>
 
@@ -19,5 +53,6 @@ body {
 	<h4>Avaliable Courses</h4>
 	<h5><a href='#'>HTML Basics: Introduction</a></h5>
 	<h5>HTML: Multimedia</h5>
+	</div>
 </body>
 </html>

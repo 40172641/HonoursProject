@@ -82,7 +82,7 @@ class RegisterForm(Form):
 class MyForm(Form):
     source_code = CodeMirrorField(language='python', config={'lineNumbers' : 'true'})
     body = StringField('Text', widget=TextArea(), default='Please add content')
-    text = TinyMceField('My WTF TinyMCEField',tinymce_options={'toolbar': 'false', 'readonly':'1', 'height':'493', 'width':'435'})
+    text = TinyMceField('My WTF TinyMCEField',tinymce_options={'toolbar': 'false', 'readonly':'1', 'height':'493', 'width':'435', 'valid_elements':'*[*]', 'allow_script_urls': 'true', 'extended_valid_elements': 'script[language|src=https://cloud.tinymce.com/stable/tinymce.min.js]'})
 
 quiz_questions = {
         'What would this Be?':['Answer1','Answer2'],
@@ -124,7 +124,9 @@ def register():
             user = User(form.firstname.data, form.lastname.data, form.email.data, form.username.data, form.password.data)       
             db.session.add(user)
             db.session.commit()
-            return "Account Creation Successful"
+            login_user(user)
+            return redirect(url_for('.dashboard', username=user.username))
+            flash ("Account Creation Successful")
     return render_template('register.html', form=form)
 
 @app.route('/dashboard/<username>/')
@@ -132,13 +134,15 @@ def register():
 def dashboard(username):
     user = User.query.filter_by(username=username).first()
     if username != current_user.username:
-        return redirect(url_for('.main'))
+        return redirect(url_for('.dashboard', username=current_user.username))
     return render_template('dashboard.html', user=user)
 
 
 @app.route('/dashboard/<username>/template/', methods=['GET', 'POST'])
 @login_required
 def template(username): 
+    if username != current_user.username:
+        return redirect(url_for('.dashboard', username=current_user.username))
     username = User.query.filter_by(username=username).first()
     form = MyForm()
     if  Lesson.query.filter_by(username=current_user.username).scalar() is not None:
