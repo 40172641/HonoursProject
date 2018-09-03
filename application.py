@@ -42,6 +42,19 @@ class User(UserMixin, db.Model):
         self.username = username
         self.password = password
 
+class Course(db.Model):
+    __tablename__ = 'course'
+    courseid = db.Column(db.Integer, primary_key=True, unique=True)
+    coursename = db.Column('coursename', db.String(20), index=True)
+    description = db.Column('description', db.String(500), index=True)
+    lessons = db.Column(db.Integer, index=True)
+
+    def __init__(self, courseid, coursename, description, lessons):
+        self.courseid = courseid
+        self.coursename = coursename
+        self.description = description
+        self.lessons = lessons
+
 class Lesson(db.Model):
     __tablename__ = 'lesson'
     username = db.Column('username', db.String(20), unique=True, index=True, primary_key=True)
@@ -138,7 +151,7 @@ def dashboard(username):
     user = User.query.filter_by(username=username).first()
     if username != current_user.username:
         return redirect(url_for('.dashboard', username=current_user.username))
-    return render_template('dashboard.html', user=user)
+    return render_template('dashboard.html', user=user, courses=Course.query.all())
 
 
 @app.route('/dashboard/<username>/template/', methods=['GET', 'POST'])
