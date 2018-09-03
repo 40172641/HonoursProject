@@ -8,12 +8,26 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <style>
-
+body
+{
+	background-color: 5CDB95;
+}
+.container-fluid
+{
+	background-color:000000;
+	
+}
 .body {
 	width: 60%;
 	position: absolute;
 	left: 250px;
 	}
+.course1
+{
+	border-radius: 25px;
+	border: 2px solid;
+	padding: 10px;
+}
 </style>
 <body>
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
@@ -46,12 +60,19 @@
         {% endif %}
         {% endwith %}
 	<div class="body">
+	<h4>Dashboard</h4>
 	<h3>{{ user.username}}</h3>
 	<p> Welcome to the Dashboard, {{ user.firstname }} {{user.lastname}}, this is the hub for the learning application. From this section you will be able to see the Available Courses</p>
 
 	<div></div>
 	<h4>Avaliable Courses</h4>
-	<h5><a href='#'>HTML Basics: Introduction</a></h5>
+	<div class='Course1'>
+	<h3><a href='#'>Course Name: HTML Basics: Introduction</a></h3>
+	<h4>Description of Course</h4>
+	<h4>Lessons Available:</h4>
+	</div>
+	<br>
+	<div>
 	<h5>HTML: Multimedia</h5>
 	</div>
 </body>

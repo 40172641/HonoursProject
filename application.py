@@ -82,7 +82,7 @@ class RegisterForm(Form):
 class MyForm(Form):
     source_code = CodeMirrorField(language='python', config={'lineNumbers' : 'true'})
     body = StringField('Text', widget=TextArea(), default='Please add content')
-    text = TinyMceField('My WTF TinyMCEField',tinymce_options={'toolbar': 'false', 'readonly':'1', 'height':'493', 'width':'435', 'valid_elements':'*[*]', 'allow_script_urls': 'true', 'extended_valid_elements': 'script[language|src=https://cloud.tinymce.com/stable/tinymce.min.js]'})
+    text = TinyMceField('My WTF TinyMCEField',tinymce_options={'toolbar': 'false', 'readonly':'1', 'height':'531', 'width':'393', 'valid_elements':'*[*]', 'allow_script_urls': 'true', 'extended_valid_elements': 'script[language|src=https://cloud.tinymce.com/stable/tinymce.min.js]'})
 
 quiz_questions = {
         'What would this Be?':['Answer1','Answer2'],
@@ -145,12 +145,7 @@ def template(username):
         return redirect(url_for('.dashboard', username=current_user.username))
     username = User.query.filter_by(username=username).first()
     form = MyForm()
-    if  Lesson.query.filter_by(username=current_user.username).scalar() is not None:
-        print "User has already done this tutorial"
-        loadData = Lesson.query.filter_by(username=current_user.username).first()
-        #form.source_code.data = loadData.excercise1
-        #form.text.data = loadData.excercise1
-    if form.validate_on_submit():
+    if form.validate_on_submit() and request.method == 'POST':
         userInput = form.source_code.data
         form.text.data = userInput
         soup = BeautifulSoup(userInput)
@@ -175,6 +170,12 @@ def template(username):
                 update = Lesson.query.filter_by(username=current_user.username).first()
                 update.excercise1 = userInput
                 db.session.commit()
+    if  Lesson.query.filter_by(username=current_user.username).scalar() is not None:
+        print "User has already done this tutorial"
+        loadData = Lesson.query.filter_by(username=current_user.username).first()
+        form.source_code.data = loadData.excercise1
+        form.text.data = loadData.excercise1
+        flash("Task 1 Complete")
     return render_template('template.html', form=form, username=username)
 
 @app.route('/dashboard/quiz/', methods=['GET', 'POST'])
