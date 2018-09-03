@@ -107,7 +107,8 @@ def login():
             login_user(user)
             return redirect(url_for('.dashboard', username=user.username))
         else:
-            return "Not Successful"
+            flash ("Login Unsuccessful, Please Try Again")
+            return redirect(url_for('.login'))
     return render_template('login.html', form=form)
 
 @app.route('/register/', methods=['POST', 'GET'])
@@ -117,9 +118,11 @@ def register():
     form = RegisterForm()
     if request.method == 'POST' and form.validate():
         if User.query.filter_by(email=form.email.data).first():
-            return 'Email already exists'
+            flash("Email Already Exists")
+            return redirect(url_for('.register'))
         elif User.query.filter_by(username=form.username.data).first():
-            return 'Username already exists'
+            flash ('Username already exists')
+            return redirect(url_for('.register'))
         else:
             user = User(form.firstname.data, form.lastname.data, form.email.data, form.username.data, form.password.data)       
             db.session.add(user)
