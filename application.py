@@ -194,6 +194,14 @@ def template(username):
         flash("Task 1 Complete")
     return render_template('template.html', form=form, username=username)
 
+@app.route('/dashboard/excercise/', methods=['GET', 'POST'])
+def excercise():
+    form = MyForm()
+    if form.validate_on_submit() and request.method == 'POST':
+        userInput = form.source_code.data
+        form.text.data = userInput
+    return render_template('excercise.html', form=form)
+
 @app.route('/dashboard/quiz/', methods=['GET', 'POST'])
 def quizTemplate():
     if request.method == "POST":
