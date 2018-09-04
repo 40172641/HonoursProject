@@ -210,10 +210,16 @@ def logout():
     logout_user()
     return redirect(url_for('.main'))
 
+@app.route('/dashboard/')
+def dashredirect():
+    if current_user.is_authenticated:
+        return redirect(url_for('.dashboard', username=current_user.username))
+    else:
+        return redirect(url_for('.main'))
 
 @app.errorhandler(404)
 def error_page(error):
-    return "Couldn't find the page"
+    return render_template('error.html')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
