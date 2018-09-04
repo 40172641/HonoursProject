@@ -8,11 +8,22 @@
   	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>	
-	<script>
-	var e = document.getElementsByTagName('script type= "mce-no/type"')[0];
-	var d = document.createElement('script');
-	d.innerHTML = e.innerHTML
-	</script>
+	
+<script>
+	$(document).ready(function(){
+		$('form').on('submit', function(event) {
+			var url = "{{url_for('excercise') }}";
+			$.ajax(
+				{
+					type: "POST", 
+					url: url
+				});
+		
+		
+		}
+		
+	}
+</script>
 	</head>
 <style>
 body, html 
