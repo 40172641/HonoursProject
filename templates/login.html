@@ -1,4 +1,3 @@
-{% from "_formhelpers.html" import render_field %}
 <html>
 <head>
 	<meta charset="utf-8">
@@ -6,18 +5,65 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style>
+.container
+{
+	width:50%;
+	height: 110%;
+}
+.login
+{
+	text-align: center;
+	position: relative;
+	top:100px;
+	border-radius: 20px;
+	background-color: ccffe6;
+}
+.form
+{
+	width: 50%;
+	border-radius: 8px;
+	margin: 8px;
+	box-sizing: border-box;
+	display: inline-block;
+	font-size: 20px;
+	
+}
+.button
+{
+	border-radius:5px;
+	padding 14px 40px;
+	width: 200px;
+	height: 40px;
+	font-size: 22px;
+	margin: 4px 2px;
+	display: inline-block;
+	
+}
+</style>
 </head>
+
 <body>
+	<div class="container">
+	<div class="login">
+		<br>
+		<br>
+		<img src="/static/img/birds.jpg" style="width:60px; height:60px;">
+		<br>
 	<h3>Login Page</h3>
 	<h4>Please Login to your account</h4>
 	<form method='POST' action="">
 		{{ form.csrf_token }}
-		{{ render_field(form.username) }}
-		{{ render_field(form.password) }}
+		{{ form.username(class_='form') }}
+		<br>
+		{{ form.password (class_='form')}}
 		<div>
-		<input type='submit' value='Login'></input>
+		<input type='submit' class="button"value='Login'></input>
 	</form>
-	<p>Don't have an account? Please <a href='/register/'>Register</a> here</p>
+	<br>
+	<br>
+	<br>
+	<h4>Don't have an account? Please <a href='/register/'>Register</a> here</h4>
 	{% with messages = get_flashed_messages() %}
         {% if messages %}
                 {% for message in messages %}
@@ -25,5 +71,11 @@
                 {% endfor %}
         {% endif %}
         {% endwith %}
+	<br>
+	<br>
+	<br>
+	<br>
+		</div>
+	</div>
 <body>
 </html>
