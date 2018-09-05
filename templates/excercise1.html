@@ -23,7 +23,11 @@
                 data: $('form').serialize(), // serializes the form's elements.
                 success: function (data) {
                     console.log(data)  // display the returned data in the console.
-			$("#movie-data").append(JSON.stringify(data));
+			console.log(JSON.stringify(data));
+			console.log(JSON.parse(JSON.stringify(data)));
+			var obj = JSON.parse(JSON.stringify(data));
+			console.log(obj.data.message);
+			$("#movie-data").append(obj.data.message);
                 }
             });
             e.preventDefault(); // block the traditional submission of the form.

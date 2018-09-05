@@ -40,7 +40,7 @@ def excercise():
     if form.validate_on_submit() and request.method == 'POST':
         userInput = form.source_code.data
         form.text.data = userInput
-        return jsonify(data={'message': (form.text.data)})
+        return jsonify(data={'message':(form.text.data)})
     return jsonify(data=form.errors)
 
 
