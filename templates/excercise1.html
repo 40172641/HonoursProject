@@ -27,7 +27,8 @@
 			console.log(JSON.parse(JSON.stringify(data)));
 			var obj = JSON.parse(JSON.stringify(data));
 			console.log(obj.data.message);
-			$("#movie-data").append(obj.data.message);
+			//$("#movie-data").append(obj.data.message);
+			tinymce.activeEditor.execCommand('mceInsertContent', false, obj.data.message);
                 }
             });
             e.preventDefault(); // block the traditional submission of the form.
