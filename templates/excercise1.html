@@ -8,10 +8,11 @@
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/codemirror.min.css">
  
-    <!-- Include Editor style. -->
+
+<!-- Include Editor style. -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.4/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.4/css/froala_style.min.css" rel="stylesheet" type="text/css" />
-	
+
 	
 	<meta charset="utf-8">
   	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -68,10 +69,14 @@
     <!-- Initialize the editor. -->
     <script> 
 	    $(function() { 
-		    $('#output').froalaEditor()
-		    $('#output').off('froalaEditor.toolbar.show');
-	    
-	    }); </script>
+		    $('#output').froalaEditor({
+	   		toolbarButtons: [], 
+			height: 474, 
+			width: 450
+			    
+		    })
+		    }); 
+    </script>
 
 
 
@@ -83,9 +88,10 @@ body, html
 	height: 100%;
 	overflow: hidden;
 }
-textearea
+.output
 {
-	resize:none;
+	height:100%
+	border: 1px solid black;
 }
 .button {
     background-color: #4CAF50;
@@ -188,8 +194,8 @@ textearea
 <div class="right" contentEditable=true>
 <div>
 	
-	<textarea id="output">
-		<div id="results"> <p>Please enter some code<p></div>
+	<textarea id="output" class="output">
+		<div id="results"> <p><p></div>
 	</textarea>
 	<!--{% block tail %}
               {{ tinymce.init_wtf_tinymce() }}
