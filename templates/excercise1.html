@@ -3,6 +3,16 @@
 	<head>
 	<title>Lesson |</title>
 	{{ codemirror.include_codemirror() }}
+	
+	
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/codemirror.min.css">
+ 
+    <!-- Include Editor style. -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.4/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.4/css/froala_style.min.css" rel="stylesheet" type="text/css" />
+	
+	
 	<meta charset="utf-8">
   	<meta name="viewport" content="width=device-width, initial-scale=1">
   	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -10,26 +20,28 @@
   	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
 	<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+	
 <script>
     $(document).ready(function() {
         $('form').submit(function (e) {
-            var url = "/post/"; .
+            var url = "/post/"; 
             $.ajax({
                 type: "POST",
                 url: url,
                 data: $('form').serialize(), 
                 success: function (data) {
-                    //console.log(data)  
+                   // console.log(data)  
 			//console.log(JSON.stringify(data));
 			//console.log(JSON.parse(JSON.stringify(data)));
 			var obj = JSON.parse(JSON.stringify(data));
-			//console.log(obj.data.message);
-			$("#result").append(obj.data.message);
+			console.log(obj.data.message);
+			console.log(eval(obj.data));
+			$("#results").html(obj.data.message);
+			//$("#result").append(j);
 			//tinymce.activeEditor.execCommand('mceInsertContent', false, obj.data.message);
-                	//var x =docuement.getElementById().innerHTML = obj.data.message;
-			//document.getElementById("result").value = obj.data.message;		
-			//$('#results').append(obj.data.message);
-			tinymce.activeEditor.setContent(obj.data.message);
+			//document.getElementById("results").innerHTML = obj.data.message;		
+			//console.log($('#result').val()
+			//tinymce.activeEditor.setContent(obj.data.message);
 		}
             });
             e.preventDefault(); // block the traditional submission of the form.
@@ -45,6 +57,24 @@
     });
 </script>		
 	
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/codemirror.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.25.0/mode/xml/xml.min.js"></script>
+ 
+    <!-- Include Editor JS files. -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.4/js/froala_editor.pkgd.min.js"></script>
+ 
+    <!-- Initialize the editor. -->
+    <script> 
+	    $(function() { 
+		    $('#output').froalaEditor()
+		    $('#output').off('froalaEditor.toolbar.show');
+	    
+	    }); </script>
+
+
+
 	</head>
 <style>
 body, html 
@@ -110,6 +140,10 @@ textearea
 	position: absolute;
 	font-size: 18px;
 }
+.frola-element
+{
+	width:30%
+}
 </style>
 <body>
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
@@ -142,7 +176,6 @@ textearea
 </div>
 <div class="middle">
 	<form method='POST' action="">
-
                 {{ form.csrf_token }}
 		<h5>Edit Code</h5>
 		{{ form.hidden_tag() }}
@@ -154,10 +187,14 @@ textearea
 </div>
 <div class="right" contentEditable=true>
 <div>
-	{% block tail %}
+	
+	<textarea id="output">
+		<div id="results"> <p>Please enter some code<p></div>
+	</textarea>
+	<!--{% block tail %}
               {{ tinymce.init_wtf_tinymce() }}
         {% endblock %}
-	{{ form.text }} 
+	{{ form.text }} --!>
 	
 </div>
 </div>
