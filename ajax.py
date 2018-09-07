@@ -27,19 +27,31 @@ codemirror = CodeMirror(app)
 class MyForm(Form):
     source_code = CodeMirrorField(language='python', config={'lineNumbers' : 'true'})
     body = StringField('Text', widget=TextArea(), default='Please add content')
-    text = TinyMceField('My WTF TinyMCEField',tinymce_options={'readonly':'1', 'height':'531', 'width':'393', 'valid_elements':'*[*]', 'allow_script_urls': 'true', 'extended_valid_elements': 'script[language|src=https://cloud.tinymce.com/stable/tinymce.min.js]'})
+    text = TinyMceField('My WTF TinyMCEField',tinymce_options={'toolbar':'false','readonly':'1', 'height':'531', 'width':'393', 'valid_elements':'*[*]', 'allow_script_urls': 'true', 'extended_valid_elements': 'script[language|src|type'})
 
 @app.route("/")
 def index ():
     form = MyForm()
     return render_template('excercise1.html', form=form)
 
-@app.route('/d/', methods=['POST'])
+@app.route('/post/', methods=['POST'])
 def excercise():
     form = MyForm()
     if form.validate_on_submit() and request.method == 'POST':
         userInput = form.source_code.data
         form.text.data = userInput
+        soup = BeautifulSoup(userInput)
+        text = soup.text.replace('\n','')
+        answer1 = "<h1>" + text + "</h1>"
+        print text
+        task1 = None
+        if answer1 in userInput:
+            task1 = True
+            print task1
+        else:
+          #  flash("Code is incorrect")
+          task1 = False
+          print task1
         return jsonify(data={'message':(form.text.data)})
     return jsonify(data=form.errors)
 
