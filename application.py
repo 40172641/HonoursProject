@@ -183,12 +183,13 @@ def templatePost():
           #  flash("Code is incorrect")
           task1 = False
           print task1
+        #return jsonify(data={'output':(form.source_code.data)})
+    #return jsonify(data=form.errors)
+        if task1 == True:
+            print "Task 1 Complete"
         return jsonify(data={'output':(form.source_code.data)})
     return jsonify(data=form.errors)
 
-        
-        #if task1 == True:
-            #print "Task 1 Complete"
             #lesson = Lesson(current_user.username, userInput)
             #if  Lesson.query.filter_by(username=current_user.username).scalar() is None:
              #   db.session.add(lesson)
