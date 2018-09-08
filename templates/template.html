@@ -26,12 +26,8 @@
                         var obj = JSON.parse(JSON.stringify(data));
                         console.log(obj.data.output);
                         //console.log(eval(obj.data));
-                        //$("#results").html(obj.data.message);
-                        //$("#result").append(j);
-                        //tinymce.activeEditor.execCommand('mceInsertContent', false, obj.data.message);
-                        //document.getElementById("results").innerHTML = obj.data.message;              
-                        //console.log($('#result').val()
-                        //tinymce.activeEditor.setContent(obj.data.message);
+                        //$("#results").html(obj.data.output);
+			$("#results").froalaEditor('html.set', 'My custom paragraph.');
                 }
             });
             e.preventDefault();
@@ -45,19 +41,27 @@
         })
     });
 </script>
-	
-	
-	
-	
+<!-- Include Editor style. -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.4/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.4/css/froala_style.min.css" rel="stylesheet" type="text/css" />
+<!-- Include Editor JS files. -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.4/js/froala_editor.pkgd.min.js"></script>
+
+    <!-- Initialize the editor. -->
+    <script>
+            $(function() {
+		    $('#output').froalaEditor({
+                        toolbarButtons: [],
+                        height: 534,
+                        width: 395
+                    })
+		    $('#output').editable({inlineMode : false});
+
+                    });
+    </script>	
 	
 	</head>
 <style>
-body, html 
-{
-	width: 100%;
-	height: 100%;
-	overflow: hidden;
-}
 .button {
     background-color: #4CAF50;
 	border: none;
@@ -168,10 +172,13 @@ Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots 
 </div>
 <div class="right" contentEditable=true>
 <div>
-	{% block tail %}
+	<textarea id="output" class="output">
+                <div id="results"> <p><p></div>
+        </textarea>	
+	<!--{% block tail %}
                 {{ tinymce.init_wtf_tinymce() }}
         {% endblock %}
-	{{ form.text }}
+	{{ form.text }} --!>
 	
 </div>
 </div>

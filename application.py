@@ -183,12 +183,8 @@ def templatePost():
           #  flash("Code is incorrect")
           task1 = False
           print task1
-        #return jsonify(data={'output':(form.source_code.data)})
-    #return jsonify(data=form.errors)
         if task1 == True:
             print "Task 1 Complete"
-        #return jsonify(data={'output':(form.source_code.data)})
-    #return jsonify(data=form.errors)
             lesson = Lesson(current_user.username, userInput)
             if  Lesson.query.filter_by(username=current_user.username).scalar() is None:
                 db.session.add(lesson)
@@ -200,13 +196,6 @@ def templatePost():
                 db.session.commit()
         return jsonify(data={'output':(form.source_code.data)})
     return jsonify(data=form.errors)
-    #if  Lesson.query.filter_by(username=current_user.username).scalar() is not None:
-        #print "User has already done this tutorial"
-        #loadData = Lesson.query.filter_by(username=current_user.username).first()
-        #form.source_code.data = loadData.excercise1
-        #form.text.data = loadData.excercise1
-        #flash("Task 1 Complete") 
-    #return render_template('template.html', form=form, username=username)
 
 @app.route('/dashboard/excercise/', methods=['GET', 'POST'])
 def excercise():
