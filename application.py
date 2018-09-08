@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, flash, session, redirect, abort, url_for,jsonify
 from flask_wtf import Form
+from werkzeug.security import generate_password_hash, check_password_hash
 import copy
 from flask_codemirror import CodeMirror
 from flask_codemirror.fields import CodeMirrorField
@@ -116,7 +117,7 @@ def login():
     form = LoginForm()   
     if request.method == 'POST' and form.validate():
         user= User.query.filter_by(username=form.username.data).first()
-        if user is not None and user.password == form.password.data:
+        if user is not None and check_password_hash(user.password, form.password.data):
             login_user(user)
             return redirect(url_for('.dashboard', username=user.username))
         else:
@@ -137,7 +138,8 @@ def register():
             flash ('Username already exists')
             return redirect(url_for('.register'))
         else:
-            user = User(form.firstname.data, form.lastname.data, form.email.data, form.username.data, form.password.data)       
+            user = User(form.firstname.data, form.lastname.data, form.email.data, form.username.data, generate_password_hash(form.password.data))
+            print generate_password_hash(form.password.data)
             db.session.add(user)
             db.session.commit()
             login_user(user)
