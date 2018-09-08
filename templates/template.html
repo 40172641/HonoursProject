@@ -6,13 +6,50 @@
 	<meta charset="utf-8">
   	<meta name="viewport" content="width=device-width, initial-scale=1">
   	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+
+
 	<script>
-	var e = document.getElementsByTagName('script type= "mce-no/type"')[0];
-	var d = document.createElement('script');
-	d.innerHTML = e.innerHTML
-	</script>
+    $(document).ready(function() {
+        $('form').submit(function (e) {
+            var url = "/dashboard/template/post/"; 
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: $('form').serialize(), 
+                success: function (data) {
+                    console.log(data)  
+                        //console.log(JSON.stringify(data));
+                        //console.log(JSON.parse(JSON.stringify(data)));
+                        var obj = JSON.parse(JSON.stringify(data));
+                        console.log(obj.data.output);
+                        //console.log(eval(obj.data));
+                        //$("#results").html(obj.data.message);
+                        //$("#result").append(j);
+                        //tinymce.activeEditor.execCommand('mceInsertContent', false, obj.data.message);
+                        //document.getElementById("results").innerHTML = obj.data.message;              
+                        //console.log($('#result').val()
+                        //tinymce.activeEditor.setContent(obj.data.message);
+                }
+            });
+            e.preventDefault();
+        });
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                    xhr.setRequestHeader("X-CSRFToken", "{{ form.csrf_token._value() }}")
+                }
+            }
+        })
+    });
+</script>
+	
+	
+	
+	
+	
 	</head>
 <style>
 body, html 
@@ -139,8 +176,4 @@ Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots 
 </div>
 </div>
 </body>
-
-	<script type="text/javascript">
-	$('.right').html(sample)
-	</script>
 </html>

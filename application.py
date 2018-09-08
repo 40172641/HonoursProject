@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, flash, session, redirect, abort, url_for
+from flask import Flask, render_template, request, flash, session, redirect, abort, url_for,jsonify
 from flask_wtf import Form
 import copy
 from flask_codemirror import CodeMirror
@@ -153,46 +153,60 @@ def dashboard(username):
         return redirect(url_for('.dashboard', username=current_user.username))
     return render_template('dashboard.html', user=user, courses=Course.query.all())
 
-
-@app.route('/dashboard/<username>/template/', methods=['GET', 'POST'])
+@app.route('/dashboard/<username>/template/')
 @login_required
-def template(username): 
+def template(username):
     if username != current_user.username:
         return redirect(url_for('.dashboard', username=current_user.username))
-    username = User.query.filter_by(username=username).first()
     form = MyForm()
-    if form.validate_on_submit() and request.method == 'POST':
-        userInput = form.source_code.data
-        form.text.data = userInput
-        soup = BeautifulSoup(userInput)
-        text = soup.text.replace('\n','')
-        answer1 = "<h1>" + text + "</h1>"
-        #print text
-        task1 = None
-        if answer1 in userInput:
-            flash("Task 1 Complete")
-            task1 = True
-        else:
-            flash("Code is incorrect")
-            task1 = False
-        if task1 == True:
-            print "Task 1 Complete"
-            lesson = Lesson(current_user.username, userInput)
-            if  Lesson.query.filter_by(username=current_user.username).scalar() is None:
-                db.session.add(lesson)
-                db.session.commit()
-            else:
-                print "User Exists"
-                update = Lesson.query.filter_by(username=current_user.username).first()
-                update.excercise1 = userInput
-                db.session.commit()
     if  Lesson.query.filter_by(username=current_user.username).scalar() is not None:
         print "User has already done this tutorial"
         loadData = Lesson.query.filter_by(username=current_user.username).first()
         form.source_code.data = loadData.excercise1
-        form.text.data = loadData.excercise1
-        flash("Task 1 Complete")
     return render_template('template.html', form=form, username=username)
+
+@app.route('/dashboard/template/post/', methods=['POST'])
+@login_required
+def templatePost(): 
+    form = MyForm()
+    if form.validate_on_submit() and request.method == 'POST':
+        userInput = form.source_code.data
+        soup = BeautifulSoup(userInput)
+        text = soup.text.replace('\n','')
+        answer1 = "<h1>" + text + "</h1>"
+        print text
+        task1 = None
+        if answer1 in userInput:
+            task1 = True
+            print task1
+        else:
+          #  flash("Code is incorrect")
+          task1 = False
+          print task1
+        return jsonify(data={'output':(form.source_code.data)})
+    return jsonify(data=form.errors)
+
+        
+        #if task1 == True:
+            #print "Task 1 Complete"
+            #lesson = Lesson(current_user.username, userInput)
+            #if  Lesson.query.filter_by(username=current_user.username).scalar() is None:
+             #   db.session.add(lesson)
+              #  db.session.commit()
+            #else:
+                #print "User Exists"
+                #update = Lesson.query.filter_by(username=current_user.username).first()
+                #update.excercise1 = userInput
+                #db.session.commit()
+        #return jsonify(data={'output':(form.sourcecode.data)})
+    #return jsonify(data=form.errors)
+    #if  Lesson.query.filter_by(username=current_user.username).scalar() is not None:
+        #print "User has already done this tutorial"
+        #loadData = Lesson.query.filter_by(username=current_user.username).first()
+        #form.source_code.data = loadData.excercise1
+        #form.text.data = loadData.excercise1
+        #flash("Task 1 Complete") 
+    #return render_template('template.html', form=form, username=username)
 
 @app.route('/dashboard/excercise/', methods=['GET', 'POST'])
 def excercise():
