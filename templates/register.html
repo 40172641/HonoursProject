@@ -7,6 +7,11 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	</head>
 <style>
+.container
+
+{
+	width:75%;
+}
 .form{
 	width: 60%;
 	border-radius: 8px;
@@ -25,6 +30,7 @@
 	position: relative;
 	top:100px;
 	border-radius: 20px;
+	background-color: ccffe6;
 }
 .button
 {
@@ -53,7 +59,8 @@ label
 <body>
 	<div class="container">
 	<div class="register">
-	<h3>Register Page</h3>
+		<br>
+		<h3>Register Page</h3>
 	<h4>Please Register your account</h4>
 	<form method='POST' action="">
 		{{ form.csrf_token }}
@@ -81,6 +88,9 @@ label
 		</div>
 		<div>
 		<input type='submit' class='button' value='Login'></input>
+		<br>
+		<br>
+		<br>
 	</form>
 	{% with messages = get_flashed_messages() %}
         {% if messages %}

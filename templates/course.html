@@ -1,0 +1,41 @@
+<html>
+<head>
+	<title>Course: </title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<body>
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <div class="container-fluid">
+    <div class="navbar-header">
+	    <a class="navbar-brand">LEARN</a>
+    </div>
+    <ul class="nav navbar-nav">
+    </ul>
+    <ul class="nav navbar-nav navbar-right">
+    <li class="dropdown">
+	    <a class="dropdown-toggle" data-toggle="dropdown">{{username.username}}</>
+        <span class="caret"></span></a>
+        <ul class="dropdown-menu">
+		<li><a href="/dashboard/{{username.username}}">Dashboard</a></li>
+          <li><a href="#">second</a></li>
+          <li><a href="/logout">Logout</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<h2>Course Page: {{ course.coursename }}</h2>
+<h4> {{ course.description }} </h4>
+	<br>
+	<br>
+	<h3>Lessons</h3>
+	<br>
+	<br>
+	<h3>Quiz</h3>
+</body>
+</html>

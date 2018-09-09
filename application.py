@@ -219,6 +219,18 @@ def quizTemplate():
         return str(correct)
     return render_template('quiz.html', questions=questions)
 
+@app.route('/dashboard/<username>/course/<courseid>')
+@login_required
+def course(username, courseid):
+    if username != current_user.username:
+        return redirect(url_for('.dashboard', username=current_user.username))
+    if Course.query.filter_by(courseid=courseid).scalar() is None:
+        return render_template('error.html')
+    form = MyForm()
+    username = User.query.filter_by(username=username).first()
+    courseid = Course.query.filter_by(courseid = courseid).first()
+    return render_template('course.html', username=username, course=courseid)
+
 @app.route('/logout/')
 def logout():
     logout_user()
