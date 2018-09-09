@@ -14,6 +14,10 @@
 	box-sizing: border-box;
 	display: inline-block;
 	font-size: 20px;
+	float: center;
+	text-align:right;
+	position: relative;
+	right:60px;
 }
 .register
 {
@@ -31,6 +35,18 @@ border-radius:5px;
 	font-size: 22px;
 	margin: 4px 2px;
 	display: inline-block;
+	 position: relative;
+        right:175px;
+
+
+}
+label 
+{
+	display: inline-block;
+	text-align: right;
+	font-size: 18px;
+	 position: relative;
+        right:60px;
 
 }
 </style>
@@ -42,12 +58,27 @@ border-radius:5px;
 	<form method='POST' action="">
 		{{ form.csrf_token }}
 		<div class="form">
+		<label for 'form'>First Name</label>
 		{{ form.firstname(class_='form') }}
+		<div>
+		<label>Last Name</label>
 		{{ form.lastname(class_='form') }}
+		</div>
+		<div>
+                <label>Email</label>
 		{{ form.email(class_='form') }}
+		<div>
+                <label>Username</label>
 		{{ form.username(class_='form') }}
+		</div>
+		<div>
+                <label>Password</label>
 		{{ form.password(class_='form') }}
+		</div>
+		<div>
+                <label>Confirm Password</label>
 		{{ form.confirm(class_='form') }}
+		</div>
 		<div>
 		<input type='submit' class='button' value='Login'></input>
 	</form>

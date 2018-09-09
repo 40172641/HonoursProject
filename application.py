@@ -161,6 +161,7 @@ def template(username):
     if username != current_user.username:
         return redirect(url_for('.dashboard', username=current_user.username))
     form = MyForm()
+    username = User.query.filter_by(username=username).first()
     if  Lesson.query.filter_by(username=current_user.username).scalar() is not None:
         print "User has already done this tutorial"
         loadData = Lesson.query.filter_by(username=current_user.username).first()

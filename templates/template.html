@@ -6,8 +6,10 @@
 	<meta charset="utf-8">
   	<meta name="viewport" content="width=device-width, initial-scale=1">
   	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>	
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	
+	
         <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
 
 
@@ -26,7 +28,7 @@
                         var obj = JSON.parse(JSON.stringify(data));
                         console.log(obj.data.output);
                         //console.log(eval(obj.data));
-                        //$("#results").html(obj.data.output);
+                        $("#results").html(obj.data.output);
 			$("#results").froalaEditor('html.set', 'My custom paragraph.');
                 }
             });
@@ -62,6 +64,13 @@
 	
 	</head>
 <style>
+body, html
+{
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+}
+
 .button {
     background-color: #4CAF50;
 	border: none;
