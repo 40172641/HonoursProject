@@ -58,12 +58,20 @@ class Course(db.Model):
 
 class Lesson(db.Model):
     __tablename__ = 'lesson'
-    username = db.Column('username', db.String(20), unique=True, index=True, primary_key=True)
-    excercise1 = db.Column('excercise1', db.String(100))
+    lessonid = db.Column('lessonid', db.Integer, unique=True, index=True, primary_key=True)
+    lessonname = db.Column('lessonname', db.String(30), index=True)
+    courseid = db.Column('courseid', db.Integer, db.ForeignKey('course.courseid'), index=True)
+    username = db.Column('username', db.String(20), unique=True, index=True)
+    excerciseData = db.Column('excerciseData', db.String(100))
+    taskCompleted = db.Column('taskCompleted', db.String(20))
 
-    def __init__(self, username, excercise1):
+    def __init__(self, lessonid,lessonname, courseid, coursename, username, excerciseData, taskCompleted):
+        self.lessonid = lessonid
+        self.lessonname = lessonname
+        self.courseid = courseid
         self.username = username
-        self.excercise1 = excercise1
+        self.excerciseData = excerciseData
+        self.taskCompleted = taskCompleted
 
     def is_authenticated(self):
         return true
@@ -165,7 +173,7 @@ def template(username):
     if  Lesson.query.filter_by(username=current_user.username).scalar() is not None:
         print "User has already done this tutorial"
         loadData = Lesson.query.filter_by(username=current_user.username).first()
-        form.source_code.data = loadData.excercise1
+        form.source_code.data = loadData.excerciseData
     return render_template('template.html', form=form, username=username)
 
 @app.route('/dashboard/template/post/', methods=['POST'])
