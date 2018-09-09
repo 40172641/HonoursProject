@@ -6,6 +6,25 @@
   	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
+<style>
+.body
+{
+position: relative;
+	left: 30px;
+}
+.lesson
+{
+	position: relative;
+	left: 80px;
+	font-size:19px;
+}
+.feedback
+{
+	position: relative;
+	left: 700px;
+	bottom: 330px;
+}
+</style>
 <body>
 <body>
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
@@ -28,14 +47,25 @@
     </ul>
   </div>
 </nav>
-
+<div class="body">
 <h2>Course Page: {{ course.coursename }}</h2>
 <h4> {{ course.description }} </h4>
 	<br>
-	<br>
 	<h3>Lessons</h3>
+	<div class="lesson">
+	{% for lesson in lesson %}
+	<p><a href="{{lesson.lessonid}}">{{lesson.lessonname}}</a></p>
+	{% endfor %}
+	</div>
 	<br>
 	<br>
 	<h3>Quiz</h3>
+	
+	
+	<div class="feedback">
+		<h3>User Feedback</h3>
+		<p>Example Output for Feedback</p>
+	</div>
+</div>
 </body>
 </html>

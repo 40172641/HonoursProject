@@ -163,18 +163,20 @@ def dashboard(username):
         return redirect(url_for('.dashboard', username=current_user.username))
     return render_template('dashboard.html', user=user, courses=Course.query.all())
 
-@app.route('/dashboard/<username>/template/')
+@app.route('/dashboard/<username>/course/<courseid>/<lessonid>')
 @login_required
-def template(username):
+def template(username, courseid, lessonid):
     if username != current_user.username:
         return redirect(url_for('.dashboard', username=current_user.username))
     form = MyForm()
     username = User.query.filter_by(username=username).first()
+    courseid = Course.query.filter_by(courseid=courseid).first()
+    lessonid = Lesson.query.filter_by(lessonid=lessonid).first()
     if  Lesson.query.filter_by(username=current_user.username).scalar() is not None:
         print "User has already done this tutorial"
         loadData = Lesson.query.filter_by(username=current_user.username).first()
         form.source_code.data = loadData.excerciseData
-    return render_template('template.html', form=form, username=username)
+    return render_template('template.html', form=form, username=username, courseid=courseid, lesson=lessonid)
 
 @app.route('/dashboard/template/post/', methods=['POST'])
 @login_required
@@ -196,15 +198,15 @@ def templatePost():
           print task1
         if task1 == True:
             print "Task 1 Complete"
-            lesson = Lesson(current_user.username, userInput)
-            if  Lesson.query.filter_by(username=current_user.username).scalar() is None:
-                db.session.add(lesson)
-                db.session.commit()
-            else:
-                print "User Exists"
-                update = Lesson.query.filter_by(username=current_user.username).first()
-                update.excercise1 = userInput
-                db.session.commit()
+            #lesson = Lesson(current_user.username, userInput)
+            #if  Lesson.query.filter_by(username=current_user.username).scalar() is None:
+             #   db.session.add(lesson)
+              #  db.session.commit()
+            #else:
+             #   print "User Exists"
+              #  update = Lesson.query.filter_by(username=current_user.username).first()
+               # update.excercise1 = userInput
+                #db.session.commit()
         return jsonify(data={'output':(form.source_code.data)})
     return jsonify(data=form.errors)
 
@@ -227,7 +229,7 @@ def quizTemplate():
         return str(correct)
     return render_template('quiz.html', questions=questions)
 
-@app.route('/dashboard/<username>/course/<courseid>')
+@app.route('/dashboard/<username>/course/<courseid>/')
 @login_required
 def course(username, courseid):
     if username != current_user.username:
@@ -237,7 +239,7 @@ def course(username, courseid):
     form = MyForm()
     username = User.query.filter_by(username=username).first()
     courseid = Course.query.filter_by(courseid = courseid).first()
-    return render_template('course.html', username=username, course=courseid)
+    return render_template('course.html', username=username, course=courseid, lesson=Lesson.query.all())
 
 @app.route('/logout/')
 def logout():
