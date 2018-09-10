@@ -55,6 +55,7 @@ position: relative;
 	<div class="lesson">
 	{% for lesson in lessons %}
 	<p><a href="{{lesson.lessonid}}">{{lesson.lessonname}}</a></p>
+	<p><font size="2">Task Complete?: {{lesson.taskCompleted}}<font></p>
 	{% endfor %}
 	</div>
 	<br>
