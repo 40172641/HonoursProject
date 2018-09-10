@@ -178,12 +178,11 @@ def template(username, courseid, lessonid):
         form.source_code.data = loadData.excerciseData
     return render_template('template.html', form=form, username=username, courseid=courseid, lesson=lessonid)
 
-@app.route('/dashboard/template/post/', methods=['POST'])
+@app.route('/dashboard/template/post/', methods=['POST', 'GET'])
 @login_required
 def templatePost(): 
     form = MyForm()
     #lesson = Lesson.query.filter_by(lessonid=lessonid).first()
-    #print lesson.lessonid
     if form.validate_on_submit() and request.method == 'POST':
         userInput = form.source_code.data
         soup = BeautifulSoup(userInput)
@@ -241,9 +240,7 @@ def course(username, courseid):
     form = MyForm()
     username = User.query.filter_by(username=username).first()
     lesson = Lesson.query.filter_by(courseid = courseid).first()
-    print Lesson.query.filter_by(courseid = courseid).first()
     courseid = Course.query.filter_by(courseid = courseid).first()
-    print courseid.courseid
     return render_template('course.html', username=username, course=courseid, lessons=Lesson.query.filter_by(courseid=courseid.courseid))
 
 @app.route('/logout/')
