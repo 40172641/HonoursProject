@@ -71,9 +71,10 @@ class LessonData(db.Model):
 
 class Lesson(db.Model):
     __tablename__ = 'lesson'
-    lessonid = db.Column('lessonid', db.Integer, index=True, primary_key=True)
+    id = db.Column( db.Integer, primary_key=True)
+    lessonid = db.Column('lessonid', db.Integer, index=True)
     lessonname = db.Column('lessonname', db.String(30), index=True)
-    courseid = db.Column('courseid', db.Integer, index=True)
+    courseid = db.Column('courseid', db.Integer, db.ForeignKey('course.courseid'), index=True)
     username = db.Column('username', db.String(20), index=True)
     excerciseData = db.Column('excerciseData', db.String(100))
     taskCompleted = db.Column('taskCompleted', db.String(20))
