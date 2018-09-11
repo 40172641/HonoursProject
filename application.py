@@ -73,18 +73,19 @@ class Lesson(db.Model):
     __tablename__ = 'lesson'
     lessonid = db.Column('lessonid', db.Integer, index=True, primary_key=True)
     lessonname = db.Column('lessonname', db.String(30), index=True)
-    courseid = db.Column('courseid', db.Integer, db.ForeignKey('course.courseid'), index=True)
+    courseid = db.Column('courseid', db.Integer, index=True)
     username = db.Column('username', db.String(20), unique=True, index=True)
     excerciseData = db.Column('excerciseData', db.String(100))
     taskCompleted = db.Column('taskCompleted', db.String(20))
 
-    def __init__(self, lessonid,lessonname, courseid, coursename, username, excerciseData, taskCompleted):
+    def __init__(self, lessonid, lessonname, courseid, username, excerciseData, taskCompleted):
         self.lessonid = lessonid
         self.lessonname = lessonname
         self.courseid = courseid
         self.username = username
         self.excerciseData = excerciseData
         self.taskCompleted = taskCompleted
+
 
     def is_authenticated(self):
         return true
@@ -202,10 +203,10 @@ def template(username, courseid, lessonid):
 @login_required
 def templatePost(): 
     form = MyForm()
-    print db_lessonid
-    print db_courseid
-    print db_lessonname
-    #lesson = Lesson.query.filter_by(lessonid=lessonid).first()
+    #print db_lessonid
+    #print db_courseid
+    #print db_lessonname
+    #print current_user.username
     if form.validate_on_submit() and request.method == 'POST':
         userInput = form.source_code.data
         soup = BeautifulSoup(userInput)
@@ -222,7 +223,7 @@ def templatePost():
           print task1
         if task1 == True:
             print "Task 1 Complete"
-            lesson = Lesson(db_lessonid, db_lessonname, db_courseid, current_user.username, userInput, '', "Task Completed")
+            lesson = Lesson(db_lessonid, db_lessonname, db_courseid, current_user.username, userInput, "Task Completed")
             if  Lesson.query.filter_by(username=current_user.username).scalar() is None:
                 db.session.add(lesson)
                 db.session.commit()
