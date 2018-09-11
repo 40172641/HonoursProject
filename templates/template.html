@@ -14,11 +14,29 @@
 
 
 	<script>
+
     $(document).ready(function() {
         var location = window.location.pathname.split('/');
-        console.log(location[4]);
-	console.log(location[5]);
-	    
+        console.log(window.location.pathname);
+	var courseid = location[4];
+	var lessonid = location[5];
+	var details = 
+		    {
+			'courseid' : courseid,
+			'lessonid': lessonid
+		    }
+	    console.log(details)
+	    //onPageLoad Ajax Request
+	    $.ajax({
+		    url: "/dashboard/template/post/",
+		    type: 'POST',
+		    contentType: 'application/json',
+		    data: JSON.stringify(details),
+		    success: function(data)
+		    {
+			console.log(data);
+		    }});
+		
 	    $('form').submit(function (e) {
 		var url = "/dashboard/template/post/"
             $.ajax({

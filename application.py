@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, flash, session, redirect, abort, url_for,jsonify
 from flask_wtf import Form
+import requests
 from werkzeug.security import generate_password_hash, check_password_hash
 import copy
 from flask_codemirror import CodeMirror
@@ -56,9 +57,21 @@ class Course(db.Model):
         self.description = description
         self.lessons = lessons
 
+class LessonData(db.Model):
+    __tablename__ = "lessondata"
+    lessonid = db.Column('lessonid', db.Integer, unique=True, index=True, primary_key=True)
+    lessonname = db.Column('lessonname', db.String(30), index=True)
+    courseid = db.Column('courseid', db.Integer, db.ForeignKey('course.courseid'), index=True)
+
+    def __init__(self, lessonid,lessonname, courseid):
+        self.lessonid = lessonid
+        self.lessonname = lessonname
+        self.courseid = courseid
+
+
 class Lesson(db.Model):
     __tablename__ = 'lesson'
-    lessonid = db.Column('lessonid', db.Integer, unique=True, index=True, primary_key=True)
+    lessonid = db.Column('lessonid', db.Integer, index=True, primary_key=True)
     lessonname = db.Column('lessonname', db.String(30), index=True)
     courseid = db.Column('courseid', db.Integer, db.ForeignKey('course.courseid'), index=True)
     username = db.Column('username', db.String(20), unique=True, index=True)
@@ -169,19 +182,29 @@ def template(username, courseid, lessonid):
     if username != current_user.username:
         return redirect(url_for('.dashboard', username=current_user.username))
     form = MyForm()
+    global db_courseid
+    global db_lessonid
+    db_courseid = courseid
+    db_lessonid = lessonid
     username = User.query.filter_by(username=username).first()
     courseid = Course.query.filter_by(courseid=courseid).first()
+    lessonData = LessonData.query.filter_by(lessonid=lessonid).first()
     lessonid = Lesson.query.filter_by(lessonid=lessonid).first()
+    global db_lessonname
+    db_lessonname = lessonData.lessonname
     if  Lesson.query.filter_by(username=current_user.username).scalar() is not None:
         print "User has already done this tutorial"
         loadData = Lesson.query.filter_by(username=current_user.username).first()
         form.source_code.data = loadData.excerciseData
-    return render_template('template.html', form=form, username=username, courseid=courseid, lesson=lessonid)
+    return render_template('template.html', form=form, username=username, courseid=courseid, lesson=lessonData)
 
 @app.route('/dashboard/template/post/', methods=['POST', 'GET'])
 @login_required
 def templatePost(): 
     form = MyForm()
+    print db_lessonid
+    print db_courseid
+    print db_lessonname
     #lesson = Lesson.query.filter_by(lessonid=lessonid).first()
     if form.validate_on_submit() and request.method == 'POST':
         userInput = form.source_code.data
@@ -199,15 +222,15 @@ def templatePost():
           print task1
         if task1 == True:
             print "Task 1 Complete"
-            #lesson = Lesson(current_user.username, userInput)
-            #if  Lesson.query.filter_by(username=current_user.username).scalar() is None:
-             #   db.session.add(lesson)
-              #  db.session.commit()
-            #else:
-             #   print "User Exists"
-              #  update = Lesson.query.filter_by(username=current_user.username).first()
-               # update.excercise1 = userInput
-                #db.session.commit()
+            lesson = Lesson(db_lessonid, db_lessonname, db_courseid, current_user.username, userInput, '', "Task Completed")
+            if  Lesson.query.filter_by(username=current_user.username).scalar() is None:
+                db.session.add(lesson)
+                db.session.commit()
+            else:
+                print "User Exists"
+                update = Lesson.query.filter_by(username=current_user.username).first()
+                update.excerciseData = userInput
+                db.session.commit()
         return jsonify(data={'output':(form.source_code.data)})
     return jsonify(data=form.errors)
 
@@ -239,9 +262,9 @@ def course(username, courseid):
         return render_template('error.html')
     form = MyForm()
     username = User.query.filter_by(username=username).first()
-    lesson = Lesson.query.filter_by(courseid = courseid).first()
+    lesson = LessonData.query.filter_by(courseid = courseid).first()
     courseid = Course.query.filter_by(courseid = courseid).first()
-    return render_template('course.html', username=username, course=courseid, lessons=Lesson.query.filter_by(courseid=courseid.courseid))
+    return render_template('course.html', username=username, course=courseid, lessons=LessonData.query.filter_by(courseid=courseid.courseid))
 
 @app.route('/logout/')
 def logout():
