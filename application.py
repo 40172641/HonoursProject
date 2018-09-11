@@ -195,7 +195,7 @@ def template(username, courseid, lessonid):
     db_lessonname = lessonData.lessonname
     if  Lesson.query.filter_by(username=current_user.username, lessonid=db_lessonid).scalar() is not None:
         print "User has already done this tutorial"
-        loadData = Lesson.query.filter_by(username=current_user.username).first()
+        loadData = Lesson.query.filter_by(username=current_user.username, lessonid=db_lessonid).first()
         form.source_code.data = loadData.excerciseData
     else:
         print "User has not done this tutorial"
