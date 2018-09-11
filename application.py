@@ -74,7 +74,7 @@ class Lesson(db.Model):
     lessonid = db.Column('lessonid', db.Integer, index=True, primary_key=True)
     lessonname = db.Column('lessonname', db.String(30), index=True)
     courseid = db.Column('courseid', db.Integer, index=True)
-    username = db.Column('username', db.String(20), unique=True, index=True)
+    username = db.Column('username', db.String(20), index=True)
     excerciseData = db.Column('excerciseData', db.String(100))
     taskCompleted = db.Column('taskCompleted', db.String(20))
 
@@ -193,10 +193,12 @@ def template(username, courseid, lessonid):
     lessonid = Lesson.query.filter_by(lessonid=lessonid).first()
     global db_lessonname
     db_lessonname = lessonData.lessonname
-    if  Lesson.query.filter_by(username=current_user.username).scalar() is not None:
+    if  Lesson.query.filter_by(username=current_user.username, lessonid=db_lessonid).scalar() is not None:
         print "User has already done this tutorial"
         loadData = Lesson.query.filter_by(username=current_user.username).first()
         form.source_code.data = loadData.excerciseData
+    else:
+        print "User has not done this tutorial"
     return render_template('template.html', form=form, username=username, courseid=courseid, lesson=lessonData)
 
 @app.route('/dashboard/template/post/', methods=['POST', 'GET'])
@@ -207,6 +209,7 @@ def templatePost():
     #print db_courseid
     #print db_lessonname
     #print current_user.username
+    lesson = Lesson.query.filter_by(lessonid=db_lessonid).first()
     if form.validate_on_submit() and request.method == 'POST':
         userInput = form.source_code.data
         soup = BeautifulSoup(userInput)
@@ -224,12 +227,12 @@ def templatePost():
         if task1 == True:
             print "Task 1 Complete"
             lesson = Lesson(db_lessonid, db_lessonname, db_courseid, current_user.username, userInput, "Task Completed")
-            if  Lesson.query.filter_by(username=current_user.username).scalar() is None:
+            if  Lesson.query.filter_by(username=current_user.username, lessonid=db_lessonid).scalar() is None:
                 db.session.add(lesson)
                 db.session.commit()
             else:
                 print "User Exists"
-                update = Lesson.query.filter_by(username=current_user.username).first()
+                update = Lesson.query.filter_by(username=current_user.username, lessonid = db_lessonid).first()
                 update.excerciseData = userInput
                 db.session.commit()
         return jsonify(data={'output':(form.source_code.data)})
