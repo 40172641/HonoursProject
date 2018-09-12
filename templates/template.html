@@ -13,7 +13,25 @@
 
 <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-	<script>
+
+<!-- Include Editor style. -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.4/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.4/css/froala_style.min.css" rel="stylesheet" type="text/css" />
+<!-- Include Editor JS files. -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.4/js/froala_editor.pkgd.min.js"></script>
+    <!-- Initialize the editor. -->
+    <script>
+            $(function() {
+                    $('#output').froalaEditor({
+                        toolbarButtons: [],
+                        height: 500,
+                        width: 394,
+			htmlRemoveTags: ['php'] , 
+                    })
+            });
+    </script>
+
+<script>
 
     $(document).ready(function() {
         var location = window.location.pathname.split('/');
@@ -28,13 +46,11 @@
 	    console.log(details)
 	    //onPageLoad Ajax Request
 	    $.ajax({
-		    url: "/dashboard/template/post/",
+		    url: window.location.pathname,
 		    type: 'POST',
-		    contentType: 'application/json',
-		    data: JSON.stringify(details),
-		    success: function(data)
+		    success: function()
 		    {
-			console.log(data);
+		    	console.log(details);
 		    }});
 		
 	    $('form').submit(function (e) {
@@ -50,8 +66,9 @@
                         var obj = JSON.parse(JSON.stringify(data));
                         console.log(obj.data.output);
                         //console.log(eval(obj.data));
-                        $("#results").html(obj.data.output);
-			$("#results").froalaEditor('html.set', 'My custom paragraph.');
+                        //$("#results").html(obj.data.output);
+			$('#output').froalaEditor({inlineMode: false});
+			$("#output").froalaEditor('html.set', obj.data.output);
                 }
             });
             e.preventDefault();
@@ -65,26 +82,7 @@
         })
     });
 </script>
-<!-- Include Editor style. -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.4/css/froala_editor.pkgd.min.css" rel="stylesheet" type="text/css" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.4/css/froala_style.min.css" rel="stylesheet" type="text/css" />
-<!-- Include Editor JS files. -->
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/2.8.4/js/froala_editor.pkgd.min.js"></script>
-
-    <!-- Initialize the editor. -->
-    <script>
-            $(function() {
-		    $('#output').froalaEditor({
-                        toolbarButtons: [],
-                        height: 534,
-                        width: 395
-                    })
-		    $('#output').editable({inlineMode : false});
-
-                    });
-    </script>	
-	
-	</head>
+	    </head>
 <style>
 body, html
 {
@@ -210,7 +208,7 @@ Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots 
 		</div>
         </form>
 </div>
-<div class="right" contentEditable=true>
+<div class="right">
 <div>
 	<textarea id="output" class="output">
                 <div id="results"> <p><p></div>
@@ -220,6 +218,7 @@ Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots 
         {% endblock %}
 	{{ form.text }} --!>
 	
+</div>
 </div>
 </div>
 </body>
