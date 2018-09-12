@@ -10,84 +10,86 @@
 .container
 
 {
-	width:75%;
+	width:60%;
 }
 .form{
 	width: 60%;
 	border-radius: 8px;
-	margin: 8px;
 	box-sizing: border-box;
-	display: inline-block;
+	display: table;
 	font-size: 20px;
 	float: center;
 	position: relative;
-	right:60px;
+	left:130px;
 }
+
 .register
 {
 	text-align: center;
 	position: relative;
-	top:100px;
+	top:70px;
 	border-radius: 20px;
 	background-color: ccffe6;
 }
+.heading
+{
+	text-align: left;
+	padding-left:100px;
+	border-bottom: 1px solid;
+	
+}
+
 .button
 {
-border-radius:5px;
+	border-radius:5px;
 	padding 14px 40px;
-	width: 200px;
+	width: 270px;
 	height: 40px;
 	font-size: 22px;
 	margin: 4px 2px;
 	display: inline-block;
-	 position: relative;
-        right:175px;
+	position: relative;
+	left: 40px;
+	background-color: teal;
+	color: white;
+	padding-top:3px;
 
 
 }
 label 
 {
-	display: inline-block;
-	text-align: right;
 	font-size: 18px;
-	 position: relative;
-        right:60px;
-
+	position:relative;
+	right:200px;
+	top: 36px;
+	
 }
 </style>
 <body>
 	<div class="container">
 	<div class="register">
 		<br>
-		<h3>Register Page</h3>
+	<div class="heading">
+	<h3>Register Page</h3>
 	<h4>Please Register your account</h4>
+	</div>
 	<form method='POST' action="">
 		{{ form.csrf_token }}
 		<div class="form">
-		<label for 'form'>First Name</label>
+		<label>First Name</label>
 		{{ form.firstname(class_='form') }}
-		<div>
 		<label>Last Name</label>
 		{{ form.lastname(class_='form') }}
-		</div>
-		<div>
                 <label>Email</label>
 		{{ form.email(class_='form') }}
-		<div>
                 <label>Username</label>
 		{{ form.username(class_='form') }}
-		</div>
-		<div>
                 <label>Password</label>
 		{{ form.password(class_='form') }}
-		</div>
-		<div>
                 <label>Confirm Password</label>
 		{{ form.confirm(class_='form') }}
-		</div>
-		<div>
-		<input type='submit' class='button' value='Login'></input>
-		<br>
+		
+		<input type='submit' class='button' value='Register'></input>
 		<br>
 		<br>
 	</form>

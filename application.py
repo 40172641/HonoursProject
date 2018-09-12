@@ -239,13 +239,18 @@ def dashboard(username):
         return redirect(url_for('.dashboard', username=current_user.username))
     return render_template('dashboard.html', user=user, courses=Course.query.all())
 
-@app.route('/dashboard/excercise/', methods=['GET', 'POST'])
+@app.route('/dashboard/excercise/')
+def excerciseTemplate():
+    form = MyForm()
+    return render_template('excercise.html', form=form)
+
+@app.route('/dashboard/excercise/post/', methods=['POST'])
 def excercise():
     form = MyForm()
     if form.validate_on_submit() and request.method == 'POST':
         userInput = form.source_code.data
-        form.text.data = userInput
-    return render_template('excercise.html', form=form)
+        return jsonify(data={'message':(userInput)})
+    return jsonify(data=form.errors)
 
 @app.route('/dashboard/quiz/', methods=['GET', 'POST'])
 def quizTemplate():
