@@ -87,13 +87,14 @@ position: relative;
 	<h3>Lessons</h3>
 	<div class="lesson">
 	{% for lesson in lessons %}
-	<h6><a href="{{lesson.lessonid}}">{{lesson.lessonname}}</a></h6>
+	<h6><a href="{{lesson.lessonid}}" style="color: #3E4551; text-decoration:none">{{lesson.lessonname}}</a></h6>
 	<p><font size="2">Task Status: {{lesson.taskCompleted}}<font></p>
 	{% endfor %}
 	</div>
 	<br>
 	<br>
 	<h3>Quiz</h3>
+	<p>Quiz Score</p>
 	
 	
 	<div class="feedback">

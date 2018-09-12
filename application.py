@@ -170,14 +170,6 @@ def register():
             flash ("Account Creation Successful")
     return render_template('register.html', form=form)
 
-@app.route('/dashboard/<username>/')
-@login_required
-def dashboard(username):
-    user = User.query.filter_by(username=username).first()
-    if username != current_user.username:
-        return redirect(url_for('.dashboard', username=current_user.username))
-    return render_template('dashboard.html', user=user, courses=Course.query.all())
-
 @app.route('/dashboard/<username>/course/<courseid>/<lessonid>')
 @login_required
 def template(username, courseid, lessonid):
@@ -238,6 +230,14 @@ def templatePost():
                 db.session.commit()
         return jsonify(data={'output':(form.source_code.data)})
     return jsonify(data=form.errors)
+
+@app.route('/dashboard/<username>/')
+@login_required
+def dashboard(username):
+    user = User.query.filter_by(username=username).first()
+    if username != current_user.username:
+        return redirect(url_for('.dashboard', username=current_user.username))
+    return render_template('dashboard.html', user=user, courses=Course.query.all())
 
 @app.route('/dashboard/excercise/', methods=['GET', 'POST'])
 def excercise():
