@@ -1,7 +1,7 @@
 {% import 'wtf_tinymce/editor.html' as tinymce with context %}
 <html>
 	<head>
-	<title>Lesson |</title>
+	<title>Excercise | {{lesson.lessonname}}</title>
 	{{ codemirror.include_codemirror() }}
 	<meta charset="utf-8">
   	
@@ -86,12 +86,16 @@ body, html
 }
 .right
 {
-	position: relative;
+	position:relative;
 	top: -25px;
-	left: 260px;
+	left: 230px;
 	width:55%;
 	height:100%;
 	float:right;
+}
+#output
+{
+	bottom:20px;
 }
 .CodeMirror
 {
@@ -134,7 +138,7 @@ body, html
 	
 <div class="container">
 <div class='top'>
-	<h2>Excercise Template</h2>
+	<h2>Excercise: {{lesson.lessonname}}</h2>
 	<p>Welcome {{username.username}}</p>
 	<h6>Filler text currently however this will be a task for the user to complete. Underneath there will be checkboxes, which when the user inputs and runs certain code, the checkbox should tick, indicating to the student that the task has been completed</h6>
 </div>

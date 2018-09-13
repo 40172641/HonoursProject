@@ -61,7 +61,7 @@ class LessonData(db.Model):
     __tablename__ = "lessondata"
     lessonid = db.Column('lessonid', db.Integer, unique=True, index=True, primary_key=True)
     lessonname = db.Column('lessonname', db.String(30), index=True)
-    lessontype = db.Column('lessontype', db.String(30), index=true)
+    lessontype = db.Column('lessontype', db.String(30), index=True)
     courseid = db.Column('courseid', db.Integer, db.ForeignKey('course.courseid'), index=True)
 
     def __init__(self, lessonid,lessonname, courseid):
@@ -171,7 +171,7 @@ def register():
             flash ("Account Creation Successful")
     return render_template('register.html', form=form)
 
-@app.route('/dashboard/<username>/course/<courseid>/<lessonid>')
+@app.route('/dashboard/<username>/course/<courseid>/lesson/<lessonid>')
 @login_required
 def template(username, courseid, lessonid):
     if username != current_user.username:
@@ -240,15 +240,16 @@ def dashboard(username):
         return redirect(url_for('.dashboard', username=current_user.username))
     return render_template('dashboard.html', user=user, courses=Course.query.all())
 
-@app.route('/dashboard/<username>/course/<courseid>/excercise/')
+@app.route('/dashboard/<username>/course/<courseid>/excercise/<lessonid>/')
 @login_required
-def excerciseTemplate(username, courseid):
+def excerciseTemplate(username, courseid, lessonid):
     if username != current_user.username:
         return redirect(url_for('.dashboard', username=current_user.username))
     form = MyForm()
     username=User.query.filter_by(username=username).first()
     courseid=Course.query.filter_by(courseid=courseid).first()
-    return render_template('excercise.html', form=form, username=username, courseid=courseid)
+    lessonData = LessonData.query.filter_by(lessonid=lessonid).first()
+    return render_template('excercise.html', form=form, username=username, courseid=courseid, lesson=LessonData.query.filter_by(lessonid=lessonid, lessontype='Excercise').first())
 
 @app.route('/dashboard/excercise/post/', methods=['POST'])
 def excercise():
@@ -280,7 +281,7 @@ def course(username, courseid):
     username = User.query.filter_by(username=username).first()
     lesson = LessonData.query.filter_by(courseid = courseid).first()
     courseid = Course.query.filter_by(courseid = courseid).first()
-    return render_template('course.html', username=username, course=courseid, lessons=LessonData.query.filter_by(courseid=courseid.courseid))
+    return render_template('course.html', username=username, course=courseid, lessons=LessonData.query.filter_by(courseid=courseid.courseid, lessontype='Lesson'), excercises=LessonData.query.filter_by(courseid=courseid.courseid, lessontype='Excercise'))
 
 @app.route('/logout/')
 def logout():

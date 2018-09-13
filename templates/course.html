@@ -32,6 +32,12 @@ position: relative;
 	left: 700px;
 	bottom: 420px;
 }
+.excercise
+{
+	position:relative;
+	bottom: 220px;
+	left:700px;
+}
 	.dropdown-menu
 	{
 		right:30px;
@@ -87,7 +93,7 @@ position: relative;
 	<h3>Lessons</h3>
 	<div class="lesson">
 	{% for lesson in lessons %}
-	<h6><a href="{{lesson.lessonid}}" style="color: #3E4551; text-decoration:none">{{lesson.lessonname}}</a></h6>
+	<h6><a href="lesson/{{lesson.lessonid}}" style="color: #3E4551; text-decoration:none">{{lesson.lessonname}}</a></h6>
 	<p><font size="2">Task Status: {{lesson.taskCompleted}}<font></p>
 	{% endfor %}
 	</div>
@@ -100,6 +106,13 @@ position: relative;
 	<div class="feedback">
 		<h3>User Feedback</h3>
 		<p>Example Output for Feedback</p>
+	</div>
+	<div class="excercise">
+	<h3>Excercises</h3>
+	{% for excercise in excercises %}
+        <h6><a href="excercise/{{excercise.lessonid}}" style="color: #3E4551; text-decoration:none">{{excercise.lessonname}}</a></h6>
+        <p><font size="2">Task Status: {{excercise.taskCompleted}}<font></p>
+        {% endfor %}
 	</div>
 	</div>
 </body>
