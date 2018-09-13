@@ -239,10 +239,15 @@ def dashboard(username):
         return redirect(url_for('.dashboard', username=current_user.username))
     return render_template('dashboard.html', user=user, courses=Course.query.all())
 
-@app.route('/dashboard/excercise/')
-def excerciseTemplate():
+@app.route('/dashboard/<username>/course/<courseid>/excercise/')
+@login_required
+def excerciseTemplate(username, courseid):
+    if username != current_user.username:
+        return redirect(url_for('.dashboard', username=current_user.username))
     form = MyForm()
-    return render_template('excercise.html', form=form)
+    username=User.query.filter_by(username=username).first()
+    courseid=Course.query.filter_by(courseid=courseid).first()
+    return render_template('excercise.html', form=form, username=username, courseid=courseid)
 
 @app.route('/dashboard/excercise/post/', methods=['POST'])
 def excercise():
