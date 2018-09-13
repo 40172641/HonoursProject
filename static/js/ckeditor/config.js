@@ -4,10 +4,9 @@
  */
 
 CKEDITOR.editorConfig = function( config ) {
-config.allowedContent = {
+    config.allowedContent = {
         script: true,
         $1: {
-            // This will set the default set of elements
             elements: CKEDITOR.dtd,
             attributes: true,
             styles: true,
