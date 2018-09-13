@@ -61,6 +61,7 @@ class LessonData(db.Model):
     __tablename__ = "lessondata"
     lessonid = db.Column('lessonid', db.Integer, unique=True, index=True, primary_key=True)
     lessonname = db.Column('lessonname', db.String(30), index=True)
+    lessontype = db.Column('lessontype', db.String(30), index=true)
     courseid = db.Column('courseid', db.Integer, db.ForeignKey('course.courseid'), index=True)
 
     def __init__(self, lessonid,lessonname, courseid):
