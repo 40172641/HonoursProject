@@ -2,24 +2,57 @@
 <head>
 <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+       
+       	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+ <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>	
+<style>
+.header
+{
+	background-color: 515762;
+}
+.main
+{
+	position:relative;
+	left:250px;
+	width: 60%;
+}
+</style>
+       
 </head>
 <body>
-	<h1>Learn HTML</h1>
-	<h3>Welcome to the ... Web Application! </h3>
-<div class="">
-  <h3 class="">Menu</h3>
-  <a href="#" class="">HTML</a>
-  <a href="#" class="">CSS</a>
-  <a href="#" class="">Javascript</a>
+
+	<div class="header">
+		<br>
+		<br>
+		<br>
+	</div>
+
+<nav class="navbar navbar-expand-sm navbar-dark" style="background-color: #3E4551;">
+  <a class="navbar-brand" href="#">LEARN</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav ml-auto">
+       <li class="nav-item">
+		<a class="nav-link" href="/login/">Login</a>
+	</li>
+	<li class="nav-item">
+                <a class="nav-link" href="/register/">Register</a>
+        </li>
+    </ul>
+  </div>
+</nav>
+<div class="main">
+	<br>
+	<br>
+	<br>
+	<h4>Project Name:</h4>
+	<h4>Project Description:</h4>
+	<h4>Feature's and Functionalities: </h4><h5>In order to use the application you will need to Register an Account, If you have already created an account then you can simply login to start, or resume any progress you have made through the application's lesson or excercise matieral!</h5>
+	
 </div>
-
-<h3><a href="/login/">Login Page</a></h3>
-<h3><a href="/register/">Register</a></h3>
-
-	<h3>The aim of this Web Application is to incorporate Active Learning activites to ensure an engaging expierence for the user. </h3>
-	<h3><a href='/HTML'>learn HTML</h3>
 </body>
 </html>

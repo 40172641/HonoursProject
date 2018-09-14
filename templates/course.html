@@ -12,6 +12,7 @@
 body
 {
 	overflow-x:hidden;
+	overflow: hidden;
 }
 .body
 {
@@ -30,13 +31,18 @@ position: relative;
 {
 	position: relative;
 	left: 700px;
-	bottom: 420px;
+	bottom: 460px;
 }
 .excercise
 {
 	position:relative;
-	bottom: 220px;
+	bottom: 370px;
 	left:700px;
+	text-align:left;
+}
+.excercises
+{
+	height:-20px;
 }
 	.dropdown-menu
 	{
@@ -109,6 +115,7 @@ position: relative;
 	</div>
 	<div class="excercise">
 	<h3>Excercises</h3>
+	<div class"excercises">
 	{% for excercise in excercises %}
         <h6><a href="excercise/{{excercise.lessonid}}" style="color: #3E4551; text-decoration:none">{{excercise.lessonname}}</a></h6>
         <p><font size="2">Task Status: {{excercise.taskCompleted}}<font></p>
