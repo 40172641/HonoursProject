@@ -6,6 +6,11 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <style>
+body
+{
+	background-image:linear-gradient(275deg, #e3e3e3 49.9%, #435370 50%);
+
+}
 .container
 {
 	width:50%;
@@ -15,14 +20,17 @@
 {
 	text-align: center;
 	position: relative;
-	top:100px;
-	border-radius: 20px;
-	background-color: ccffe6;
+	top:80px;
+	left:80px;
+	width:80%;
+	border-radius: 10px;
+	background-color: cbd3d4;
+		
 }
 .form
 {
-	width: 50%;
-	border-radius: 8px;
+	width: 57%;
+	border-radius: 3px;
 	margin: 8px;
 	box-sizing: border-box;
 	display: inline-block;
@@ -35,8 +43,12 @@
 .button
 {
 	border-radius:5px;
+	background-color: #435370;
+	color:white;
 	padding 14px 40px;
-	width: 200px;
+	position:relative;
+	left:17px;
+	width: 283px;
 	height: 40px;
 	font-size: 22px;
 	margin: 4px 2px;
@@ -52,6 +64,11 @@ label
         right:30px;
 
 }
+.l
+{
+	position:relative;
+	bottom:13px;
+}
 </style>
 </head>
 
@@ -60,10 +77,10 @@ label
 	<div class="login">
 		<br>
 		<br>
-		<img src="/static/img/birds.jpg" style="width:60px; height:60px;">
-		<br>
-	<h3>Login Page</h3>
+		<img src="/static/img/logo_transparent.png" style="width:150px; height:150px;">	
+		<div class="l">
 	<h4>Please Login to your account</h4>
+		</div>
 	<form method='POST' action="">
 		{{ form.csrf_token }}
 		<label>Username</label>
