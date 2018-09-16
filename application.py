@@ -198,11 +198,11 @@ def template(username, courseid, lessonid):
         print "User has not done this tutorial"
     print lessonData.lessonid
     for paragraph in para_data:
-        if paragraph['course_id'] == courseid.courseid:
-            if paragraph['lesson_id'] == lessonData.lessonid:
-                return render_template('template.html', form=form, username=username, courseid=courseid, lesson=lessonData, paragraphData=paragraph)
-        else:
-            return render_template('template.html', form=form, username=username, courseid=courseid, lesson=lessonData, paragraphData="Example")
+        #if paragraph['course_id'] == courseid.courseid:
+        if paragraph['lesson_id'] == lessonData.lessonid:
+            return render_template('template.html', form=form, username=username, courseid=courseid, lesson=lessonData, paragraphData=paragraph)
+        #else:
+         #   return render_template('template.html', form=form, username=username, courseid=courseid, lesson=lessonData, paragraphData="Example")
 
 
 @app.route('/dashboard/template/post/', methods=['POST', 'GET'])
