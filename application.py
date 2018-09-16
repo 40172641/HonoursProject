@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, flash, session, redirect, abort, url_for,jsonify
+from flask import Flask, render_template, request, flash, session, redirect, abort, url_for,jsonify, json
+import json
 from flask_wtf import Form
 import requests
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -177,6 +178,8 @@ def template(username, courseid, lessonid):
     if username != current_user.username:
         return redirect(url_for('.dashboard', username=current_user.username))
     form = MyForm()
+    with open ('lesson.json') as jsonData:
+        para_data = json.load(jsonData)
     global db_courseid
     global db_lessonid
     db_courseid = courseid
@@ -193,16 +196,18 @@ def template(username, courseid, lessonid):
         form.source_code.data = loadData.excerciseData
     else:
         print "User has not done this tutorial"
-    return render_template('template.html', form=form, username=username, courseid=courseid, lesson=lessonData)
+    for paragraph in para_data:
+        if paragraph['course_id'] == courseid.courseid and paragraph['lesson_id'] == lessonData.lessonid:
+            print "This is how it's meant to output etc"
+            return render_template('template.html', form=form, username=username, courseid=courseid, lesson=lessonData, paragraphData=paragraph)
+        else:
+            return render_template('template.html', form=form, username=username, courseid=courseid, lesson=lessonData, paragraphData="example")
+
 
 @app.route('/dashboard/template/post/', methods=['POST', 'GET'])
 @login_required
 def templatePost(): 
     form = MyForm()
-    #print db_lessonid
-    #print db_courseid
-    #print db_lessonname
-    #print current_user.username
     lesson = Lesson.query.filter_by(lessonid=db_lessonid).first()
     if form.validate_on_submit() and request.method == 'POST':
         userInput = form.source_code.data

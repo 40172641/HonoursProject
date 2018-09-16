@@ -36,8 +36,6 @@
     $(document).ready(function() {
         var location = window.location.pathname.split('/');
         console.log(window.location.pathname);
-	var test = $('.test');
-	console.log(test);
 	var courseid = location[4];
 	var lessonid = location[5];
 	var details = 
@@ -177,8 +175,7 @@ body, html
 <div class='left'>
 	<h2>Lesson: {{ lesson.lessonname }}</h2>
 	<p>Welcome {{username.username}}</p>
-	
-	<div class="test">{{ paragraphData['para_data'] }}</div>
+	<h5>Filler text currently however this will be a task for the user to complete. Underneath there will be checkboxes, which when the user inputs and runs certain code, the checkbox should tick, indicating to the student that the task has been completed</h5>
 	<form method='POST' action ="">
 	</form>
 	<br>This would act like the question </br>
