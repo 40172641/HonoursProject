@@ -22,7 +22,7 @@ body
 }
 .heading
 {
-	background-color: 515762;
+	background-color: 435370;
 	color: white;
 }
 .title
@@ -42,7 +42,7 @@ body
 	border-bottom: 1px solid;
 	border-radius: 1px;
 	padding: 8px;
-	color: #515762;
+	color: 435370;
 }
 .lessons
 {
@@ -50,7 +50,7 @@ body
 }
 </style>
 <body>
-<nav class="navbar navbar-expand-sm navbar-dark" style="background-color: #3E4551;">
+<nav class="navbar navbar-expand-sm navbar-dark" style="background-color: #3c4a64;">
   <a class="navbar-brand" href="#"><img src="/static/img/logo_transparent.png" height="27.5" class="logo"> LEARN</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -89,7 +89,7 @@ body
 		<h4>Avaliable Courses</h4>
 			{% for course in courses %}
 			<div class='Course1'>
-				<h4><a href='course/{{course.courseid}}' style="color: #3E4551; text-decoration:none">{{ course.coursename }}</a></h4>
+				<h4><a href='course/{{course.courseid}}' style="color: #354259; text-decoration:none">{{ course.coursename }}</a></h4>
 				<h5>{{course.description}}	</h5>						<div class="lessons">
 					<h6>Lessons Avaliable: {{course.lessons}}</h6>				</div>
 			</div>
