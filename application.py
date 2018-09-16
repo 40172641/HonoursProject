@@ -190,16 +190,18 @@ def template(username, courseid, lessonid):
     lessonid = Lesson.query.filter_by(lessonid=lessonid).first()
     global db_lessonname
     db_lessonname = lessonData.lessonname
-    global output
+    global answer
     if  Lesson.query.filter_by(username=current_user.username, lessonid=db_lessonid).scalar() is not None:
         print "User has already done this tutorial"
         loadData = Lesson.query.filter_by(username=current_user.username, lessonid=db_lessonid).first()
         form.source_code.data = loadData.excerciseData
     else:
         print "User has not done this tutorial"
-    for answer in para_data:
-        if answer['lesson_id'] == lessonData.lessonid:
-            output = answer['answer']
+    for json_answer in para_data:
+        if json_answer['lesson_id'] == lessonData.lessonid:
+            json_answer = json_answer['answer']
+            output = json_answer
+            answer = str(output)
     #print output
     for paragraph in para_data:
         #if paragraph['course_id'] == courseid.courseid:
@@ -216,10 +218,12 @@ def templatePost():
     lesson = Lesson.query.filter_by(lessonid=db_lessonid).first()
     if form.validate_on_submit() and request.method == 'POST':
         userInput = form.source_code.data
-        print "Answer is " + output
+        template_answer = str(answer)
+        final_answer = template_answer.split()
+        print final_answer[0]
         soup = BeautifulSoup(userInput)
         text = soup.text.replace('\n','')
-        answer1 = "<h1>" + text + "</h1>"
+        answer1 = final_answer[0] + text + final_answer[1]
         print text
         task1 = None
         if answer1 in userInput:
@@ -230,7 +234,7 @@ def templatePost():
           task1 = False
           print task1
         if task1 == True:
-            print "Task 1 Complete"
+            print "Task Complete"
             lesson = Lesson(db_lessonid, db_lessonname, db_courseid, current_user.username, userInput, "Task Completed")
             if  Lesson.query.filter_by(username=current_user.username, lessonid=db_lessonid).scalar() is None:
                 db.session.add(lesson)
