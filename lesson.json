@@ -2,7 +2,7 @@
 	{  
    		"course_id": 11111,
    		"lesson_id": 111,
-   		"para_data": "<h1>Hello</h1><h2>Example Data</h2><br><p>This is an example of this working etc</p>",
+   		"para_data": "<p>This is an example of this working etc</p>",
 		"answer":"<h1> </h1>",
 		"answer2":"<h2> </h2>"
 	},
@@ -10,6 +10,7 @@
                 "course_id": 11111,
                 "lesson_id": 112,
                 "para_data": "<p> Welcome to lesson 2, the contents of this lesson is...</p>",
-		"answer":"<h2> </h2>"
+		"answer":"<h2> </h2>",
+		"answer2":"<h3> </h3>"
         }
 ]

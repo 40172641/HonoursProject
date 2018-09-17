@@ -221,16 +221,17 @@ def templatePost():
     lesson = Lesson.query.filter_by(lessonid=db_lessonid).first()
     if form.validate_on_submit() and request.method == 'POST':
         userInput = form.source_code.data
-        template_answer = str(answer)
-        template_answer2 = str(second_answer)
-        final_answer = template_answer.split()
+        template_answer = str(answer) #Converts JSON object to String
+        template_answer2 = str(second_answer) #Converts JSON object to String
+        final_answer = template_answer.split() #Splits the String so the tags can be accessed for the answer
         final_answer2 = template_answer2.split()
-        print final_answer[0]
+        soup_search = final_answer[0].replace("<","").replace(">","") #In order to pass a variable through soup.find, characters < & > had to be replaced
+        print soup_search
         print final_answer2[0]
         soup = BeautifulSoup(userInput)
-        text = soup.find("h1").text
-        answer1 = final_answer[0] + text + final_answer[1]
-        print text
+        text1 = soup.find(soup_search).text
+        print text1
+        answer1 = final_answer[0] + text1 + final_answer[1]
         print answer
         task1 = None
         if answer1 in userInput:
