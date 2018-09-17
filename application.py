@@ -191,6 +191,7 @@ def template(username, courseid, lessonid):
     global db_lessonname
     db_lessonname = lessonData.lessonname
     global answer
+    global second_answer
     if  Lesson.query.filter_by(username=current_user.username, lessonid=db_lessonid).scalar() is not None:
         print "User has already done this tutorial"
         loadData = Lesson.query.filter_by(username=current_user.username, lessonid=db_lessonid).first()
@@ -199,9 +200,11 @@ def template(username, courseid, lessonid):
         print "User has not done this tutorial"
     for json_answer in para_data:
         if json_answer['lesson_id'] == lessonData.lessonid:
-            json_answer = json_answer['answer']
-            output = json_answer
+            output = json_answer['answer']
+            json_answer = json_answer['answer2']
             answer = str(output)
+            print json_answer
+            second_answer = str(json_answer)
     #print output
     for paragraph in para_data:
         #if paragraph['course_id'] == courseid.courseid:
@@ -219,8 +222,11 @@ def templatePost():
     if form.validate_on_submit() and request.method == 'POST':
         userInput = form.source_code.data
         template_answer = str(answer)
+        template_answer2 = str(second_answer)
         final_answer = template_answer.split()
+        final_answer2 = template_answer2.split()
         print final_answer[0]
+        print final_answer2[0]
         soup = BeautifulSoup(userInput)
         text = soup.find("h1").text
         answer1 = final_answer[0] + text + final_answer[1]
