@@ -222,9 +222,10 @@ def templatePost():
         final_answer = template_answer.split()
         print final_answer[0]
         soup = BeautifulSoup(userInput)
-        text = soup.text.replace('\n','')
+        text = soup.find("h1").text
         answer1 = final_answer[0] + text + final_answer[1]
         print text
+        print answer
         task1 = None
         if answer1 in userInput:
             task1 = True
@@ -235,14 +236,14 @@ def templatePost():
           print task1
         if task1 == True:
             print "Task Complete"
-            lesson = Lesson(db_lessonid, db_lessonname, db_courseid, current_user.username, userInput, "Task Completed")
+            lesson = Lesson(db_lessonid, db_lessonname, db_courseid, current_user.username, answer1, "Task Completed")
             if  Lesson.query.filter_by(username=current_user.username, lessonid=db_lessonid).scalar() is None:
                 db.session.add(lesson)
                 db.session.commit()
             else:
                 print "User Exists"
                 update = Lesson.query.filter_by(username=current_user.username, lessonid = db_lessonid).first()
-                update.excerciseData = userInput
+                update.excerciseData = answer1
                 db.session.commit()
         return jsonify(data={'output':(form.source_code.data)})
     return jsonify(data=form.errors)
