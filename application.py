@@ -219,6 +219,7 @@ def template(username, courseid, lessonid):
 def templatePost(): 
     form = MyForm()
     lesson = Lesson.query.filter_by(lessonid=db_lessonid).first()
+    global test
     if form.validate_on_submit() and request.method == 'POST':
         userInput = form.source_code.data
         template_answer = str(answer) #Converts JSON object to String
@@ -226,21 +227,34 @@ def templatePost():
         final_answer = template_answer.split() #Splits the String so the tags can be accessed for the answer
         final_answer2 = template_answer2.split()
         soup_search = final_answer[0].replace("<","").replace(">","") #In order to pass a variable through soup.find, characters < & > had to be replaced
+        tag_search_answer2 = final_answer2[0].replace("<","").replace(">","")
         print soup_search
+        print tag_search_answer2
         print final_answer2[0]
         soup = BeautifulSoup(userInput)
         text1 = soup.find(soup_search).text
-        print text1
+        if soup.find(tag_search_answer2) is None:
+            print "Heading not entered"
+        else:
+            print "Heading Entered"
+            #text2 = soup.find(tag_search_answer2).text
+        #print text1
+        #print test
         answer1 = final_answer[0] + text1 + final_answer[1]
-        print answer
+        answer2 = final_answer2[0] + "hello" + final_answer2[1]
+        #print answer
         task1 = None
+        task2 = None
         if answer1 in userInput:
             task1 = True
-            print task1
+            print "Task 1 Complete"
         else:
           #  flash("Code is incorrect")
-          task1 = False
-          print task1
+            task1 = False
+            print "Task 1 Not Complete"
+        if answer2 in userInput:
+            task2= True
+            print "Task 2 Completed"
         if task1 == True:
             print "Task Complete"
             lesson = Lesson(db_lessonid, db_lessonname, db_courseid, current_user.username, answer1, "Task Completed")
