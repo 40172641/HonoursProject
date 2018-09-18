@@ -172,6 +172,8 @@ def register():
             flash ("Account Creation Successful")
     return render_template('register.html', form=form)
 
+
+#This route renders the template for the Template page based on the lessonid. If the User has done this lesson before then their previous excercise data will be loaded into the text editor, however if the user has not done the lesson it will just render the standard template. Global variables are created so that they can be used an accessed by the Ajax Post, and that the user's data can be added or updated to the Database table
 @app.route('/dashboard/<username>/course/<courseid>/lesson/<lessonid>')
 @login_required
 def template(username, courseid, lessonid):
@@ -233,18 +235,22 @@ def templatePost():
         print final_answer2[0]
         soup = BeautifulSoup(userInput)
         text1 = soup.find(soup_search).text
+        task2 = None
         if soup.find(tag_search_answer2) is None:
             print "Heading not entered"
         else:
             print "Heading Entered"
-            #text2 = soup.find(tag_search_answer2).text
+            text2 = soup.find(tag_search_answer2)
+            answer2 = final_answer2[0] + text2.text + final_answer2[1]
+            if answer2 in userInput:
+                task2= True
+                print "Task 2 Completed"
         #print text1
-        #print test
+        #print text2.text
         answer1 = final_answer[0] + text1 + final_answer[1]
-        answer2 = final_answer2[0] + "hello" + final_answer2[1]
+        #answer2 = final_answer2[0] + "hello" + final_answer2[1]
         #print answer
         task1 = None
-        task2 = None
         if answer1 in userInput:
             task1 = True
             print "Task 1 Complete"
@@ -252,22 +258,23 @@ def templatePost():
           #  flash("Code is incorrect")
             task1 = False
             print "Task 1 Not Complete"
-        if answer2 in userInput:
-            task2= True
-            print "Task 2 Completed"
+        #if answer2 in userInput:
+         #   task2= True
+          #  print "Task 2 Completed"
         if task1 == True:
-            print "Task Complete"
-            lesson = Lesson(db_lessonid, db_lessonname, db_courseid, current_user.username, answer1, "Task Completed")
-            if  Lesson.query.filter_by(username=current_user.username, lessonid=db_lessonid).scalar() is None:
-                db.session.add(lesson)
-                db.session.commit()
-            else:
-                print "User Exists"
-                update = Lesson.query.filter_by(username=current_user.username, lessonid = db_lessonid).first()
-                update.excerciseData = answer1
-                db.session.commit()
-        return jsonify(data={'output':(form.source_code.data)})
-    return jsonify(data=form.errors)
+            if task2 == True:
+                print "Task Complete"
+                lesson = Lesson(db_lessonid, db_lessonname, db_courseid, current_user.username, answer1, "Task Completed")
+                if  Lesson.query.filter_by(username=current_user.username, lessonid=db_lessonid).scalar() is None:
+                    db.session.add(lesson)
+                    db.session.commit()
+                else:
+                    print "User Exists"
+                    update = Lesson.query.filter_by(username=current_user.username, lessonid = db_lessonid).first()
+                    update.excerciseData = answer1
+                    db.session.commit()
+            return jsonify(data={'output':(form.source_code.data)})
+        return jsonify(data=form.errors)
 
 @app.route('/dashboard/<username>/')
 @login_required
