@@ -121,16 +121,8 @@ class RegisterForm(Form):
 
 class MyForm(Form):
     source_code = CodeMirrorField(language='python', config={'lineNumbers' : 'true'})
-    body = StringField('Text', widget=TextArea(), default='Please add content')
-    text = TinyMceField('My WTF TinyMCEField',tinymce_options={'toolbar': 'false', 'readonly':'1', 'height':'531', 'width':'393', 'valid_elements':'*[*]', 'allow_script_urls': 'true', 'extended_valid_elements': 'script[language|src=https://cloud.tinymce.com/stable/tinymce.min.js]'})
-
-quiz_questions = {
-        'What would this Be?':['Answer1','Answer2'],
-        'Test Question?!':['Answer 3','Answer 4']
-
-}
-
-questions = copy.deepcopy(quiz_questions)
+    #body = StringField('Text', widget=TextArea(), default='Please add content')
+    #text = TinyMceField('My WTF TinyMCEField',tinymce_options={'toolbar': 'false', 'readonly':'1', 'height':'531', 'width':'393', 'valid_elements':'*[*]', 'allow_script_urls': 'true', 'extended_valid_elements': 'script[language|src=https://cloud.tinymce.com/stable/tinymce.min.js]'})
 
 @app.route("/")
 def main():
@@ -295,6 +287,8 @@ def excercise():
         return jsonify(data={'message':(userInput)})
     return jsonify(data=form.errors)
 
+
+
 @app.route('/dashboard/<username>/course/<courseid>/quiz/<lessonid>/', methods=['GET', 'POST'])
 @login_required
 def quizTemplate(username, courseid, lessonid):
@@ -313,7 +307,7 @@ def quizTemplate(username, courseid, lessonid):
     if request.method == "POST":
         correct_questions = 0
         for i in questions:
-            random.shuffle(questions[i])
+            #random.shuffle(questions[i])
             answered = request.form[i]
             if quiz_questions[i][1] == answered:
                 correct_questions = correct_questions + 1
