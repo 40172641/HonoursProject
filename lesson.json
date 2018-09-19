@@ -10,7 +10,7 @@
                 "course_id": 11111,
                 "lesson_id": 112,
                 "para_data": "<p> Welcome to lesson 2, the contents of this lesson is...</p>",
-		"answer":"<h2> </h2>",
+		"answer":"<script> </script>",
 		"answer2":"<h3> </h3>"
         }
 ]

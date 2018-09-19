@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, flash, session, redirect, abort, url_for,jsonify, json
 import json
+import random
 from flask_wtf import Form
 import requests
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -221,7 +222,6 @@ def template(username, courseid, lessonid):
 def templatePost(): 
     form = MyForm()
     lesson = Lesson.query.filter_by(lessonid=db_lessonid).first()
-    global test
     if form.validate_on_submit() and request.method == 'POST':
         userInput = form.source_code.data
         template_answer = str(answer) #Converts JSON object to String
@@ -232,7 +232,7 @@ def templatePost():
         tag_search_answer2 = final_answer2[0].replace("<","").replace(">","")
         print tag_search_answer2
         print final_answer2[0]
-        soup = BeautifulSoup(userInput)
+        soup = BeautifulSoup(userInput) #BeautifulSoup Library is used to Parse the HTML Input to find the desired user input
         task1 = None
         task2= None
         if soup.find(tag_search_answer) is None:
@@ -253,22 +253,6 @@ def templatePost():
             if answer2 in userInput:
                 task2= True
                 print "Task 2 Completed"
-        #print text1
-        #print text2.text
-        #answer1 = final_answer[0] + text1 + final_answer[1]
-        #answer2 = final_answer2[0] + "hello" + final_answer2[1]
-        #print answer
-        #task1 = None
-        #if answer1 in userInput:
-         #   task1 = True
-          #  print "Task 1 Complete"
-        #else:
-          #  flash("Code is incorrect")
-         #   task1 = False
-            #print "Task 1 Not Complete"
-        #if answer2 in userInput:
-         #   task2= True
-          #  print "Task 2 Completed"
         if task1 == True:
             if task2 == True:
                 print "Task Complete"
@@ -311,16 +295,30 @@ def excercise():
         return jsonify(data={'message':(userInput)})
     return jsonify(data=form.errors)
 
-@app.route('/dashboard/quiz/', methods=['GET', 'POST'])
-def quizTemplate():
+@app.route('/dashboard/<username>/course/<courseid>/quiz/<lessonid>/', methods=['GET', 'POST'])
+@login_required
+def quizTemplate(username, courseid, lessonid):
+    if username != current_user.username:
+        return redirect(url_for('.dashboard', username=current_user.username))
+    username=User.query.filter_by(username=username).first()
+    courseid=Course.query.filter_by(courseid=courseid).first()
+    lessonData = LessonData.query.filter_by(lessonid=lessonid).first()
+    with open ('quiz.json') as jsonQuizData:
+        quiz_data = json.load(jsonQuizData)
+    for quiz_questions in quiz_data:
+        if quiz_questions['lesson_id'] == lessonData.lessonid:
+            quiz_questions = quiz_questions['quiz']
+    questions = copy.deepcopy(quiz_questions)
+    print questions
     if request.method == "POST":
-        correct = 0
-        for i in questions.keys():
+        correct_questions = 0
+        for i in questions:
+            random.shuffle(questions[i])
             answered = request.form[i]
             if quiz_questions[i][1] == answered:
-                correct = correct + 1
-        return str(correct)
-    return render_template('quiz.html', questions=questions)
+                correct_questions = correct_questions + 1
+        return "You scored " +  str(correct_questions) + " out of 7" 
+    return render_template('quiz.html', questions=questions, username=username, courseid=courseid, lesson=LessonData.query.filter_by(lessonid=lessonid, lessontype='Quiz').first())
 
 @app.route('/dashboard/<username>/course/<courseid>/')
 @login_required
@@ -333,7 +331,7 @@ def course(username, courseid):
     username = User.query.filter_by(username=username).first()
     lesson = LessonData.query.filter_by(courseid = courseid).first()
     courseid = Course.query.filter_by(courseid = courseid).first()
-    return render_template('course.html', username=username, course=courseid, lessons=LessonData.query.filter_by(courseid=courseid.courseid, lessontype='Lesson'), excercises=LessonData.query.filter_by(courseid=courseid.courseid, lessontype='Excercise'))
+    return render_template('course.html', username=username, course=courseid, lessons=LessonData.query.filter_by(courseid=courseid.courseid, lessontype='Lesson'), excercises=LessonData.query.filter_by(courseid=courseid.courseid, lessontype='Excercise'), quizzes=LessonData.query.filter_by(courseid=courseid.courseid, lessontype='Quiz'))
 
 @app.route('/logout/')
 def logout():

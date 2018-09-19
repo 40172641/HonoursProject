@@ -62,6 +62,11 @@ position: relative;
 	left: 30px;
 	color:white;
 }
+.quiz
+{
+	position:relative;
+	bottom:25px;
+}
 </style>
 <body>
 
@@ -105,10 +110,14 @@ position: relative;
 	</div>
 	<br>
 	<br>
+	<div class="quiz">
 	<h3>Quiz</h3>
+	{% for quiz in quizzes %}
+        <h6><a href="quiz/{{quiz.lessonid}}" style="color: #3E4551; text-decoration:none">{{quiz.lessonname}}</a></h6>
+        {% endfor %}	
 	<p>Quiz Score</p>
-	
-	
+	</div>
+	</div>	
 	<div class="feedback">
 		<h3>User Feedback</h3>
 		<p>Example Output for Feedback</p>
