@@ -173,7 +173,7 @@ def template(username, courseid, lessonid):
     if username != current_user.username:
         return redirect(url_for('.dashboard', username=current_user.username))
     form = MyForm()
-    with open ('lesson.json') as jsonData:
+    with open ('static/lesson/lesson.json') as jsonData:
         para_data = json.load(jsonData)
     global db_courseid
     global db_lessonid
