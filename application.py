@@ -295,10 +295,10 @@ def quizTemplate(username, courseid, lessonid):
     username=User.query.filter_by(username=username).first()
     courseid=Course.query.filter_by(courseid=courseid).first()
     lessonData = LessonData.query.filter_by(lessonid=lessonid).first()
-    with open ('quiz.json') as jsonQuizData:
-        quiz_data = json.load(jsonQuizData)
-    for quiz_questions in quiz_data:
-        if quiz_questions['lesson_id'] == lessonData.lessonid:
+    if lessonid == lessonid:
+        with open ('static/quiz/%s.json' %lessonid) as jsonQuizData:
+            quiz_data = json.load(jsonQuizData)
+        for quiz_questions in quiz_data:
             quiz_questions = quiz_questions['quiz']
     questions = copy.deepcopy(quiz_questions)
     for j in questions:
