@@ -90,6 +90,21 @@ class Lesson(db.Model):
         self.excerciseData = excerciseData
         self.taskCompleted = taskCompleted
 
+class Quiz(db.Model):
+    __tablename__ = 'quiz'
+    id = db.Column(db.Integer, primary_key=True)
+    lessonid = db.Column('lessonid', db.Integer, index=True)
+    courseid = db.Column('courseid', db.Integer, db.ForeignKey('course.courseid'), index=True)
+    username = db.Column('username', db.String(20), index=True)
+    quizscore = db.Column('score', db.Integer, index=True)
+    feedback = db.Column('feedback', db.String(100))
+
+    def __init__(self, lessonid, courseid, username, quizscore, feedback):
+        self.lessonid = lessonid
+        self.courseid = courseid
+        self.username = username
+        self.quizscore = quizscore
+        self.feedback = feedback
 
     def is_authenticated(self):
         return true
@@ -313,6 +328,14 @@ def quizTemplate(username, courseid, lessonid):
             if answered == answer:
                 print answer
                 correct_questions += 1
+                if correct_questions == 0:
+                    return "You scored" + str(correct_questions)
+                if correct_questions == 1:
+                    return "2"
+                if correct_questions == 2:
+                    return "You scored" 
+                if correct_questions == 6:
+                    return "really well done " + current_user.username + " You scored " + str(correct_questions) + " We feel you don't need to do any additional lessons"
         return "You scored " +  str(correct_questions) + " out of 7" 
     return render_template('quiz.html', questions=questions, username=username, courseid=courseid, lesson=LessonData.query.filter_by(lessonid=lessonid, lessontype='Quiz').first())
 
