@@ -338,43 +338,16 @@ def quizTemplate(username, courseid, lessonid):
                 db.session.commit()
                 return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
                 print "You scored " +  str(correct_questions) + " out of 7"
+            else:
+                print "User Exists"
+                update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
+                print update.quizscore
+                update.quizscore = correct_questions
+                update.feedback = "You scored " + str(correct_questions)
+                db.session.commit()
+                print "You scored " +  str(correct_questions) + " out of 7"
+                return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
         if correct_questions == 1:
-            if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
-                feedback = "You scored" + str(correct_questions)
-                db.session.add(quiz)
-                update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid)
-                update.feedback = feedback
-                db.session.commit()
-                return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
-                print "You scored " +  str(correct_questions) + " out of 7"
-        if correct_questions == 2:
-            if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
-                feedback = "You scored" + str(correct_questions)
-                db.session.add(quiz)
-                update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid)
-                update.feedback = feedback
-                db.session.commit()
-                return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
-                print "You scored " +  str(correct_questions) + " out of 7"
-        if correct_questions == 3:
-            if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
-                feedback = "You scored" + str(correct_questions)
-                db.session.add(quiz)
-                update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid)
-                update.feedback = feedback
-                db.session.commit()
-                return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
-                print "You scored " +  str(correct_questions) + " out of 7"
-        if correct_questions == 4:
-            if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
-                feedback = "You scored" + str(correct_questions)
-                db.session.add(quiz)
-                update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid)
-                update.feedback = feedback
-                db.session.commit()
-                return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
-                print "You scored " +  str(correct_questions) + " out of 7"
-        if correct_questions == 5:
             if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
                 feedback = "You scored" + str(correct_questions)
                 db.session.add(quiz)
@@ -385,9 +358,82 @@ def quizTemplate(username, courseid, lessonid):
                 print "You scored " +  str(correct_questions) + " out of 7"
             else:
                 print "User Exists"
-                update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid)
+                update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
+                print update.quizscore
                 update.quizscore = correct_questions
-                update.feedback = "You scored" + str(correct_questions)
+                update.feedback = "You scored " + str(correct_questions)
+                db.session.commit()
+                print "You scored " +  str(correct_questions) + " out of 7"
+                return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
+        if correct_questions == 2:
+            if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
+                feedback = "You scored" + str(correct_questions)
+                db.session.add(quiz)
+                update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid)
+                update.feedback = feedback
+                db.session.commit()
+                return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
+                print "You scored " +  str(correct_questions) + " out of 7"
+            else:
+                print "User Exists"
+                update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
+                print update.quizscore
+                update.quizscore = correct_questions
+                update.feedback = "You scored " + str(correct_questions)
+                db.session.commit()
+                print "You scored " +  str(correct_questions) + " out of 7"
+                return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
+        if correct_questions == 3:
+            if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
+                feedback = "You scored" + str(correct_questions)
+                db.session.add(quiz)
+                update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid)
+                update.feedback = feedback
+                db.session.commit()
+                return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
+                print "You scored " +  str(correct_questions) + " out of 7"
+            else:
+                print "User Exists"
+                update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
+                print update.quizscore
+                update.quizscore = correct_questions
+                update.feedback = "You scored " + str(correct_questions)
+                db.session.commit()
+                print "You scored " +  str(correct_questions) + " out of 7"
+                return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
+        if correct_questions == 4:
+            if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
+                feedback = "You scored" + str(correct_questions)
+                db.session.add(quiz)
+                update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid)
+                update.feedback = feedback
+                db.session.commit()
+                return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
+                print "You scored " +  str(correct_questions) + " out of 7"
+            else:
+                print "User Exists"
+                update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
+                print update.quizscore
+                update.quizscore = correct_questions
+                update.feedback = "You scored " + str(correct_questions)
+                db.session.commit()
+                print "You scored " +  str(correct_questions) + " out of 7"
+                return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
+        if correct_questions == 5:
+            if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
+                feedback = "You scored" + str(correct_questions)
+                db.session.add(quiz)
+                update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
+                update.feedback = feedback
+                db.session.commit()
+                return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
+                print "You scored " +  str(correct_questions) + " out of 7"
+            else:
+                print "User Exists"
+                update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
+                print update.quizscore
+                update.quizscore = correct_questions
+                update.feedback = "You scored " + str(correct_questions)
                 db.session.commit()
                 print "You scored " +  str(correct_questions) + " out of 7"
                 return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
@@ -400,6 +446,15 @@ def quizTemplate(username, courseid, lessonid):
                 db.session.commit()
                 return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
                 print "You scored " +  str(correct_questions) + " out of 7"
+            else:
+                print "User Exists"
+                update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
+                print update.quizscore
+                update.quizscore = correct_questions
+                update.feedback = "You scored " + str(correct_questions)
+                db.session.commit()
+                print "You scored " +  str(correct_questions) + " out of 7"
+                return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
         if correct_questions == 7:
             if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
                 feedback = "You scored" + str(correct_questions)
@@ -409,8 +464,15 @@ def quizTemplate(username, courseid, lessonid):
                 db.session.commit()
                 return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
                 print "You scored " +  str(correct_questions) + " out of 7"
-            #return "You scored " +  str(correct_questions) + " out of 7"
-        #return "You scored " +  str(correct_questions) + " out of 7" 
+            else:
+                print "User Exists"
+                update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
+                print update.quizscore
+                update.quizscore = correct_questions
+                update.feedback = "You scored " + str(correct_questions)
+                db.session.commit()
+                print "You scored " +  str(correct_questions) + " out of 7"
+                return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
     return render_template('quiz.html', questions=questions, username=username, courseid=courseid, lesson=LessonData.query.filter_by(lessonid=lessonid, lessontype='Quiz').first())
 @app.route('/dashboard/<username>/course/<courseid>/')
 @login_required
