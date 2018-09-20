@@ -12,6 +12,17 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 </head>
+<style>
+.quiz
+{
+	padding-top:10px;
+	padding-left:20px;
+}
+.questions
+{
+	display: inline-block;
+}
+</style>
 <body>
 
 <nav class="navbar navbar-expand-sm navbar-dark" style="background-color: #3E4551;">
@@ -36,11 +47,12 @@
 </nav>
 
 
-
+	<div class="quiz">
 	<h3>Quiz Template</h3>
 	<form method='POST'>
 		{% for i in questions %}	
 		<h3>{{i}}</h3>
+		<div class="questions">
 		<fieldset>
 		{% for j in questions[i] %}
 		<div>
@@ -49,8 +61,11 @@
 			{% endfor %}
 		</fieldset>
 		{% endfor %}
-		<div>
+		</div>
+		<div class="button">
 		<input type="submit" value="submit" />
+		</div>
 	</form>
+		</div>
 </body>
 </html>

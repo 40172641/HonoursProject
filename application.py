@@ -287,8 +287,6 @@ def excercise():
         return jsonify(data={'message':(userInput)})
     return jsonify(data=form.errors)
 
-
-
 @app.route('/dashboard/<username>/course/<courseid>/quiz/<lessonid>/', methods=['GET', 'POST'])
 @login_required
 def quizTemplate(username, courseid, lessonid):
@@ -303,14 +301,18 @@ def quizTemplate(username, courseid, lessonid):
         if quiz_questions['lesson_id'] == lessonData.lessonid:
             quiz_questions = quiz_questions['quiz']
     questions = copy.deepcopy(quiz_questions)
-    print questions
+    for j in questions:
+        answer = questions[j][0]
+        print answer
+    for i in questions.keys():
+        random.shuffle(questions[i])
     if request.method == "POST":
         correct_questions = 0
-        for i in questions:
-            #random.shuffle(questions[i])
-            answered = request.form[i]
-            if quiz_questions[i][1] == answered:
-                correct_questions = correct_questions + 1
+        for question in questions.keys():
+            answered = request.form[question]
+            if answered == answer:
+                print answer
+                correct_questions += 1
         return "You scored " +  str(correct_questions) + " out of 7" 
     return render_template('quiz.html', questions=questions, username=username, courseid=courseid, lesson=LessonData.query.filter_by(lessonid=lessonid, lessontype='Quiz').first())
 
