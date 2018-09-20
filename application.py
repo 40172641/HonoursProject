@@ -93,10 +93,10 @@ class Lesson(db.Model):
 class Quiz(db.Model):
     __tablename__ = 'quiz'
     id = db.Column(db.Integer, primary_key=True)
-    lessonid = db.Column('lessonid', db.Integer, index=True)
+    lessonid = db.Column('lessonid', db.Integer, unique=True, index=True)
     courseid = db.Column('courseid', db.Integer, db.ForeignKey('course.courseid'), index=True)
     username = db.Column('username', db.String(20), index=True)
-    quizscore = db.Column('score', db.Integer, index=True)
+    quizscore = db.Column('quizscore', db.Integer, index=True)
     feedback = db.Column('feedback', db.String(100))
 
     def __init__(self, lessonid, courseid, username, quizscore, feedback):
@@ -328,9 +328,17 @@ def quizTemplate(username, courseid, lessonid):
             if answered == answer:
                 print answer
                 correct_questions += 1
-                if correct_questions == 0:
-                    return "You scored" + str(correct_questions)
+                feedback = "You Should do Lessons ..., and Excercises ..., then try the Quiz Again"
+                quiz = Quiz(lessonData.lessonid, courseid.courseid, current_user.username, correct_questions, feedback)
                 if correct_questions == 1:
+                    feedback = "You scored" + str(correct_questions)
+                    db.session.add(quiz)
+                    update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid)
+                    update.feedback = feedback
+                    db.session.commit()
+                    #return "You scored One"
+                    return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
+                if correct_questions == 2:
                     return "2"
                 if correct_questions == 2:
                     return "You scored" 
@@ -349,9 +357,9 @@ def course(username, courseid):
     form = MyForm()
     username = User.query.filter_by(username=username).first()
     lesson = LessonData.query.filter_by(courseid = courseid).first()
+    quizData = Quiz.query.filter_by(courseid = courseid, username=current_user.username).first()
     courseid = Course.query.filter_by(courseid = courseid).first()
-    return render_template('course.html', username=username, course=courseid, lessons=LessonData.query.filter_by(courseid=courseid.courseid, lessontype='Lesson'), excercises=LessonData.query.filter_by(courseid=courseid.courseid, lessontype='Excercise'), quizzes=LessonData.query.filter_by(courseid=courseid.courseid, lessontype='Quiz'))
-
+    return render_template('course.html', username=username, course=courseid, quiz=quizData, lessons=LessonData.query.filter_by(courseid=courseid.courseid, lessontype='Lesson'), excercises=LessonData.query.filter_by(courseid=courseid.courseid, lessontype='Excercise'), quizzes=LessonData.query.filter_by(courseid=courseid.courseid, lessontype='Quiz'))
 @app.route('/logout/')
 def logout():
     logout_user()
