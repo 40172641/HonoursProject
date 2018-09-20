@@ -333,8 +333,8 @@ def quizTemplate(username, courseid, lessonid):
             if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
                 feedback = "You scored" + str(correct_questions)
                 db.session.add(quiz)
-                update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid)
-                update.feedback = feedback
+                update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
+                update.feedback = feedback #Updates the feedback row with the new Feedback
                 db.session.commit()
                 return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
                 print "You scored " +  str(correct_questions) + " out of 7"
@@ -351,7 +351,7 @@ def quizTemplate(username, courseid, lessonid):
             if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
                 feedback = "You scored" + str(correct_questions)
                 db.session.add(quiz)
-                update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid)
+                update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
                 update.feedback = feedback
                 db.session.commit()
                 return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
@@ -369,7 +369,7 @@ def quizTemplate(username, courseid, lessonid):
             if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
                 feedback = "You scored" + str(correct_questions)
                 db.session.add(quiz)
-                update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid)
+                update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
                 update.feedback = feedback
                 db.session.commit()
                 return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
@@ -387,7 +387,7 @@ def quizTemplate(username, courseid, lessonid):
             if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
                 feedback = "You scored" + str(correct_questions)
                 db.session.add(quiz)
-                update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid)
+                update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
                 update.feedback = feedback
                 db.session.commit()
                 return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
@@ -405,7 +405,7 @@ def quizTemplate(username, courseid, lessonid):
             if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
                 feedback = "You scored" + str(correct_questions)
                 db.session.add(quiz)
-                update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid)
+                update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
                 update.feedback = feedback
                 db.session.commit()
                 return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
@@ -441,7 +441,7 @@ def quizTemplate(username, courseid, lessonid):
             if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
                 feedback = "You scored" + str(correct_questions)
                 db.session.add(quiz)
-                update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid)
+                update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
                 update.feedback = feedback
                 db.session.commit()
                 return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
@@ -459,7 +459,7 @@ def quizTemplate(username, courseid, lessonid):
             if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
                 feedback = "You scored" + str(correct_questions)
                 db.session.add(quiz)
-                update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid)
+                update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
                 update.feedback = feedback
                 db.session.commit()
                 return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
@@ -474,6 +474,7 @@ def quizTemplate(username, courseid, lessonid):
                 print "You scored " +  str(correct_questions) + " out of 7"
                 return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
     return render_template('quiz.html', questions=questions, username=username, courseid=courseid, lesson=LessonData.query.filter_by(lessonid=lessonid, lessontype='Quiz').first())
+
 @app.route('/dashboard/<username>/course/<courseid>/')
 @login_required
 def course(username, courseid):
