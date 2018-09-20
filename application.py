@@ -93,7 +93,7 @@ class Lesson(db.Model):
 class Quiz(db.Model):
     __tablename__ = 'quiz'
     id = db.Column(db.Integer, primary_key=True)
-    lessonid = db.Column('lessonid', db.Integer, unique=True, index=True)
+    lessonid = db.Column('lessonid', db.Integer, index=True)
     courseid = db.Column('courseid', db.Integer, db.ForeignKey('course.courseid'), index=True)
     username = db.Column('username', db.String(20), index=True)
     quizscore = db.Column('quizscore', db.Integer, index=True)
@@ -328,55 +328,90 @@ def quizTemplate(username, courseid, lessonid):
             if answered == answer:
                 print answer
                 correct_questions += 1
-                quiz = Quiz(lessonData.lessonid, courseid.courseid, current_user.username, correct_questions, '')
-                if correct_questions == 1:
-                    if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
-                        feedback = "You scored" + str(correct_questions)
-                        db.session.add(quiz)
-                        update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid)
-                        update.feedback = feedback
-                        db.session.commit()
-                        return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
-                    else:
-                        print "User Exists"
-                        update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid)
-                        update.quizscore = correct_questions
-                        update.feedback = "You scored" + str(correct_questions)
-                        db.session.commit()
-                        return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
-                if correct_questions == 2:
-                    if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
-                        feedback = "You scored" + str(correct_questions)
-                        db.session.add(quiz)
-                        update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid)
-                        update.feedback = feedback
-                        db.session.commit()
-                        return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
-                    else:
-                        print "User Exists"
-                        update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid)
-                        update.quizscore = correct_questions
-                        update.feedback = "You scored" + str(correct_questions)
-                        db.session.commit()
-                        return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
-                if correct_questions == 3:
-                    if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
-                        feedback = "You scored" + str(correct_questions)
-                        db.session.add(quiz)
-                        update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid)
-                        update.feedback = feedback
-                        db.session.commit()
-                        return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
-                    else:
-                        print "User Exists"
-                        update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid)
-                        update.quizscore = correct_questions
-                        update.feedback = "You scored" + str(correct_questions)
-                        db.session.commit()
-                        return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
-        return "You scored " +  str(correct_questions) + " out of 7" 
+        quiz = Quiz(lessonData.lessonid, courseid.courseid, current_user.username, correct_questions, '')
+        if correct_questions == 0:
+            if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
+                feedback = "You scored" + str(correct_questions)
+                db.session.add(quiz)
+                update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid)
+                update.feedback = feedback
+                db.session.commit()
+                return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
+                print "You scored " +  str(correct_questions) + " out of 7"
+        if correct_questions == 1:
+            if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
+                feedback = "You scored" + str(correct_questions)
+                db.session.add(quiz)
+                update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid)
+                update.feedback = feedback
+                db.session.commit()
+                return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
+                print "You scored " +  str(correct_questions) + " out of 7"
+        if correct_questions == 2:
+            if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
+                feedback = "You scored" + str(correct_questions)
+                db.session.add(quiz)
+                update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid)
+                update.feedback = feedback
+                db.session.commit()
+                return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
+                print "You scored " +  str(correct_questions) + " out of 7"
+        if correct_questions == 3:
+            if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
+                feedback = "You scored" + str(correct_questions)
+                db.session.add(quiz)
+                update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid)
+                update.feedback = feedback
+                db.session.commit()
+                return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
+                print "You scored " +  str(correct_questions) + " out of 7"
+        if correct_questions == 4:
+            if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
+                feedback = "You scored" + str(correct_questions)
+                db.session.add(quiz)
+                update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid)
+                update.feedback = feedback
+                db.session.commit()
+                return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
+                print "You scored " +  str(correct_questions) + " out of 7"
+        if correct_questions == 5:
+            if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
+                feedback = "You scored" + str(correct_questions)
+                db.session.add(quiz)
+                update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid)
+                update.feedback = feedback
+                db.session.commit()
+                return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
+                print "You scored " +  str(correct_questions) + " out of 7"
+            else:
+                print "User Exists"
+                update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid)
+                update.quizscore = correct_questions
+                update.feedback = "You scored" + str(correct_questions)
+                db.session.commit()
+                print "You scored " +  str(correct_questions) + " out of 7"
+                return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
+        if correct_questions == 6:
+            if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
+                feedback = "You scored" + str(correct_questions)
+                db.session.add(quiz)
+                update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid)
+                update.feedback = feedback
+                db.session.commit()
+                return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
+                print "You scored " +  str(correct_questions) + " out of 7"
+        if correct_questions == 7:
+            if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
+                feedback = "You scored" + str(correct_questions)
+                db.session.add(quiz)
+                update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid)
+                update.feedback = feedback
+                db.session.commit()
+                return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
+                print "You scored " +  str(correct_questions) + " out of 7"
+            #return "You scored " +  str(correct_questions) + " out of 7"
+        #return "You scored " +  str(correct_questions) + " out of 7" 
     return render_template('quiz.html', questions=questions, username=username, courseid=courseid, lesson=LessonData.query.filter_by(lessonid=lessonid, lessontype='Quiz').first())
-
 @app.route('/dashboard/<username>/course/<courseid>/')
 @login_required
 def course(username, courseid):
