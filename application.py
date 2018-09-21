@@ -288,12 +288,30 @@ def dashboard(username):
 def excerciseTemplate(username, courseid, lessonid):
     if username != current_user.username:
         return redirect(url_for('.dashboard', username=current_user.username))
+    #Creating global variables so that this data can be input into the Database for the POST request
+    global excercise_courseid
+    global excercise_lessonid
+    global answer
+    excercise_courseid = courseid
+    excercise_lessonid = lessonid
+    print excercise_courseid
+    print excercise_lessonid
     form = MyForm()
+    #Loading the JSON file which contains the paragraph data and answer data for the Excercise
     with open ('static/lesson/excercise.json') as jsonData:
         paragraph_data = json.load(jsonData)
     username=User.query.filter_by(username=username).first()
     courseid=Course.query.filter_by(courseid=courseid).first()
     lessonData = LessonData.query.filter_by(lessonid=lessonid).first()
+    global excercise_lessonname
+    excercise_lessonname = lessonData.lessonname
+    #IF statement which means if the User has completed the Excercise successfully previously, it will load their correct data
+    if  Lesson.query.filter_by(username=current_user.username, lessonid=excercise_lessonid).scalar() is not None:
+        print "User has already done this tutorial"
+        loadData = Lesson.query.filter_by(username=current_user.username, lessonid=excercise_lessonid).first()
+        form.source_code.data = loadData.excerciseData
+    else:
+        print "User has not done this tutorial"
     for paragraph in paragraph_data:
         if paragraph['lesson_id'] == lessonData.lessonid:
             return render_template('excercise.html', form=form, username=username, courseid=courseid, lesson=lessonData, paragraphData=paragraph)
