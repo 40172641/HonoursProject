@@ -17,7 +17,9 @@
 
 	<script>
     $(document).ready(function() {
-        $('form').submit(function (e) {
+        	var test = $('div.test').text();
+        	$('div.output').html(test);
+	    $('form').submit(function (e) {
             var url = "/dashboard/excercise/post/";
             $.ajax({
                 type: "POST",
@@ -140,7 +142,8 @@ body, html
 <div class='top'>
 	<h2>Excercise: {{lesson.lessonname}}</h2>
 	<p>Welcome {{username.username}}</p>
-	<h6>Filler text currently however this will be a task for the user to complete. Underneath there will be checkboxes, which when the user inputs and runs certain code, the checkbox should tick, indicating to the student that the task has been completed</h6>
+	<div class="test" contenteditable="true" style="display:none;">{{ paragraphData['para_data'] }}</div>
+        <div class="output"></div>
 </div>
 <div class="middle">
 	<form method='POST' action="">

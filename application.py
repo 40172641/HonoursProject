@@ -289,9 +289,14 @@ def excerciseTemplate(username, courseid, lessonid):
     if username != current_user.username:
         return redirect(url_for('.dashboard', username=current_user.username))
     form = MyForm()
+    with open ('static/lesson/excercise.json') as jsonData:
+        paragraph_data = json.load(jsonData)
     username=User.query.filter_by(username=username).first()
     courseid=Course.query.filter_by(courseid=courseid).first()
     lessonData = LessonData.query.filter_by(lessonid=lessonid).first()
+    for paragraph in paragraph_data:
+        if paragraph['lesson_id'] == lessonData.lessonid:
+            return render_template('excercise.html', form=form, username=username, courseid=courseid, lesson=lessonData, paragraphData=paragraph)
     return render_template('excercise.html', form=form, username=username, courseid=courseid, lesson=LessonData.query.filter_by(lessonid=lessonid, lessontype='Excercise').first())
 
 @app.route('/dashboard/excercise/post/', methods=['POST'])
