@@ -352,10 +352,10 @@ def excercise():
                 db.session.add(excercise)
                 db.session.commit()
             else:
-                print "User Exists"
-                update = Lesson.query.filter_by(username=current_user.username, lessonid = db_lessonid).first()
-                update.excerciseData = excercise_answer
-                db.session.commit()
+                print "User has already completed this Excercise!!!"
+                #update = Lesson.query.filter_by(username=current_user.username, lessonid = db_lessonid).first()
+                #update.excerciseData = excercise_answer
+                #db.session.commit()
         return jsonify(data={'message':(userInput)})
     return jsonify(data=form.errors)
 
