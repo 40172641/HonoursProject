@@ -224,7 +224,7 @@ def template(username, courseid, lessonid):
          #   return render_template('template.html', form=form, username=username, courseid=courseid, lesson=lessonData, paragraphData="Example")
 
 
-@app.route('/dashboard/template/post/', methods=['POST', 'GET'])
+@app.route('/dashboard/template/post/', methods=['POST'])
 @login_required
 def templatePost(): 
     form = MyForm()
@@ -292,10 +292,9 @@ def excerciseTemplate(username, courseid, lessonid):
     global excercise_courseid
     global excercise_lessonid
     global answer
+    global heading
     excercise_courseid = courseid
     excercise_lessonid = lessonid
-    print excercise_courseid
-    print excercise_lessonid
     form = MyForm()
     #Loading the JSON file which contains the paragraph data and answer data for the Excercise
     with open ('static/lesson/excercise.json') as jsonData:
@@ -312,6 +311,13 @@ def excerciseTemplate(username, courseid, lessonid):
         form.source_code.data = loadData.excerciseData
     else:
         print "User has not done this tutorial"
+    for json_answer in paragraph_data:
+        if json_answer['lesson_id'] == lessonData.lessonid:
+            output = json_answer['answer']
+            output_heading = json_answer['heading']
+            answer = str(output)
+            heading = str(output_heading)
+            print answer
     for paragraph in paragraph_data:
         if paragraph['lesson_id'] == lessonData.lessonid:
             return render_template('excercise.html', form=form, username=username, courseid=courseid, lesson=lessonData, paragraphData=paragraph)
@@ -322,6 +328,15 @@ def excercise():
     form = MyForm()
     if form.validate_on_submit() and request.method == 'POST':
         userInput = form.source_code.data
+        excercise_answer = str(answer)
+        heading_search = str(heading)
+        print heading_search
+        soup = BeautifulSoup(userInput)
+        excercise = None
+        if soup.find(heading_search) is None:
+            print "Correct Heading for Answer Not entered"
+        else:
+            print "Correct Heading for the Answer Found"
         return jsonify(data={'message':(userInput)})
     return jsonify(data=form.errors)
 
