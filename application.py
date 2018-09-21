@@ -335,8 +335,27 @@ def excercise():
         excercise = None
         if soup.find(heading_search) is None:
             print "Correct Heading for Answer Not entered"
+            excercise = False
+            print "Incorrect Answer"
         else:
             print "Correct Heading for the Answer Found"
+            if excercise_answer in userInput:
+                excercise = True
+                print "Correct Answer Found"
+            else:
+                excercise = False
+                print "Incorrect Answer"
+        if excercise == True:
+            print "Excercise Complete"
+            excercise = Lesson(excercise_lessonid, excercise_lessonname, excercise_courseid, current_user.username, excercise_answer, "Excercise Completed")
+            if Lesson.query.filter_by(username=current_user.username, lessonid=excercise_lessonid).scalar() is None:
+                db.session.add(excercise)
+                db.session.commit()
+            else:
+                print "User Exists"
+                update = Lesson.query.filter_by(username=current_user.username, lessonid = db_lessonid).first()
+                update.excerciseData = excercise_answer
+                db.session.commit()
         return jsonify(data={'message':(userInput)})
     return jsonify(data=form.errors)
 

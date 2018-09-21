@@ -3,7 +3,7 @@
    		"course_id": 11111,
    		"lesson_id": 121,
    		"para_data": "<p>Welcome to Excercise 1</p>",
-		"answer":"<h1> Hello </h1>",
+		"answer":"<h1>Hello</h1>",
 		"heading":"h1"
 	},
 	{
