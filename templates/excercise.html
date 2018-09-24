@@ -52,7 +52,9 @@ body, html
 {
 	width: 100%;
 	height: 100%;
-	overflow: hidden;
+	overflow:hidden;
+	overflow-x:hidden;
+	background-color:e3e3e3;
 }
 .button {
     background-color: #4CAF50;
@@ -74,10 +76,21 @@ body, html
 	width: 100%;
 	height: 100%
 }
+.header
+{
+	position:relative;
+	background-color:565762;
+	width:2600px;
+	right:100px;
+}
 .top
 {
 	padding-top:5px;
-	right:30px;
+	padding-left:50px;
+	background-color:565762;
+	color:white;
+	width:100%
+	
 }
 .middle
 {
@@ -85,18 +98,14 @@ body, html
 	right: 20px;
 	height:80%;
 	float:left;
+	background-color: e3e3e3;
 }
 .right
 {
 	position:relative;
-	top: 50.5px;
-	right:93px;
-	height:100%;
 	float:right;
-}
-#output
-{
-	bottom:40px;
+	top:50px;
+	right:80px;
 }
 .CodeMirror
 {
@@ -105,6 +114,10 @@ body, html
 	position:relative;
 	top:20px;
 	width:300%;
+}
+.o
+{
+	background-color: e3e3e3;
 }
 .message
 {
@@ -141,11 +154,14 @@ body, html
 
 	
 <div class="container">
+	<div class="header">
 <div class='top'>
 	<h2>Excercise: {{lesson.lessonname}}</h2>
 	<div class="test" contenteditable="true" style="display:none;">{{ paragraphData['para_data'] }}</div>
         <div class="output"></div>
 </div>
+	</div>
+<div class = "o">
 <div class="middle">
 	<form method='POST' action="">
                 {{ form.csrf_token }}
@@ -166,6 +182,8 @@ body, html
         </form>
 </div>
 <div class="right">
-<iframe id="output"style="height:465px; width:430px;"></iframe>
+<iframe id="output"style="height:465px; width:430px; background-color:white;"></iframe>
+</div>
+</div>
 </body>
 </html>

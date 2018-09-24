@@ -543,8 +543,10 @@ def course(username, courseid):
     username = User.query.filter_by(username=username).first()
     lesson = LessonData.query.filter_by(courseid = courseid).first()
     quizData = Quiz.query.filter_by(courseid = courseid, username=current_user.username).first()
+    taskData = Lesson.query.filter_by(courseid=courseid ,username=current_user.username).first()
     courseid = Course.query.filter_by(courseid = courseid).first()
-    return render_template('course.html', username=username, course=courseid, quiz=quizData, lessons=LessonData.query.filter_by(courseid=courseid.courseid, lessontype='Lesson'), excercises=LessonData.query.filter_by(courseid=courseid.courseid, lessontype='Excercise'), quizzes=LessonData.query.filter_by(courseid=courseid.courseid, lessontype='Quiz'))
+    return render_template('course.html', username=username, course=courseid, quiz=quizData,task=taskData, lessons=LessonData.query.filter_by(courseid=courseid.courseid, lessontype='Lesson'), excercises=LessonData.query.filter_by(courseid=courseid.courseid, lessontype='Excercise'), quizzes=LessonData.query.filter_by(courseid=courseid.courseid, lessontype='Quiz'))
+
 @app.route('/logout/')
 def logout():
     logout_user()

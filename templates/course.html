@@ -31,7 +31,7 @@ position: relative;
 {
 	position: relative;
 	left: 700px;
-	bottom: 460px;
+	bottom: 495px;
 }
 .excercise
 {
@@ -66,6 +66,10 @@ position: relative;
 {
 	position:relative;
 	bottom:25px;
+}
+.quizP
+{
+	padding-left:80px;
 }
 </style>
 <body>
@@ -105,17 +109,19 @@ position: relative;
 	<div class="lesson">
 	{% for lesson in lessons %}
 	<h6><a href="lesson/{{lesson.lessonid}}" style="color: #3E4551; text-decoration:none">{{lesson.lessonname}}</a></h6>
-	<p><font size="2">Task Status: {{lesson.taskCompleted}}<font></p>
+	<p><font size="2">Task Status: {{task.taskCompleted}}<font></p>
 	{% endfor %}
 	</div>
 	<br>
 	<br>
 	<div class="quiz">
 	<h3>Quiz</h3>
+	<div class="quizP">
 	{% for quiz in quizzes %}
         <h6><a href="quiz/{{quiz.lessonid}}" style="color: #3E4551; text-decoration:none">{{quiz.lessonname}}</a></h6>
         {% endfor %}	
 	<p>Quiz Score: {{quiz.quizscore}}/7</p>
+	</div>
 	</div>
 	</div>	
 	<div class="feedback">
