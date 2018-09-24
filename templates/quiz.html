@@ -24,10 +24,10 @@
 }
 .heading
 {
-	background-color: 565762;
-	padding-top:10px;
-	padding-bottom:5px;
-	padding-left:5px;
+	background-color: 183024;
+	padding-top:15px;
+	padding-bottom:15px;
+	padding-left:15px;
 	color:white;
 }
 .button
@@ -47,8 +47,8 @@
 </style>
 <body>
 
-<nav class="navbar navbar-expand-sm navbar-dark" style="background-color: #3E4551;">
-  <a class="navbar-brand" href="#">LEARN</a>
+<nav class="navbar navbar-expand-sm navbar-dark" style="background-color: #193326;">
+  <a class="navbar-brand" href="#"><img src="/static/img/logo_transparent.png" height="27.5" class="logo"> LEARN</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -83,7 +83,7 @@
 		<label class="radio-inline">
 		{% for j in questions[i] %}
 		<label class="btn btn-secondary">
-			<input type="radio" value="{{j}}" name="{{i}}" autocomplete="off"> {{j}}
+			<input type="radio" value="{{j}}" name="{{i}}" autocomplete="off" required> {{j}}
   		</label>
 				{% endfor %}
 			</label>
