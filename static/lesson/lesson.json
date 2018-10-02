@@ -2,7 +2,7 @@
 	{  
    		"course_id": 11111,
    		"lesson_id": 111,
-   		"para_data": "<p>This is an example of this working etc</p>",
+   		"para_data": "<p>This is an example of this working etc, editing this will edit the page</p>",
 		"answer":"<h1> </h1>",
 		"answer2":"<h2> </h2>"
 	},
