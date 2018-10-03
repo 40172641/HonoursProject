@@ -52,6 +52,7 @@
 		    }
 	    console.log(details)
 
+
 	    $('#lessonButton').click(function()
 		    
 		    {
@@ -59,6 +60,7 @@
 			if(lessonid+1 == 116)
 			    {
 			    //window.location = 211;
+			      location.pathname= "/location/";
 			    
 			    }
 			 if(lessonid+1 == 216)
@@ -74,6 +76,29 @@
                             }
 
 		    })
+
+
+	    $('#previousButton').click(function(event)
+                    {
+                        window.location = lessonid-1;
+                            if(lessonid -1 == 110)
+                            {
+                                window.location = 111;
+                            }
+                         if(lessonid-1 == 210)
+                            {
+                            window.location = 211;
+
+                            }
+
+                           if(lessonid-1 == 310)
+                            {
+                           window.location = 311;
+
+                            }
+
+                    })
+
 	    //onPageLoad Ajax Request
 	    $.ajax({
 		    url: window.location.pathname,
@@ -81,6 +106,7 @@
 		    success: function()
 		    {
 		    	console.log(details);
+			alert("hello");
 		    }});
 		
 	    $('form').submit(function (e) {
@@ -95,8 +121,9 @@
                         //console.log(JSON.parse(JSON.stringify(data)));
                         var obj = JSON.parse(JSON.stringify(data));
                         console.log(obj.data.output);
+			console.log(obj.data.task);
                         //console.log(eval(obj.data));
-                        //$("#results").html(obj.data.output);
+			$("#message").html("<h5>"+ obj.data.task +"</h5>");
 			document.getElementById('result').contentWindow.document.write(obj.data.output);
 			document.getElementById('result').contentWindow.document.close();
                 }
@@ -176,9 +203,9 @@ body, html
 }
 .message
 {
-	position: absolute;
-	left: 750px;
-	bottom: 17px;
+	position:relative;
+	left: 135px;
+	bottom: 39px;
 	font-size: 18px;
 }
 .lessonButton
@@ -193,7 +220,26 @@ body, html
     font-size: 17px;
     margin: 4px 2px;
     cursor: pointer;
+	   left: 275px;
+	   bottom: 53px;
+	position: relative;
 
+
+}
+.previousButton
+{
+background-color: 4c4cff;
+        border: none;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 17px;
+    margin: 4px 2px;
+    cursor: pointer;
+           left: 125px;
+        position: relative;
 
 }
 </style>
@@ -249,14 +295,7 @@ Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots 
                 {{ form.source_code }}
                 <div>
 			<input type="submit" class="button" value="Run Code >>" />
-			<div class="message">
-		{% with messages = get_flashed_messages() %}
-        {% if messages %}
-                {% for message in messages %}
-                <p>{{ message }}</p>
-                {% endfor %}
-        {% endif %}
-        {% endwith %}
+		<div class="message" id='message'>
 	</div>
 		</div>
         </form>
@@ -265,6 +304,7 @@ Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots 
 </div>
 <div class="right">
 <iframe id="result" style="height:541px; width:405px; background-color:white;"></iframe>	
+<button type="submit" class="previousButton" id="previousButton" form="nameform" value="Submit">Previous Lesson</button>
 <button type="submit" class="lessonButton" id="lessonButton" form="nameform" value="Submit">Next Lesson</button>
 </div>
 </body>

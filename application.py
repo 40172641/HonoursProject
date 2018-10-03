@@ -244,6 +244,7 @@ def templatePost():
         task2= None
         if soup.find(tag_search_answer) is None:
             print "Heading not entered"
+            return jsonify(data={'output':(form.source_code.data), 'task':'Incorrect Answer'})
         else:
             print "Heading Entered"
             text1 = soup.find(tag_search_answer)
@@ -251,6 +252,11 @@ def templatePost():
             if answer1 in userInput:
                 task1= True
                 print "Task 1 Completed"
+                return jsonify(data={'output':(form.source_code.data), 'task':'Task 1 Completed'})
+            else:
+                task1 = False
+                print "Task 1 Incomplete"
+                return jsonify(data={'output':(form.source_code.data), 'task':'Incorrect Answer'})
         if soup.find(tag_search_answer2) is None:
             print "Heading not entered"
         else:
@@ -260,6 +266,7 @@ def templatePost():
             if answer2 in userInput:
                 task2= True
                 print "Task 2 Completed"
+                return jsonify(data={'output':(form.source_code.data), 'task':'true'})
         if task1 == True:
             if task2 == True:
                 print "Task Complete"
@@ -272,7 +279,7 @@ def templatePost():
                     update = Lesson.query.filter_by(username=current_user.username, lessonid = db_lessonid).first()
                     update.excerciseData = answer1
                     db.session.commit()
-        return jsonify(data={'output':(form.source_code.data)})
+        return jsonify(data={'output':(form.source_code.data)})    
     return jsonify(data=form.errors)
 
 @app.route('/dashboard/<username>/')
@@ -562,6 +569,10 @@ def dashredirect():
 @app.errorhandler(404)
 def error_page(error):
     return render_template('error.html')
+
+@app.errorhandler(500)
+def internal_error(error):
+    return "hello"
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
