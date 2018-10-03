@@ -244,7 +244,7 @@ def templatePost():
         task2= None
         if soup.find(tag_search_answer) is None:
             print "Heading not entered"
-            return jsonify(data={'output':(form.source_code.data), 'task':'Incorrect Answer'})
+            task1 = False
         else:
             print "Heading Entered"
             text1 = soup.find(tag_search_answer)
@@ -252,13 +252,12 @@ def templatePost():
             if answer1 in userInput:
                 task1= True
                 print "Task 1 Completed"
-                return jsonify(data={'output':(form.source_code.data), 'task':'Task 1 Completed'})
             else:
                 task1 = False
                 print "Task 1 Incomplete"
-                return jsonify(data={'output':(form.source_code.data), 'task':'Incorrect Answer'})
         if soup.find(tag_search_answer2) is None:
             print "Heading not entered"
+            task2=False
         else:
             print "Heading Entered"
             text2 = soup.find(tag_search_answer2)
@@ -266,10 +265,12 @@ def templatePost():
             if answer2 in userInput:
                 task2= True
                 print "Task 2 Completed"
-                return jsonify(data={'output':(form.source_code.data), 'task':'true'})
+            else:
+                task2 = False
         if task1 == True:
             if task2 == True:
                 print "Task Complete"
+                return jsonify(data={'output':(form.source_code.data),'task':'Task 1 Complete', 'second':'Task 2 Complete'})
                 lesson = Lesson(db_lessonid, db_lessonname, db_courseid, current_user.username, userInput, "Task Completed")
                 if  Lesson.query.filter_by(username=current_user.username, lessonid=db_lessonid).scalar() is None:
                     db.session.add(lesson)
@@ -279,7 +280,15 @@ def templatePost():
                     update = Lesson.query.filter_by(username=current_user.username, lessonid = db_lessonid).first()
                     update.excerciseData = answer1
                     db.session.commit()
-        return jsonify(data={'output':(form.source_code.data)})    
+            if task2 == False:
+                print "Task 1 Complete, Task 2 Not"
+                return jsonify(data={'output':(form.source_code.data),'task':'Task 1 Complete', 'second':'Incorrect Answer'})
+        else:
+            if task2 == True:
+                return jsonify(data={'output':(form.source_code.data),'task':'Incorrect Answer', 'second':'Task 2 Complete'})
+            else:
+                return jsonify(data={'output':(form.source_code.data),'task':'Incorrect Answer', 'second':'Incorrect Answer'})
+        return jsonify(data={'output':(form.source_code.data)})
     return jsonify(data=form.errors)
 
 @app.route('/dashboard/<username>/')

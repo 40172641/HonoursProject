@@ -120,10 +120,13 @@
 			//console.log(JSON.stringify(data));
                         //console.log(JSON.parse(JSON.stringify(data)));
                         var obj = JSON.parse(JSON.stringify(data));
-                        console.log(obj.data.output);
+                        console.log(obj)
+			console.log(obj.data.output);
 			console.log(obj.data.task);
+			console.log(obj.data.second);
                         //console.log(eval(obj.data));
 			$("#message").html("<h5>"+ obj.data.task +"</h5>");
+			$("#task2").html("<h5>"+ obj.data.second +"</h5>");
 			document.getElementById('result').contentWindow.document.write(obj.data.output);
 			document.getElementById('result').contentWindow.document.close();
                 }
@@ -208,6 +211,15 @@ body, html
 	bottom: 39px;
 	font-size: 18px;
 }
+
+.task2
+{
+        position:relative;
+        bottom: 70px;
+	left: 325px;
+        font-size: 18px;
+}
+
 .lessonButton
 {
 	background-color: 4c4cff;
@@ -296,7 +308,10 @@ Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots 
                 <div>
 			<input type="submit" class="button" value="Run Code >>" />
 		<div class="message" id='message'>
+
 	</div>
+	<div class="task2" id='task2'></div>
+
 		</div>
         </form>
 
