@@ -18,6 +18,50 @@
 	<script>
     $(document).ready(function() {
         	var test = $('div.test').text();
+	    	var location = window.location.pathname.split('/');
+	    	var username = location[2];
+	    	var lessonid = parseInt(location[6]);
+	    	var lessonid_1 = (lessonid + 1)
+	    	
+		var path = "dashboard/"+username+"/course/20001/excercise/221"
+	    	var addOne  = "dashboard/"+username+"/course/"+location[4]+"/excercise/"+lessonid_1;
+	    	console.log(addOne)
+	    	$('#lessonButton').click(function()
+		    
+		    {
+		    	window.location.pathname = addOne;
+			if(lessonid+1 == 126)
+			    {
+			    window.location.pathname = path;
+			    
+			    }
+			 if(lessonid+1 == 226)
+                            {
+                            	window.location = window.location.pathname;
+			    }
+			   if(lessonid+1 == 326)
+                            {
+                            window.location = window.location.pathname;
+			    }
+		    })
+	    $('#previousButton').click(function(event)
+                    {
+                        window.location = lessonid-1;
+                            if(lessonid -1 == 120)
+                            {
+                                //window.location = 121;
+
+                            }
+                         if(lessonid-1 == 220)
+                            {
+                            window.location = 221;
+                            }
+                           if(lessonid-1 == 320)
+                            {
+                           window.location = 321;
+                            }
+                    })
+
         	$('div.output').html(test);
 	    $('form').submit(function (e) {
             var url = "/dashboard/excercise/post/";
@@ -28,8 +72,9 @@
                 success: function (data) {
                         var obj = JSON.parse(JSON.stringify(data));
                         console.log(obj.data.message);
-                        console.log(eval(obj.data));
-                        $("#results").html(obj.data.message);
+                        console.log(obj.data.task);
+			//$("#results").html(obj.data.message);
+			$("#message").html("<h5>"+ obj.data.task +"</h5>");
                         document.getElementById('output').contentWindow.document.write(obj.data.message);
 			document.getElementById('output').contentWindow.document.close();
                 }
@@ -67,7 +112,7 @@ body, html
     font-size: 17px;
     margin: 4px 2px;
     cursor: pointer;
-	    position: relative;
+    position: absolute;
     left: 465px;
     bottom: 275px;
 	}
@@ -111,9 +156,9 @@ body, html
 {
         height:86%;
 	background-color: white;
-	position:relative;
+	position:absolute;
 	top:20px;
-	width:300%;
+	width:500%
 }
 .o
 {
@@ -121,10 +166,9 @@ body, html
 }
 .message
 {
-	position: absolute;
-	left: 750px;
-	bottom: 17px;
-	font-size: 18px;
+	position:absolute;
+	left:680px;
+	bottom:485px;
 }
 </style>
 <body>
@@ -161,6 +205,10 @@ body, html
         <div class="output"></div>
 </div>
 	</div>
+
+	<button type="submit" class="previousButton" id="previousButton" form="nameform" value="Submit">Previous Lesson</button>
+<button type="submit" class="lessonButton" id="lessonButton" form="nameform" value="Submit">Next Lesson</button>
+<div class="message" id="message">Example</div>
 <div class = "o">
 <div class="middle">
 	<form method='POST' action="">
@@ -169,15 +217,6 @@ body, html
 		{{ form.source_code }}
                 <div>
 			<input type="submit" class="button" value="Run Code >>" />
-			<div class="message">
-		{% with messages = get_flashed_messages() %}
-        {% if messages %}
-                {% for message in messages %}
-                <p>{{ message }}</p>
-                {% endfor %}
-        {% endif %}
-        {% endwith %}
-	</div>
 		</div>
         </form>
 </div>

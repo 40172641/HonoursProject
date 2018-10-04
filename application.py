@@ -363,6 +363,7 @@ def excercise():
                 print "Incorrect Answer"
         if excercise == True:
             print "Excercise Complete"
+            return jsonify(data={'message':(userInput), 'task':'Correct Answer, Excercise Completed'})
             excercise = Lesson(excercise_lessonid, excercise_lessonname, excercise_courseid, current_user.username, excercise_answer, "Excercise Completed")
             if Lesson.query.filter_by(username=current_user.username, lessonid=excercise_lessonid).scalar() is None:
                 db.session.add(excercise)
@@ -371,7 +372,9 @@ def excercise():
                 print "User has already completed this Excercise!!!"
                 #update = Lesson.query.filter_by(username=current_user.username, lessonid = db_lessonid).first()
                 #update.excerciseData = excercise_answer
-                #db.session.commit()
+        #db.session.commit()
+        else:
+            return jsonify(data={'message':(userInput), 'task':'Incorrect Answer'})
         return jsonify(data={'message':(userInput)})
     return jsonify(data=form.errors)
 
