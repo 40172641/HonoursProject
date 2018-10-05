@@ -202,6 +202,8 @@ def template(username, courseid, lessonid):
     db_lessonname = lessonData.lessonname
     global answer
     global second_answer
+    global feedback
+    global feedback2
     if  Lesson.query.filter_by(username=current_user.username, lessonid=db_lessonid).scalar() is not None:
         print "User has already done this tutorial"
         loadData = Lesson.query.filter_by(username=current_user.username, lessonid=db_lessonid).first()
@@ -210,9 +212,13 @@ def template(username, courseid, lessonid):
         print "User has not done this tutorial"
     for json_answer in para_data:
         if json_answer['lesson_id'] == lessonData.lessonid:
+            json_feedback = json_answer['feedback']
+            json_feedback_Q2 = json_answer['feedback2']
             output = json_answer['answer']
             json_answer = json_answer['answer2']
             answer = str(output)
+            feedback = str(json_feedback)
+            feedback2 = str(json_feedback_Q2)
             print json_answer
             second_answer = str(json_answer)
     #print output
@@ -233,6 +239,10 @@ def templatePost():
         userInput = form.source_code.data
         template_answer = str(answer) #Converts JSON object to String
         template_answer2 = str(second_answer) #Converts JSON object to String
+        user_feedback = str(feedback)
+        user_feedback_Q2 = str(feedback2)
+        print user_feedback
+        print user_feedback_Q2
         final_answer = template_answer.split() #Splits the String so the tags can be accessed for the answer
         final_answer2 = template_answer2.split()
         tag_search_answer = final_answer[0].replace("<","").replace(">","") #In order to pass a variable through soup.find, characters < & > had to be replaced
@@ -270,7 +280,7 @@ def templatePost():
         if task1 == True:
             if task2 == True:
                 print "Task Complete"
-                return jsonify(data={'output':(form.source_code.data),'task':'Task 1 Complete', 'second':'Task 2 Complete'})
+                return jsonify(data={'output':(form.source_code.data),'task':(user_feedback), 'second':(user_feedback_Q2)})
                 lesson = Lesson(db_lessonid, db_lessonname, db_courseid, current_user.username, userInput, "Task Completed")
                 if  Lesson.query.filter_by(username=current_user.username, lessonid=db_lessonid).scalar() is None:
                     db.session.add(lesson)
@@ -282,7 +292,7 @@ def templatePost():
                     db.session.commit()
             if task2 == False:
                 print "Task 1 Complete, Task 2 Not"
-                return jsonify(data={'output':(form.source_code.data),'task':'Task 1 Complete', 'second':'Incorrect Answer'})
+                return jsonify(data={'output':(form.source_code.data),'task':(user_feedback), 'second':'Incorrect Answer'})
         else:
             if task2 == True:
                 return jsonify(data={'output':(form.source_code.data),'task':'Incorrect Answer', 'second':'Task 2 Complete'})
