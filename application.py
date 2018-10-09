@@ -295,7 +295,7 @@ def templatePost():
                 return jsonify(data={'output':(form.source_code.data),'task':(user_feedback), 'second':'Incorrect Answer'})
         else:
             if task2 == True:
-                return jsonify(data={'output':(form.source_code.data),'task':'Incorrect Answer', 'second':'Task 2 Complete'})
+                return jsonify(data={'output':(form.source_code.data),'task':'Incorrect Answer', 'second':(user_feedback_Q2)})
             else:
                 return jsonify(data={'output':(form.source_code.data),'task':'Incorrect Answer', 'second':'Incorrect Answer'})
         return jsonify(data={'output':(form.source_code.data)})
@@ -413,6 +413,7 @@ def quizTemplate(username, courseid, lessonid):
             answered = request.form[question]
             if answered == answer:
                 print answer
+                print question
                 correct_questions += 1
         quiz = Quiz(lessonData.lessonid, courseid.courseid, current_user.username, correct_questions, '')
         if correct_questions == 0:
@@ -431,7 +432,7 @@ def quizTemplate(username, courseid, lessonid):
                 update.quizscore = correct_questions
                 update.feedback = "You scored " + str(correct_questions)
                 db.session.commit()
-                print "You scored " +  str(correct_questions) + " out of 7"
+                print "You scored " +  str(correct_questions) + " out of 7" + question + " correctly"
                 return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
         if correct_questions == 1:
             if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
@@ -447,7 +448,7 @@ def quizTemplate(username, courseid, lessonid):
                 update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
                 print update.quizscore
                 update.quizscore = correct_questions
-                update.feedback = "For the Quiz, You scored " + str(correct_questions) + ". Based off these results we feel that you should repeat all of the current lesson matieral for the " + courseid.coursename  +" course again. Once that has been completed, please also try the Excercises available. Once all this work has been completed please re-try the Quiz to try improve your overall score!"
+                update.feedback = "For the Quiz, You scored " + str(correct_questions) + ". Based off these results we feel that you should repeat all of the current lesson matieral for the " + courseid.coursename  +" course again. Once that has been completed, please also try the Excercises available. Once all this work has been completed please re-try the Quiz to try improve your overall score! "+ question + " " + answer
                 db.session.commit()
                 print "You scored " +  str(correct_questions) + " out of 7"
                 return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))

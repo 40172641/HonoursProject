@@ -41,8 +41,9 @@
 	console.log(test);
 	var courseid = location[4];
 	var lessonid = parseInt(location[6]);
-	console.log(lessonid + 1)
-	
+	var username = location[2];
+	var lessonid_1 = (lessonid + 1)
+	var path = "dashboard/"+username+"/course/20001/lesson/211";
 	console.log(lessonid)
 	
 	var details = 
@@ -60,8 +61,7 @@
 			if(lessonid+1 == 116)
 			    {
 			    //window.location = 211;
-			      location.pathname= "/location/";
-			    
+			   window.location.pathname = path; 
 			    }
 			 if(lessonid+1 == 216)
                             {
@@ -125,8 +125,8 @@
 			console.log(obj.data.task);
 			console.log(obj.data.second);
                         //console.log(eval(obj.data));
-			$("#message").html("<h5>"+ obj.data.task +"</h5>");
-			$("#task2").html("<h5>"+ obj.data.second +"</h5>");
+			$("#message").html("<p>"+ obj.data.task +"</p>");
+			$("#task2").html("<p>"+ obj.data.second +"</p>");
 			document.getElementById('result').contentWindow.document.write(obj.data.output);
 			document.getElementById('result').contentWindow.document.close();
                 }
@@ -208,16 +208,18 @@ body, html
 {
 	position:relative;
 	left: 135px;
-	bottom: 39px;
-	font-size: 18px;
+	bottom: 49px;
+	font-size: 15px;
+	width:45%;
 }
 
 .task2
 {
         position:relative;
-        bottom: 70px;
+        bottom: 110px;
 	left: 325px;
-        font-size: 18px;
+        font-size: 15px;
+	width:40%
 }
 
 .lessonButton
