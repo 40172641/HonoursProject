@@ -74,7 +74,16 @@
 		<h3>{{lesson.lessonname}}</h3>
 		</div>
 		<br>
-	<form method='POST'>
+	{% with messages = get_flashed_messages() %}
+        {% if messages %}
+                {% for message in messages %}
+                <p>{{ message }}</p>
+		<p>Return to <a href='/dashboard/{{username.username}}/course/{{courseid.courseid}}/'>Course Page</a></p>
+                {% endfor %}
+        {% endif %}
+        {% endwith %}
+		
+		<form method='POST'>
 		<div class="questions">
 		{% for i in questions %}	
 		<h4>{{i}}</h4>
@@ -90,7 +99,7 @@
 		</div>
 		</fieldset>
 		{% endfor %}
-			<input type="submit" class="button" value="submit" />
+			<input type="submit" class="button" value="Submit!" />
 		</div>
 	</form>
 		</div>
