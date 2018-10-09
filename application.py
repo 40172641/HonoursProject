@@ -404,22 +404,18 @@ def quizTemplate(username, courseid, lessonid):
     questions = copy.deepcopy(quiz_questions)
     for j in questions:
         answer = questions[j][0]
-        print answer
+        #print answer
     for i in questions.keys():
         random.shuffle(questions[i])
     if request.method == "POST":
         correct_questions = 0
-        flash_correct_question = " "
+        arrayQuestion = []
         for question in questions.keys():
             answered = request.form[question]
             if answered == answer:
-                print answer
-                print question
-                flash_correct_question = question
+                arrayQuestion.append(question)
                 correct_questions += 1
-        quiz = Quiz(lessonData.lessonid, courseid.courseid, current_user.username, correct_questions, '')
-        print flash_correct_question
-        print correct_questions
+        flash_correct_question = (", ".join(arrayQuestion))
         if correct_questions == 0:
             if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
                 feedback = "You scored" + str(correct_questions)
@@ -427,7 +423,7 @@ def quizTemplate(username, courseid, lessonid):
                 update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
                 update.feedback = feedback #Updates the feedback row with the new Feedback
                 db.session.commit()
-                flash("You Got 0/7 For the Quiz, The Questions you answered correctly were "+ question)
+                flash("You Got 0/7 For the Quiz, You Answered No Questions Correctly.")
                 return redirect(url_for('.quizTemplate', lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
                 print "You scored " +  str(correct_questions) + " out of 7"
             else:
@@ -437,7 +433,7 @@ def quizTemplate(username, courseid, lessonid):
                 update.quizscore = correct_questions
                 update.feedback = "You scored " + str(correct_questions)
                 db.session.commit()
-                flash("You Got 0/7 For the Quiz, The Questions you answered correctly were "+ flash_correct_question)
+                flash("You Got 0/7 For the Quiz, You Answered No Questions Correctly.")
                 return redirect(url_for('.quizTemplate', lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
                 print "You scored " +  str(correct_questions) + " out of 7" + question + " correctly"
         if correct_questions == 1:
@@ -447,7 +443,7 @@ def quizTemplate(username, courseid, lessonid):
                 update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
                 update.feedback = feedback
                 db.session.commit()
-                flash("You Got 1/7 For the Quiz, The Questions you answered correctly were "+ question)
+                flash("You Got 1/7 For the Quiz, The question you answered correctly were "+ flash_correct_question)
                 return redirect(url_for('.quizTemplate', lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
                 print "You scored " +  str(correct_questions) + " out of 7"
             else:
@@ -458,7 +454,7 @@ def quizTemplate(username, courseid, lessonid):
                 update.feedback = "For the Quiz, You scored " + str(correct_questions) + ". Based off these results we feel that you should repeat all of the current lesson matieral for the " + courseid.coursename  +" course again. Once that has been completed, please also try the Excercises available. Once all this work has been completed please re-try the Quiz to try improve your overall score! "+ question + " " + answer
                 db.session.commit()
                 print "You scored " +  str(correct_questions) + " out of 7"
-                flash("You Got 1/7 For the Quiz, The Questions you answered correctly were "+ flash_correct_question)
+                flash("You Got 1/7 For the Quiz, The question you answered correctly were "+ flash_correct_question)
                 return redirect(url_for('.quizTemplate', lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
         if correct_questions == 2:
             if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
@@ -487,7 +483,8 @@ def quizTemplate(username, courseid, lessonid):
                 update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
                 update.feedback = feedback
                 db.session.commit()
-                return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
+                flash("You Got 3/7 For the Quiz, The Questions you answered correctly were "+ flash_correct_question)
+                return redirect(url_for('.quizTemplate', lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
                 print "You scored " +  str(correct_questions) + " out of 7"
             else:
                 print "User Exists"
@@ -497,7 +494,8 @@ def quizTemplate(username, courseid, lessonid):
                 update.feedback = "You scored " + str(correct_questions)
                 db.session.commit()
                 print "You scored " +  str(correct_questions) + " out of 7"
-                return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
+                flash("You Got 3/7 For the Quiz, The Questions you answered correctly were "+ flash_correct_question)
+                return redirect(url_for('.quizTemplate', lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
         if correct_questions == 4:
             if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
                 feedback = "You scored" + str(correct_questions)
@@ -505,7 +503,8 @@ def quizTemplate(username, courseid, lessonid):
                 update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
                 update.feedback = feedback
                 db.session.commit()
-                return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
+                flash("You Got 4/7 For the Quiz, The Questions you answered correctly were "+ flash_correct_question)
+                return redirect(url_for('.quizTemplate', lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
                 print "You scored " +  str(correct_questions) + " out of 7"
             else:
                 print "User Exists"
@@ -515,7 +514,8 @@ def quizTemplate(username, courseid, lessonid):
                 update.feedback = "You scored " + str(correct_questions)
                 db.session.commit()
                 print "You scored " +  str(correct_questions) + " out of 7"
-                return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
+                flash("You Got 4/7 For the Quiz, The Questions you answered correctly were "+ flash_correct_question)
+                return redirect(url_for('.quizTemplate', lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
         if correct_questions == 5:
             if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
                 feedback = "You scored" + str(correct_questions)
@@ -523,7 +523,8 @@ def quizTemplate(username, courseid, lessonid):
                 update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
                 update.feedback = feedback
                 db.session.commit()
-                return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
+                flash("You Got 5/7 For the Quiz, The Questions you answered correctly were "+ flash_correct_question)
+                return redirect(url_for('.quizTemplate', lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
                 print "You scored " +  str(correct_questions) + " out of 7"
             else:
                 print "User Exists"
@@ -533,7 +534,8 @@ def quizTemplate(username, courseid, lessonid):
                 update.feedback = "You scored " + str(correct_questions)
                 db.session.commit()
                 print "You scored " +  str(correct_questions) + " out of 7"
-                return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
+                flash("You Got 5/7 For the Quiz, The Questions you answered correctly were "+ flash_correct_question)
+                return redirect(url_for('.quizTemplate', lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
         if correct_questions == 6:
             if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
                 feedback = "You scored" + str(correct_questions)
@@ -541,7 +543,8 @@ def quizTemplate(username, courseid, lessonid):
                 update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
                 update.feedback = feedback
                 db.session.commit()
-                return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
+                flash("You Got 6/7 For the Quiz, The Questions you answered correctly were "+ flash_correct_question)
+                return redirect(url_for('.quizTemplate', lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
                 print "You scored " +  str(correct_questions) + " out of 7"
             else:
                 print "User Exists"
@@ -551,7 +554,8 @@ def quizTemplate(username, courseid, lessonid):
                 update.feedback = "You scored " + str(correct_questions)
                 db.session.commit()
                 print "You scored " +  str(correct_questions) + " out of 7"
-                return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
+                flash("You Got 6/7 For the Quiz, The Questions you answered correctly were "+ flash_correct_question)
+                return redirect(url_for('.quizTemplate', lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
         if correct_questions == 7:
             if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
                 feedback = "You scored" + str(correct_questions)
@@ -559,7 +563,8 @@ def quizTemplate(username, courseid, lessonid):
                 update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
                 update.feedback = feedback
                 db.session.commit()
-                return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
+                flash("You Got 7/7 For the Quiz, The Questions you answered correctly were "+ flash_correct_question)
+                return redirect(url_for('.quizTemplate', lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
                 print "You scored " +  str(correct_questions) + " out of 7"
             else:
                 print "User Exists"
@@ -569,7 +574,8 @@ def quizTemplate(username, courseid, lessonid):
                 update.feedback = "You scored " + str(correct_questions)
                 db.session.commit()
                 print "You scored " +  str(correct_questions) + " out of 7"
-                return redirect(url_for('.course',lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
+                flash("You Got 7/7 For the Quiz, The Questions you answered correctly were "+ flash_correct_question)
+                return redirect(url_for('.quizTemplate', lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
     return render_template('quiz.html', questions=questions, username=username, courseid=courseid, lesson=LessonData.query.filter_by(lessonid=lessonid, lessontype='Quiz').first())
 
 @app.route('/dashboard/<username>/course/<courseid>/')
