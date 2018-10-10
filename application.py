@@ -249,7 +249,7 @@ def templatePost():
         tag_search_answer2 = final_answer2[0].replace("<","").replace(">","")
         print tag_search_answer2
         print final_answer2[0]
-        soup = BeautifulSoup(userInput) #BeautifulSoup Library is used to Parse the HTML Input to find the desired user input
+        soup = BeautifulSoup(userInput, 'html.parser') #BeautifulSoup Library is used to Parse the HTML Input to find the desired user input
         task1 = None
         task2= None
         if soup.find(tag_search_answer) is None:
@@ -272,6 +272,7 @@ def templatePost():
             print "Heading Entered"
             text2 = soup.find(tag_search_answer2)
             answer2 = final_answer2[0] + text2.text + final_answer2[1]
+            print answer2
             if answer2 in userInput:
                 task2= True
                 print "Task 2 Completed"
@@ -280,16 +281,18 @@ def templatePost():
         if task1 == True:
             if task2 == True:
                 print "Task Complete"
-                return jsonify(data={'output':(form.source_code.data),'task':(user_feedback), 'second':(user_feedback_Q2)})
-                lesson = Lesson(db_lessonid, db_lessonname, db_courseid, current_user.username, userInput, "Task Completed")
-                if  Lesson.query.filter_by(username=current_user.username, lessonid=db_lessonid).scalar() is None:
+                db_answer = answer1 + "\n" + answer2
+                lesson = Lesson(db_lessonid, db_lessonname, db_courseid, current_user.username, db_answer, "Task Completed")
+                print lesson
+                if Lesson.query.filter_by(username=current_user.username, lessonid=db_lessonid).scalar() is None:
                     db.session.add(lesson)
                     db.session.commit()
-                else:
+                if Lesson.query.filter_by(username=current_user.username, lessonid=db_lessonid).scalar() is not None:    
                     print "User Exists"
                     update = Lesson.query.filter_by(username=current_user.username, lessonid = db_lessonid).first()
-                    update.excerciseData = answer1
+                    update.excerciseData = answer1 + "\n" + answer2
                     db.session.commit()
+                return jsonify(data={'output':(form.source_code.data),'task':(user_feedback), 'second':(user_feedback_Q2)})
             if task2 == False:
                 print "Task 1 Complete, Task 2 Not"
                 return jsonify(data={'output':(form.source_code.data),'task':(user_feedback), 'second':'Incorrect Answer'})
@@ -373,15 +376,16 @@ def excercise():
                 print "Incorrect Answer"
         if excercise == True:
             print "Excercise Complete"
-            return jsonify(data={'message':(userInput), 'task':'Correct Answer, Excercise Completed'})
-            excercise = Lesson(excercise_lessonid, excercise_lessonname, excercise_courseid, current_user.username, excercise_answer, "Excercise Completed")
+            #return jsonify(data={'message':(userInput), 'task':'Correct Answer, Excercise Completed'})
+            excercise1 = Lesson(excercise_lessonid, excercise_lessonname, excercise_courseid, current_user.username, excercise_answer, "Excercise Completed")
             if Lesson.query.filter_by(username=current_user.username, lessonid=excercise_lessonid).scalar() is None:
-                db.session.add(excercise)
+                db.session.add(excercise1)
                 db.session.commit()
-            else:
+            return jsonify(data={'message':(userInput), 'task':'Correct Answer, Excercise Completed'})
+            if Lesson.query.filter_by(username=current_user.username, lessonid=excercise_lessonid).scalar() is not None:
                 print "User has already completed this Excercise!!!"
-                #update = Lesson.query.filter_by(username=current_user.username, lessonid = db_lessonid).first()
-                #update.excerciseData = excercise_answer
+            #update = Lesson.query.filter_by(username=current_user.username, lessonid = db_lessonid).first()
+            #update.excerciseData = excercise_answer
         #db.session.commit()
         else:
             return jsonify(data={'message':(userInput), 'task':'Incorrect Answer'})
@@ -416,6 +420,7 @@ def quizTemplate(username, courseid, lessonid):
                 arrayQuestion.append(question)
                 correct_questions += 1
         flash_correct_question = (", ".join(arrayQuestion))
+        quiz = Quiz(lessonData.lessonid, courseid.courseid, current_user.username, correct_questions, '')
         if correct_questions == 0:
             if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
                 feedback = "You scored" + str(correct_questions)
