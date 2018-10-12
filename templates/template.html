@@ -210,14 +210,14 @@ body, html
 	position:relative;
 	left: 135px;
 	bottom: 49px;
-	font-size: 15px;
+	font-size: 13px;
 	width:45%;
 }
 
 .task2
 {
-        position:relative;
-        bottom: 110px;
+        position:absolute;
+        bottom: 70px;
 	left: 325px;
         font-size: 15px;
 	width:40%
@@ -287,7 +287,7 @@ background-color: 4c4cff;
 <div class="container">
 <div class='left'>
 	<h2>Lesson: {{ lesson.lessonname }}</h2>
-	<p>Welcome {{username.username}}</p>
+	<p>Welcome {{username.firstname}}</p>
 	
 	<div class="test" contenteditable="true" style="display:none;">{{ paragraphData['para_data'] }}</div>
 	<div class="output"></div>

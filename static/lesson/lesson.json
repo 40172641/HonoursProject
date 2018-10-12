@@ -2,11 +2,11 @@
 	{  
    		"course_id": 11111,
    		"lesson_id": 111,
-   		"para_data": "<h3>What is HTML?</h3><h6>HTML stands for HyperText Markup Language</h6><h6>HTML is not a programming language, it's a markup language which makes up the structure of all web pages and websites.</h6> <br> <h6>HTML Tags:</h6><ul><li>HMTL:</li><li>head</li><li>title</li><li>body</li><li>h1: outputs a large heading</li><li>p: element outputs a paragraph</li></ul> <br><h3>Task: My First Webpage</h3><h6>Using the headings Above: <li> Please enter your name using the h1 heading into the Text Editor</h6></li>",
-		"answer":"<h1> </h1>",
-		"answer2":"<h2> </h2>",
-		"feedback":"Feedback for Answer 1 Task 1",
-		"feedback2": "Feedback for Answer 2 Task 1"
+   		"para_data": "<br><h3>What is HTML?</h3><h6>HTML stands for HyperText Markup Language</h6><h6>HTML is not a programming language, it's a markup language which makes up the structure of all web pages and websites Websites consist of HTML Elements.</h6> <br> <h6>HTML Elements:</h6>A HTML Element contains a start tag, and end tag, and content between the two tags. It is constructed like this: <img src='https://mdn.mozillademos.org/files/7659/anatomy-of-an-html-element.png' height='' width='400'><br><p>The start tag is used to define the type of HTML element you want to render in the webpage. So inputing h1 into the opening tag will render a large heading on the webpage.<br><h5>Task:<h5><h6>Following the structure displayed above, create a HTML element with h1 in the start tag, Please enter your name!, Remember the End Tag</li></h6></li><br> Within each tag is were content which will be displayed on the webpage is input. <br>However when creating HTML elements you must remember to the closing tag! If you forget to input the closing tag then following HTML elements will be effected. <br> Using the Text Editor, Try for yourself, Remove the closing tag from the HTML element you created. Now create a second HTML element underneath. In the opening and closing tags replace h1 with p and input your name between both tags. Now, run the code to see the effect! <br><br>As you can see the p element is effected by the unclosed tag. Using p in the start tag should render normal text.<br> <br><h5>Task:</h5><h6>Add the Closing Tag to the h1 element, and run the code again!</h6><br><p> In the next lesson, we will continue with HTML elements, and opening and closing tags!</p><br>><br> "	,		
+		"answer":"<h1> </h1>",						
+		"answer2":"<p> </p>",		
+		"feedback":"Well Done! You have created your first HTML element",
+		"feedback2": "As you can see the p tag renders normal text!"
 	},
 	{
                 "course_id": 11111,
