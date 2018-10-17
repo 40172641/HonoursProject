@@ -392,6 +392,7 @@ def excercise():
         return jsonify(data={'message':(userInput)})
     return jsonify(data=form.errors)
 
+
 @app.route('/dashboard/<username>/course/<courseid>/quiz/<lessonid>/', methods=['GET', 'POST'])
 @login_required
 def quizTemplate(username, courseid, lessonid):
@@ -406,9 +407,12 @@ def quizTemplate(username, courseid, lessonid):
         for quiz_questions in quiz_data:
             quiz_questions = quiz_questions['quiz']
     questions = copy.deepcopy(quiz_questions)
+    answerArray = []
     for j in questions:
         answer = questions[j][0]
-        #print answer
+        answerArray.append(answer)
+        #print answerTest
+    print answerArray
     for i in questions.keys():
         random.shuffle(questions[i])
     if request.method == "POST":
@@ -416,10 +420,10 @@ def quizTemplate(username, courseid, lessonid):
         arrayQuestion = []
         for question in questions.keys():
             answered = request.form[question]
-            if answered == answer:
+            if answered in answerArray:
                 arrayQuestion.append(question)
                 correct_questions += 1
-        flash_correct_question = (", ".join(arrayQuestion))
+        flash_correct_question = ("\n".join(arrayQuestion))
         quiz = Quiz(lessonData.lessonid, courseid.courseid, current_user.username, correct_questions, '')
         if correct_questions == 0:
             if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
@@ -448,7 +452,7 @@ def quizTemplate(username, courseid, lessonid):
                 update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
                 update.feedback = feedback
                 db.session.commit()
-                flash("You Got 1/7 For the Quiz, The question you answered correctly were "+ flash_correct_question)
+                flash("You Got 1/7 For the Quiz, The question you answered correctly were: " +  "\n" + flash_correct_question)
                 return redirect(url_for('.quizTemplate', lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
                 print "You scored " +  str(correct_questions) + " out of 7"
             else:
@@ -459,7 +463,7 @@ def quizTemplate(username, courseid, lessonid):
                 update.feedback = "For the Quiz, You scored " + str(correct_questions) + ". Based off these results we feel that you should repeat all of the current lesson matieral for the " + courseid.coursename  +" course again. Once that has been completed, please also try the Excercises available. Once all this work has been completed please re-try the Quiz to try improve your overall score! "+ question + " " + answer
                 db.session.commit()
                 print "You scored " +  str(correct_questions) + " out of 7"
-                flash("You Got 1/7 For the Quiz, The question you answered correctly were "+ flash_correct_question)
+                flash("You Got 1/7 For the Quiz, The question you answered correctly were: " +  "\n" + flash_correct_question)
                 return redirect(url_for('.quizTemplate', lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
         if correct_questions == 2:
             if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
@@ -582,6 +586,7 @@ def quizTemplate(username, courseid, lessonid):
                 flash("You Got 7/7 For the Quiz, The Questions you answered correctly were "+ flash_correct_question)
                 return redirect(url_for('.quizTemplate', lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
     return render_template('quiz.html', questions=questions, username=username, courseid=courseid, lesson=LessonData.query.filter_by(lessonid=lessonid, lessontype='Quiz').first())
+
 
 @app.route('/dashboard/<username>/course/<courseid>/')
 @login_required

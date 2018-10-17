@@ -18,13 +18,15 @@
 	<script>
     $(document).ready(function() {
         	var test = $('div.test').text();
+		$('div.output').html(test);
 	    	var location = window.location.pathname.split('/');
 	    	var username = location[2];
 	    	var lessonid = parseInt(location[6]);
 	    	var lessonid_1 = (lessonid + 1)
-	    	
+	    	var lessonid_2 = (lessonid -1)	
 		var path = "dashboard/"+username+"/course/20001/excercise/221"
 	    	var addOne  = "dashboard/"+username+"/course/"+location[4]+"/excercise/"+lessonid_1;
+	    	var minusOne = "dashboard/"+username+"/course/"+location[4]+"/excercise/"+lessonid_2;
 	    	console.log(addOne)
 	    	$('#lessonButton').click(function()
 		    
@@ -46,11 +48,10 @@
 		    })
 	    $('#previousButton').click(function(event)
                     {
-                        window.location = lessonid-1;
-                            if(lessonid -1 == 120)
+                            window.location.pathname = minusOne;
+			    if(lessonid -1 == 120)
                             {
-                                //window.location = 121;
-
+				window.location = window.location.pathname;
                             }
                          if(lessonid-1 == 220)
                             {
@@ -62,7 +63,6 @@
                             }
                     })
 
-        	$('div.output').html(test);
 	    $('form').submit(function (e) {
             var url = "/dashboard/excercise/post/";
             $.ajax({
@@ -113,7 +113,7 @@ body, html
     margin: 4px 2px;
     cursor: pointer;
     position: absolute;
-    left: 465px;
+    left: 545px;
     bottom: 275px;
 	}
 .container 
@@ -127,6 +127,12 @@ body, html
 	background-color:565762;
 	width:2600px;
 	right:100px;
+}
+.output
+{
+	position:absolute;
+	right:-80px;
+	top:10px;
 }
 .top
 {
@@ -154,10 +160,11 @@ body, html
 }
 .CodeMirror
 {
-        height:86%;
+        height:90%;
 	background-color: white;
 	position:absolute;
-	top:20px;
+	top:60px;
+	left:90px;
 	width:500%
 }
 .o
@@ -167,8 +174,41 @@ body, html
 .message
 {
 	position:absolute;
-	left:680px;
-	bottom:485px;
+	left:750px;
+	bottom:525px;
+}
+.lessonButton
+{
+	background-color: 4c4cff;
+        border: none;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 17px;
+    margin: 4px 2px;
+    cursor: pointer;
+	   position:absolute;
+           left:620px;
+        top:500px;
+
+}
+.previousButton
+{
+	background-color: 4c4cff;
+        border: none;
+    color: white;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 17px;
+    margin: 4px 2px;
+    cursor: pointer;
+    position:absolute;
+	   left:605px;
+	top:550px;
 }
 </style>
 <body>
@@ -201,14 +241,12 @@ body, html
 	<div class="header">
 <div class='top'>
 	<h2>Excercise: {{lesson.lessonname}}</h2>
-	<div class="test" contenteditable="true" style="display:none;">{{ paragraphData['para_data'] }}</div>
-        <div class="output"></div>
+	<div class="test" contenteditable="true" style="display:none;">{{ paragraphData['para_data'] }}</div>	
+	<div class="output"></div>
 </div>
 	</div>
 
-	<button type="submit" class="previousButton" id="previousButton" form="nameform" value="Submit">Previous Lesson</button>
-<button type="submit" class="lessonButton" id="lessonButton" form="nameform" value="Submit">Next Lesson</button>
-<div class="message" id="message">Example</div>
+<div class="message" id="message"></div>
 <div class = "o">
 <div class="middle">
 	<form method='POST' action="">
@@ -220,8 +258,11 @@ body, html
 		</div>
         </form>
 </div>
+<button type="submit" class="previousButton" id="previousButton" form="nameform" value="Submit">Previous Lesson</button>
+<button type="submit" class="lessonButton" id="lessonButton" form="nameform" value="Submit">Next Lesson</button>
+
 <div class="right">
-<iframe id="output"style="height:465px; width:430px; background-color:white;"></iframe>
+<iframe class="output" id="output"style="height:485px; width:450px; background-color:white;"></iframe>
 </div>
 </div>
 </body>
