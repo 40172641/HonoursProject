@@ -241,30 +241,57 @@ def templatePost():
         template_answer2 = str(second_answer) #Converts JSON object to String
         user_feedback = str(feedback)
         user_feedback_Q2 = str(feedback2)
-        print user_feedback
-        print user_feedback_Q2
+        #My Apologies for this truly awful programming 
         final_answer = template_answer.split() #Splits the String so the tags can be accessed for the answer
         final_answer2 = template_answer2.split()
+        print len(final_answer)
+        non_tag_array = []
+        tag_array = []
+        outer_tag_array = []
+        if len(final_answer) > 2:
+            for x in final_answer:
+                if "/" not in x:
+                    tag_array.append(x)
+                    ex = x.replace("<","").replace(">","")
+                    non_tag_array.append(ex)
+                else:
+                    outer_tag_array.append(x)
         tag_search_answer = final_answer[0].replace("<","").replace(">","") #In order to pass a variable through soup.find, characters < & > had to be replaced
         tag_search_answer2 = final_answer2[0].replace("<","").replace(">","")
-        print tag_search_answer2
-        print final_answer2[0]
         soup = BeautifulSoup(userInput, 'html.parser') #BeautifulSoup Library is used to Parse the HTML Input to find the desired user input
         task1 = None
         task2= None
-        if soup.find(tag_search_answer) is None:
-            print "Heading not entered"
-            task1 = False
-        else:
-            print "Heading Entered"
-            text1 = soup.find(tag_search_answer)
-            answer1 = final_answer[0] + text1.text + final_answer[1]
-            if answer1 in userInput:
-                task1= True
-                print "Task 1 Completed"
-            else:
+        if len(final_answer) > 2:
+            if soup.find(non_tag_array) is None:
+                print "Heading not entered"
                 task1 = False
-                print "Task 1 Incomplete"
+            else:
+                print "Heading Entered"
+                text1 = soup.find(tag_search_answer)
+                inner_tag_output =("\n".join(tag_array))
+                outer_tag_output =("\n".join(outer_tag_array))
+                answer1 = inner_tag_output + text1.text + outer_tag_output
+                print answer1  
+                if answer1 in userInput:
+                    task1= True
+                    print "Task 1 Completed"
+                else:
+                    task1 = False
+                    print "Task 1 Incomplete"
+        if len(final_answer) == 2:
+            if soup.find(tag_search_answer) is None:
+                print "Heading not entered"
+                task1 = False
+            else:
+                print "Heading Entered"
+                text1 = soup.find(tag_search_answer)
+                answer1 = final_answer[0] + text1.text + final_answer[1]
+                if answer1 in userInput:
+                    task1= True
+                    print "Task 1 Completed"
+                else:
+                    task1 = False
+                    print "Task 1 Incomplete" 
         if soup.find(tag_search_answer2) is None:
             print "Heading not entered"
             task2=False
