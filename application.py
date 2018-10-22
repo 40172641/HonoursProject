@@ -261,16 +261,24 @@ def templatePost():
         soup = BeautifulSoup(userInput, 'html.parser') #BeautifulSoup Library is used to Parse the HTML Input to find the desired user input
         task1 = None
         task2= None
+        test1 =(" ".join(non_tag_array))
+        print test1
+        print non_tag_array
         if len(final_answer) > 2:
-            if soup.find(non_tag_array) is None:
-                print "Heading not entered"
+            if non_tag_array not in soup:
+            #if soup.find(x) i None:
+                print "Found heading" + str(soup.find_all(non_tag_array))
                 task1 = False
             else:
                 print "Heading Entered"
                 text1 = soup.find(tag_search_answer)
-                inner_tag_output =("\n".join(tag_array))
-                outer_tag_output =("\n".join(outer_tag_array))
+                test = []
+                test = soup.find(non_tag_array)
+                print "Correct" + str(test)
+                inner_tag_output =("".join(tag_array))
+                outer_tag_output =("".join(outer_tag_array))
                 answer1 = inner_tag_output + text1.text + outer_tag_output
+                #answer1 = str(test)
                 print answer1  
                 if answer1 in userInput:
                     task1= True
@@ -299,7 +307,7 @@ def templatePost():
             print "Heading Entered"
             text2 = soup.find(tag_search_answer2)
             answer2 = final_answer2[0] + text2.text + final_answer2[1]
-            print answer2
+            #print answer2
             if answer2 in userInput:
                 task2= True
                 print "Task 2 Completed"
@@ -377,7 +385,7 @@ def excerciseTemplate(username, courseid, lessonid):
     for paragraph in paragraph_data:
         if paragraph['lesson_id'] == lessonData.lessonid:
             return render_template('excercise.html', form=form, username=username, courseid=courseid, lesson=lessonData, paragraphData=paragraph)
-    return render_template('excercise.html', form=form, username=username, courseid=courseid, lesson=LessonData.query.filter_by(lessonid=lessonid, lessontype='Excercise').first())
+    #return render_template('excercise.html', form=form, username=username, courseid=courseid, lesson=LessonData.query.filter_by(lessonid=lessonid, lessontype='Excercise').first())
 
 @app.route('/dashboard/excercise/post/', methods=['POST'])
 def excercise():

@@ -17,8 +17,9 @@
 
 	<script>
     $(document).ready(function() {
-        	var test = $('div.test').text();
-		$('div.output').html(test);
+	    	var test = $('div.test').text();
+		$('div.output1').html(test);	
+		console.log(test);
 	    	var location = window.location.pathname.split('/');
 	    	var username = location[2];
 	    	var lessonid = parseInt(location[6]);
@@ -210,6 +211,14 @@ body, html
 	   left:605px;
 	top:550px;
 }
+.output1
+{
+	position: absolute;
+	top:110px;
+	right:605px;
+	width:50%;
+}
+
 </style>
 <body>
 
@@ -241,16 +250,22 @@ body, html
 	<div class="header">
 <div class='top'>
 	<h2>Excercise: {{lesson.lessonname}}</h2>
-	<div class="test" contenteditable="true" style="display:none;">{{ paragraphData['para_data'] }}</div>	
-	<div class="output"></div>
+
 </div>
 	</div>
 
 <div class="message" id="message"></div>
+
 <div class = "o">
 <div class="middle">
+
 	<form method='POST' action="">
                 {{ form.csrf_token }}
+	
+	<div class="message" id="message"></div>
+	<br>
+	<br>
+	<br>
 		<h5>Edit Code</h5>
 		{{ form.source_code }}
                 <div>
@@ -260,7 +275,8 @@ body, html
 </div>
 <button type="submit" class="previousButton" id="previousButton" form="nameform" value="Submit">Previous Lesson</button>
 <button type="submit" class="lessonButton" id="lessonButton" form="nameform" value="Submit">Next Lesson</button>
-
+<div class="test" contenteditable="true" style="display:none;">{{ paragraphData['para_data'] }}</div>
+        <div class="output1"></div>
 <div class="right">
 <iframe class="output" id="output"style="height:485px; width:450px; background-color:white;"></iframe>
 </div>

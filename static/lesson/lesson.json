@@ -15,7 +15,7 @@
                 "lesson_id": 112,
                 "para_data": "<p> Welcome to lesson 2, the contents of this lesson is...</p>",
 		"answer":"<body> <h1> </h1> </body>",
-		"answer2":"<body> <h1> </h1> <h2> </h2> </body>",
+		"answer2":"<p> </p>",
 		"feedback":"Feedback for Answer 1 Task 2",
 		"feedback2":"Feedback for Answer 2 Task 2"
         },
