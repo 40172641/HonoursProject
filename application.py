@@ -265,20 +265,19 @@ def templatePost():
         print test1
         print non_tag_array
         if len(final_answer) > 2:
-            if non_tag_array not in soup:
-            #if soup.find(x) i None:
-                print "Found heading" + str(soup.find_all(non_tag_array))
+            if not all(soup.find(tag) for tag in (non_tag_array)):
+                print "Did not enter headings"
                 task1 = False
             else:
                 print "Heading Entered"
                 text1 = soup.find(tag_search_answer)
                 test = []
                 test = soup.find(non_tag_array)
-                print "Correct" + str(test)
+                print str(test)
                 inner_tag_output =("".join(tag_array))
                 outer_tag_output =("".join(outer_tag_array))
-                answer1 = inner_tag_output + text1.text + outer_tag_output
-                #answer1 = str(test)
+                    #answer1 = inner_tag_output + text1.text + outer_tag_output
+                answer1 = str(test)
                 print answer1  
                 if answer1 in userInput:
                     task1= True
@@ -287,7 +286,7 @@ def templatePost():
                     task1 = False
                     print "Task 1 Incomplete"
         if len(final_answer) == 2:
-            if soup.find(tag_search_answer) is None:
+            if (soup.find(tag_search_answer)) is None:
                 print "Heading not entered"
                 task1 = False
             else:
