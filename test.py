@@ -69,7 +69,7 @@ class TestApplication(unittest.TestCase):
         response = self.register('Kevin', 'Falconer', 'ExampleEmail1234@gmail.com', 'ExampleEmail1', 'examplePassword', 'examplePassword')
         self.assertEqual(response.status_code, 200)
 
-    def test_valid_registeration(self):
+    def test_invalid_registeration(self):
         self.app.get('/register/', follow_redirects=True)
         response = self.register('Kevin', 'Falconer', 'exampleexa132@email.com', 'ExampleEmail12', 'examplePassword', 'examplePassword')
         self.assertIn(b'Email Already Exists', response.data)
@@ -78,6 +78,13 @@ class TestApplication(unittest.TestCase):
         response = self.app.get('/dashboard/ExampleUser70/', follow_redirects=True)
         self.assertIn(b'Please Login to your account', response.data)
 
+    def test_dashboard_page(self):
+        self.app.get('/login/', follow_redirects=True)
+        response = self.login('ExampleUser70', 'examplepassword')
+        self.assertEqual(response.status_code, 200)
+        response1 = self.app.get('dashboard/ExampleUser70/', follow_redirects=True)
+        self.assertIn('ExampleUser70', response1.data)
+    
     def test_course_page(self):
         self.app.get('/login/', follow_redirects=True)
         response = self.login('ExampleUser70', 'examplepassword')
@@ -85,13 +92,41 @@ class TestApplication(unittest.TestCase):
         response1 = self.app.get('dashboard/ExampleUser70/course/11111/', follow_redirects=True)
         self.assertIn('Course Page: HTML:Introduction', response1.data)
 
-
     def test_template_page(self):
         self.app.get('/login/', follow_redirects=True)
         response = self.login('ExampleUser70', 'examplepassword')
         self.assertEqual(response.status_code, 200)
         response1 = self.app.get('dashboard/ExampleUser70/course/11111/lesson/111', follow_redirects=True)
-        self.assertIn('Lesson 1', response1.data)
+        self.assertIn('Lesson: HTML:Lesson 1', response1.data)
 
+    def test_excercise_page(self):
+        self.app.get('/login/', follow_redirects=True)
+        response = self.login('ExampleUser70', 'examplepassword')
+        self.assertEqual(response.status_code, 200)
+        response1 = self.app.get('dashboard/ExampleUser70/course/11111/excercise/121/', follow_redirects=True)
+        self.assertIn('Excercise: HTML:Excercise 1', response1.data)
+
+    def test_quiz_page(self):
+        self.app.get('/login/', follow_redirects=True)
+        response = self.login('ExampleUser70', 'examplepassword')
+        self.assertEqual(response.status_code, 200)
+        response1 = self.app.get('dashboard/ExampleUser70/course/11111/quiz/131/', follow_redirects=True)
+        self.assertIn('Which HTML tag will display the largest heading?', response1.data)
+
+    def test_course_without_login(self):
+        response = self.app.get('dashboard/ExampleUser70/course/11111/', follow_redirects=True)
+        self.assertIn(b'Please Login to your account', response.data)
+
+    def test_template_without_login(self):
+        response = self.app.get('dashboard/ExampleUser70/course/11111/lesson/111', follow_redirects=True)
+        self.assertIn(b'Please Login to your account', response.data)
+
+    def test_excercise_without_login(self):
+        response = self.app.get('dashboard/ExampleUser70/course/11111/excercise/121/', follow_redirects=True)
+        self.assertIn(b'Please Login to your account', response.data)
+
+    def test_quiz_without_login(self):
+        response = self.app.get('dashboard/ExampleUser70/course/11111/quiz/131/', follow_redirects=True)
+        self.assertIn(b'Please Login to your account', response.data)
 if __name__ == '__main__':
     unittest.main()

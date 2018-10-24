@@ -134,13 +134,6 @@
             });
             e.preventDefault();
         });
-        $.ajaxSetup({
-            beforeSend: function(xhr, settings) {
-                if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
-                    xhr.setRequestHeader("X-CSRFToken", "{{ form.csrf_token._value() }}")
-                }
-            }
-        })
     });
 </script>
 	    </head>
@@ -291,14 +284,12 @@ background-color: 4c4cff;
 	
 	<div class="test" contenteditable="true" style="display:none;">{{ paragraphData['para_data'] }}</div>
 	<div class="output"></div>
-	<form method='POST' action ="">
-	</form>
 
 </div>
 <div class="middle">
 	<form method='POST' action="">
                 {{ form.csrf_token }}
-                {{ form.source_code }}
+		{{ form.source_code }}
                 <div>
 			<input type="submit" class="button" value="Run Code >>" />
 		<div class="message" id='message'>
