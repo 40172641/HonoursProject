@@ -78,5 +78,20 @@ class TestApplication(unittest.TestCase):
         response = self.app.get('/dashboard/ExampleUser70/', follow_redirects=True)
         self.assertIn(b'Please Login to your account', response.data)
 
+    def test_course_page(self):
+        self.app.get('/login/', follow_redirects=True)
+        response = self.login('ExampleUser70', 'examplepassword')
+        self.assertEqual(response.status_code, 200)
+        response1 = self.app.get('dashboard/ExampleUser70/course/11111/', follow_redirects=True)
+        self.assertIn('Course Page: HTML:Introduction', response1.data)
+
+
+    def test_template_page(self):
+        self.app.get('/login/', follow_redirects=True)
+        response = self.login('ExampleUser70', 'examplepassword')
+        self.assertEqual(response.status_code, 200)
+        response1 = self.app.get('dashboard/ExampleUser70/course/11111/lesson/111', follow_redirects=True)
+        self.assertIn('Lesson 1', response1.data)
+
 if __name__ == '__main__':
     unittest.main()
