@@ -1,20 +1,20 @@
 import os
 import unittest
 import tempfile
-#import application
+import application
 #from application import db
 
 class applicationTestCase(unittest.TestCase):
 
-    def setUp(self):
+    #def setUp(self):
         #self.db_fd, application.app.config['DATABASE'] = tempfile.mkstemp()
         #SQLALCHEMY_DATABASE_URI = 'sqlite:////home/kevin/HonoursProject/db.db'
-        TESTING = True
-        self.app = application.app.test_client()
-        with application.app.app_context():
-            db.create_all()
+     #   TESTING = True
+     #   self.app = application.app.test_client()
+      #  with application.app.app_context():
+       #     db.create_all()
 
-    def tearDown(self):
+    #def tearDown(self):
         #db.session.remove()
         #db.drop_all()
 
@@ -31,7 +31,6 @@ class applicationTestCase(unittest.TestCase):
    #         data=dict(firstname=firstname, lastname=lastname, email=email, username=username, password=password, confirm=confirm),
      #       follow_redirects=True
     #        )
-
 
     def test_login_display(self):
         response = self.app.get('/login/')

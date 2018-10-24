@@ -274,12 +274,13 @@ def templatePost():
                 test = []
                 test = soup.find(non_tag_array)
                 print str(test)
-                inner_tag_output =("".join(tag_array))
-                outer_tag_output =("".join(outer_tag_array))
+                #inner_tag_output =("".join(tag_array))
+                #outer_tag_output =("".join(outer_tag_array))
                     #answer1 = inner_tag_output + text1.text + outer_tag_output
                 answer1 = str(test)
-                print answer1  
-                if answer1 in userInput:
+                print answer1
+                #if answer1 in userInput:
+                if userInput.find(answer1) != -1:
                     task1= True
                     print "Task 1 Completed"
                 else:
