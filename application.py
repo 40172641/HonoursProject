@@ -31,7 +31,7 @@ login_manager.init_app(app)
 login_manager.login_view = 'login'
 
 class User(UserMixin, db.Model):
-    #__tablename__ = 'user'
+    __tablename__ = 'user'
     id = db.Column(db.Integer, primary_key=True)
     firstname = db.Column('firstname', db.String(20), index=True)
     lastname = db.Column('lastname', db.String(20), index=True)
@@ -45,6 +45,7 @@ class User(UserMixin, db.Model):
         self.email = email
         self.username = username
         self.password = password
+
 
 class Course(db.Model):
     __tablename__ = 'course'
@@ -117,6 +118,7 @@ class Quiz(db.Model):
 
     def get_id(self):
         return str(self.id)
+
 
 @login_manager.user_loader
 def load_user(user_id):
