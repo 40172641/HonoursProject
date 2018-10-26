@@ -1,5 +1,7 @@
 import os
 import unittest
+from application import SQLAlchemy
+from sqlalchemy.exc import IntegrityError
 from application import app, Course, User, LessonData, Lesson, Quiz
 from application import db
 
@@ -155,5 +157,16 @@ class TestApplication(unittest.TestCase):
     def test_quiz_without_login(self):
         response = self.app.get('dashboard/ExampleUser70/course/11111/quiz/131/', follow_redirects=True)
         self.assertIn(b'Please Login to your account', response.data)
+
+    def test_database_entry_course(self):
+         self.app.get('/register/', follow_redirects=True)
+         response = self.register('Kevin', 'Falconer', 'ExampleEmail1234@gmail.com', 'ExampleUser70', 'examplepassword', 'examplepassword')
+         self.assertEqual(response.status_code, 200)
+         course = Course('HTML:Introduction', 11111,'Description', 'Hello')
+         db.session.add(course)
+         #db.session.commit()
+         self.assertRaises(IntegrityError, db.session.commit)
+         #response1 = self.app.get('dashboard/ExampleUser70/course/11111/', follow_redirects=True)
+         #self.assertIn('Course Page: HTML:Introduction', response1.data)
 if __name__ == '__main__':
     unittest.main()
