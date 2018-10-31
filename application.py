@@ -207,6 +207,8 @@ def template(username, courseid, lessonid):
     global second_answer
     global feedback
     global feedback2
+    global incorrect_feedback
+    global incorrect_feedback2
     if  Lesson.query.filter_by(username=current_user.username, lessonid=db_lessonid).scalar() is not None:
         print "User has already done this tutorial"
         loadData = Lesson.query.filter_by(username=current_user.username, lessonid=db_lessonid).first()
@@ -217,11 +219,15 @@ def template(username, courseid, lessonid):
         if json_answer['lesson_id'] == lessonData.lessonid:
             json_feedback = json_answer['feedback']
             json_feedback_Q2 = json_answer['feedback2']
+            json_incorrect = json_answer['incorrect_feedback']
+            json_incorrect_Q2 = json_answer['incorrect_feedback2']
             output = json_answer['answer']
             json_answer = json_answer['answer2']
             answer = str(output)
             feedback = str(json_feedback)
             feedback2 = str(json_feedback_Q2)
+            incorrect_feedback = str(json_incorrect)
+            incorrect_feedback2 = str(json_incorrect_Q2)
             print json_answer
             second_answer = str(json_answer)
     #print output
@@ -244,6 +250,8 @@ def templatePost():
         template_answer2 = str(second_answer) #Converts JSON object to String
         user_feedback = str(feedback)
         user_feedback_Q2 = str(feedback2)
+        user_incorrect_feedback = str(incorrect_feedback)
+        user_incorrect_feedbackQ2 = str(incorrect_feedback2)
         #My Apologies for this truly awful programming 
         final_answer = template_answer.split() #Splits the String so the tags can be accessed for the answer
         final_answer2 = template_answer2.split()
@@ -303,11 +311,11 @@ def templatePost():
                 text2 = soup.find(tag_search_answer2)
                 answer2 = final_answer2[0] + text2.text + final_answer2[1]
                 #print answer2
-            if answer2 in userInput:
-                task2= True
-                print "Task 2 Completed"
-            else:
-                task2 = False
+                if answer2 in userInput:
+                    task2= True
+                    print "Task 2 Completed"
+                else:
+                    task2 = False
         if task1 == True:
             if task2 == True:
                 print "Task Complete"
@@ -325,12 +333,12 @@ def templatePost():
                 return jsonify(data={'output':(form.source_code.data),'task':(user_feedback), 'second':(user_feedback_Q2)})
             if task2 == False:
                 print "Task 1 Complete, Task 2 Not"
-                return jsonify(data={'output':(form.source_code.data),'task':(user_feedback), 'second':'Incorrect Answer'})
+                return jsonify(data={'output':(form.source_code.data),'task':(user_feedback), 'second': (user_incorrect_feedbackQ2)})
         else:
             if task2 == True:
-                return jsonify(data={'output':(form.source_code.data),'task':'Incorrect Answer', 'second':(user_feedback_Q2)})
+                return jsonify(data={'output':(form.source_code.data),'task': (user_incorrect_feedback), 'second':(user_feedback_Q2)})
             else:
-                return jsonify(data={'output':(form.source_code.data),'task':'Incorrect Answer', 'second':'Incorrect Answer'})
+                return jsonify(data={'output':(form.source_code.data),'task':(user_incorrect_feedback), 'second':(user_incorrect_feedbackQ2)})
         return jsonify(data={'output':(form.source_code.data)})
     return jsonify(data=form.errors)
 
