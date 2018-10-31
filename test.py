@@ -16,9 +16,9 @@ class TestApplication(unittest.TestCase):
         db.create_all()
     
     def tearDown(self):
-        db.session.remove()
-        db.drop_all()
-        #pass
+        #db.session.remove()
+        #db.drop_all()
+        pass
     
     def register(self, firstname, lastname, email, username, password, confirm):
         return self.app.post(
@@ -164,9 +164,25 @@ class TestApplication(unittest.TestCase):
          self.assertEqual(response.status_code, 200)
          course = Course('HTML:Introduction', 11111,'Description', 'Hello')
          db.session.add(course)
-         #db.session.commit()
          self.assertRaises(IntegrityError, db.session.commit)
-         #response1 = self.app.get('dashboard/ExampleUser70/course/11111/', follow_redirects=True)
-         #self.assertIn('Course Page: HTML:Introduction', response1.data)
+
+    def test_database_incorrect_entry_template(self):
+        lessondata = LessonData('Course Name',111,'CourseID')
+        db.session.add(lessondata)
+        #db.session.commit()
+        self.assertRaises(IntegrityError, db.session.commit)
+
+    def test_database_incorrect_entry_register(self):
+        user=User(112, 'KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKlllllllllll', 'Hello', 111111, 222222)
+        db.session.add(user)
+        #self.assertRaises(IntegrityError, db.session.commit)
+        db.session.commit()
+
+    def test_database_incorrect_entry_template(self):
+        lesson = Lesson('11111', 111, 'CourseID', '11111', 1111, 2222)
+        db.session.add(lesson)
+        db.session.commit()
+        #self.assertRaises(IntegrityError, db.session.commit)
+
 if __name__ == '__main__':
     unittest.main()

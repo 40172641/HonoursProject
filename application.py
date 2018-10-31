@@ -3,6 +3,7 @@ import json
 import random
 from flask_wtf import Form
 import requests
+import difflib
 from werkzeug.security import generate_password_hash, check_password_hash
 import copy
 from flask_codemirror import CodeMirror
@@ -263,33 +264,25 @@ def templatePost():
         soup = BeautifulSoup(userInput, 'html.parser') #BeautifulSoup Library is used to Parse the HTML Input to find the desired user input
         task1 = None
         task2= None
-        test1 =(" ".join(non_tag_array))
-        print test1
-        print non_tag_array
         if len(final_answer) > 2:
             if not all(soup.find(tag) for tag in (non_tag_array)):
                 print "Did not enter headings"
                 task1 = False
             else:
                 print "Heading Entered"
-                text1 = soup.find(tag_search_answer)
-                test = []
-                test = soup.find(non_tag_array)
-                print str(test)
-                #inner_tag_output =("".join(tag_array))
-                #outer_tag_output =("".join(outer_tag_array))
-                    #answer1 = inner_tag_output + text1.text + outer_tag_output
-                answer1 = str(test)
+                find_answer = soup.find(non_tag_array)
+                answer1 = str(find_answer)
+                task1 = True
                 print answer1
-                #if answer1 in userInput:
-                if userInput.find(answer1) != -1:
-                    task1= True
-                    print "Task 1 Completed"
-                else:
-                    task1 = False
-                    print "Task 1 Incomplete"
+                print userInput
+                #if answer1 == str(test):
+                    #task1= True
+                    #print "Task 1 Completed"
+                #else:
+                    #task1 = False
+                    #print "Task 1 Incomplete"
         if len(final_answer) == 2:
-            if (soup.find(tag_search_answer)) is None:
+            if soup.find(tag_search_answer) is None:
                 print "Heading not entered"
                 task1 = False
             else:
@@ -302,14 +295,14 @@ def templatePost():
                 else:
                     task1 = False
                     print "Task 1 Incomplete" 
-        if soup.find(tag_search_answer2) is None:
-            print "Heading not entered"
-            task2=False
-        else:
-            print "Heading Entered"
-            text2 = soup.find(tag_search_answer2)
-            answer2 = final_answer2[0] + text2.text + final_answer2[1]
-            #print answer2
+            if soup.find(tag_search_answer2) is None:
+                print "Heading not entered"
+                task2=False
+            else:
+                print "Heading Entered"
+                text2 = soup.find(tag_search_answer2)
+                answer2 = final_answer2[0] + text2.text + final_answer2[1]
+                #print answer2
             if answer2 in userInput:
                 task2= True
                 print "Task 2 Completed"
