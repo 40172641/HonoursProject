@@ -456,16 +456,21 @@ def quizTemplate(username, courseid, lessonid):
     if request.method == "POST":
         correct_questions = 0
         arrayQuestion = []
+        wrong_questions = []
         for question in questions.keys():
             answered = request.form[question]
             if answered in answerArray:
                 arrayQuestion.append(question)
                 correct_questions += 1
+            else:
+                wrong_questions.append(question)
         flash_correct_question = ("\n".join(arrayQuestion))
+        flash_wrong_question = (", ".join(wrong_questions))
+        print "Wrong Question" + flash_wrong_question
         quiz = Quiz(lessonData.lessonid, courseid.courseid, current_user.username, correct_questions, '')
         if correct_questions == 0:
             if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
-                feedback = "You scored" + str(correct_questions)
+                feedback = "On the "+ lessonData.lessonname +  " quiz, you scored 0 out of 7." + "\n" + "Based on your score we recommend you try all of the lessons in this course, alongside the problem solving excercises. Once you feel confident enough try the quiz again!"
                 db.session.add(quiz)
                 update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
                 update.feedback = feedback #Updates the feedback row with the new Feedback
@@ -478,14 +483,14 @@ def quizTemplate(username, courseid, lessonid):
                 update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
                 print update.quizscore
                 update.quizscore = correct_questions
-                update.feedback = "You scored " + str(correct_questions)
+                update.feedback = "On the "+ lessonData.lessonname +  ", you scored 0 out of 7." + "\n" + "Based on your score we recommend you try all of the lessons in this course, alongside the problem solving excercises. Once you feel confident enough try the quiz again!"
                 db.session.commit()
                 flash("You Got 0/7 For the Quiz, You Answered No Questions Correctly.")
                 return redirect(url_for('.quizTemplate', lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
                 print "You scored " +  str(correct_questions) + " out of 7" + question + " correctly"
         if correct_questions == 1:
             if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
-                feedback = "For the Quiz, You scored " + str(correct_questions) + ". Based off these results we feel that you should repeat all of the current lesson matieral for this " + courseid.lessonname  +" course again. Once that has been completed, please also try the Excercises available. Once all this work has been completed please re-try the Quiz to try improve your overall score!"
+                feedback = "On the "+ lessonData.lessonname +  ", you scored 1 out of 7." + "\n" + "Based on your score we recommend you try all of the lessons in this course, alongside the problem solving excercises. Once you feel confident enough try the quiz again!"
                 db.session.add(quiz)
                 update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
                 update.feedback = feedback
@@ -498,14 +503,14 @@ def quizTemplate(username, courseid, lessonid):
                 update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
                 print update.quizscore
                 update.quizscore = correct_questions
-                update.feedback = "For the Quiz, You scored " + str(correct_questions) + ". Based off these results we feel that you should repeat all of the current lesson matieral for the " + courseid.coursename  +" course again. Once that has been completed, please also try the Excercises available. Once all this work has been completed please re-try the Quiz to try improve your overall score! "+ question + " " + answer
+                update.feedback = "On the "+ lessonData.lessonname +  ", you scored 1 out of 7." + "\n" + "Based on your score we recommend you try all of the lessons in this course, alongside the problem solving excercises. Once you feel confident enough try the quiz again!"
                 db.session.commit()
                 print "You scored " +  str(correct_questions) + " out of 7"
                 flash("You Got 1/7 For the Quiz, The question you answered correctly were: " +  "\n" + flash_correct_question)
                 return redirect(url_for('.quizTemplate', lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
         if correct_questions == 2:
             if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
-                feedback = "You scored" + str(correct_questions)
+                feedback = "On the "+ lessonData.lessonname +  ", you scored 2 out of 7." + "\n" + "Based on your score we recommend you try all of the lessons in this course, alongside the problem solving excercises. Once you feel confident enough try the quiz again!"
                 db.session.add(quiz)
                 update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
                 update.feedback = feedback
@@ -518,14 +523,14 @@ def quizTemplate(username, courseid, lessonid):
                 update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
                 print update.quizscore
                 update.quizscore = correct_questions
-                update.feedback = "You scored " + str(correct_questions)
+                update.feedback = "On the "+ lessonData.lessonname +  ", you scored 2 out of 7." + "\n" + "Based on your score we recommend you try all of the lessons in this course, alongside the problem solving excercises. Once you feel confident enough try the quiz again!"
                 db.session.commit()
                 print "You scored " +  str(correct_questions) + " out of 7"
                 flash("You Got 2/7 For the Quiz, The Questions you answered correctly were "+ flash_correct_question)
                 return redirect(url_for('.quizTemplate', lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
         if correct_questions == 3:
             if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
-                feedback = "You scored" + str(correct_questions)
+                feedback = "On the " + lessonData.lessonname +", you scored 3 out of 7." + "\n" + "Based on your score we recommend you retry lessons relating to the questions you answered incorrectly. If you cannot remember the questions you answered in correctly." + "\n" + "They were:               " + "\n" + flash_wrong_question
                 db.session.add(quiz)
                 update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
                 update.feedback = feedback
@@ -538,14 +543,14 @@ def quizTemplate(username, courseid, lessonid):
                 update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
                 print update.quizscore
                 update.quizscore = correct_questions
-                update.feedback = "You scored " + str(correct_questions)
+                update.feedback = "On the " + lessonData.lessonname +", you scored 3 out of 7." + "\n" + "Based on your score we recommend you retry lessons relating to the questions you answered incorrectly. If you cannot remember the questions you answered in correctly." + "\n" + "They were:               " + "\n" + flash_wrong_question
                 db.session.commit()
                 print "You scored " +  str(correct_questions) + " out of 7"
                 flash("You Got 3/7 For the Quiz, The Questions you answered correctly were "+ flash_correct_question)
                 return redirect(url_for('.quizTemplate', lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
         if correct_questions == 4:
             if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
-                feedback = "You scored" + str(correct_questions)
+                feedback = "On the " + lessonData.lessonname +", you scored 4 out of 7." + "\n" + "Based on your score we recommend you retry lessons relating to the questions you answered incorrectly. If you cannot remember the questions you answered in correctly." + "\n" + "They were:               " + "\n" + flash_wrong_question
                 db.session.add(quiz)
                 update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
                 update.feedback = feedback
@@ -558,14 +563,14 @@ def quizTemplate(username, courseid, lessonid):
                 update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
                 print update.quizscore
                 update.quizscore = correct_questions
-                update.feedback = "You scored " + str(correct_questions)
+                update.feedback = "On the " + lessonData.lessonname +", you scored 4 out of 7." + "\n" + "Based on your score we recommend you retry lessons relating to the questions you answered incorrectly. If you cannot remember the questions you answered in correctly." + "\n" + "They were:               " + "\n" + flash_wrong_question
                 db.session.commit()
                 print "You scored " +  str(correct_questions) + " out of 7"
                 flash("You Got 4/7 For the Quiz, The Questions you answered correctly were "+ flash_correct_question)
                 return redirect(url_for('.quizTemplate', lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
         if correct_questions == 5:
             if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
-                feedback = "You scored" + str(correct_questions)
+                feedback = "On the " + lessonData.lessonname +", you scored 5 out of 7." + "\n" + "Based on your score we recommend you retry lessons relating to the questions you answered incorrectly. If you cannot remember the questions you answered in correctly." + "\n" + "They were:               " + "\n" + flash_wrong_question
                 db.session.add(quiz)
                 update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
                 update.feedback = feedback
@@ -578,14 +583,14 @@ def quizTemplate(username, courseid, lessonid):
                 update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
                 print update.quizscore
                 update.quizscore = correct_questions
-                update.feedback = "You scored " + str(correct_questions)
+                update.feedback = "On the " + lessonData.lessonname +", you scored 5 out of 7." + "\n" + "Based on your score we recommend you retry lessons relating to the questions you answered incorrectly. If you cannot remember the questions you answered in correctly." + "\n" + "They were:               " + "\n" + flash_wrong_question
                 db.session.commit()
                 print "You scored " +  str(correct_questions) + " out of 7"
                 flash("You Got 5/7 For the Quiz, The Questions you answered correctly were "+ flash_correct_question)
                 return redirect(url_for('.quizTemplate', lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
         if correct_questions == 6:
             if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
-                feedback = "You scored" + str(correct_questions)
+                feedback = "On the " + lessonData.lessonname +", you scored 6 out of 7." + "\n" + "Based on your score we feel that you have gained a good understanding and knowledge for the matieral presented in this course. However remember you can always review amd reflect on the learning matieral in this course!"
                 db.session.add(quiz)
                 update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
                 update.feedback = feedback
@@ -600,7 +605,7 @@ def quizTemplate(username, courseid, lessonid):
                 update.quizscore = correct_questions
                 update.feedback = "You scored " + str(correct_questions)
                 db.session.commit()
-                print "You scored " +  str(correct_questions) + " out of 7"
+                print "On the " + lessonData.lessonname +", you scored 6 out of 7." + "\n" + "Based on your score we feel that you have gained a good understanding and knowledge for the matieral presented in this course. However remember you can always review amd reflect on the learning matieral in this course!"
                 flash("You Got 6/7 For the Quiz, The Questions you answered correctly were "+ flash_correct_question)
                 return redirect(url_for('.quizTemplate', lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
         if correct_questions == 7:
@@ -618,7 +623,7 @@ def quizTemplate(username, courseid, lessonid):
                 update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
                 print update.quizscore
                 update.quizscore = correct_questions
-                update.feedback = "You scored " + str(correct_questions)
+                update.feedback = "On the " + lessonData.lessonname +", you scored 7 out of 7." + "\n" + "Based on your score we feel that you have gained a good understanding and knowledge for the matieral presented in this course. However remember you can always review amd reflect on the learning matieral in this course!"
                 db.session.commit()
                 print "You scored " +  str(correct_questions) + " out of 7"
                 flash("You Got 7/7 For the Quiz, The Questions you answered correctly were "+ flash_correct_question)
