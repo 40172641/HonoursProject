@@ -13,14 +13,14 @@
 	{
                 "course_id": 11111,
                 "lesson_id": 112,
-                "para_data": "<p> Welcome to lesson 2, the contents of this lesson is...</p>",
+		"para_data":"<p>In the previous lesson, the building blocks of how content is displayed on website's, HTML elements were introducted.</p> <img src='https://mdn.mozillademos.org/files/7659/anatomy-of-an-html-element.png' height='' width='400'><p>However HTML elements are only part of the overall structure of HTML webpages.</p> <H3>HTML Page Structure</h3><p>Every HTML Web Page follows the same structure. </p><img src='https://stuyhsdesign.files.wordpress.com/2015/09/basic-structure.png?w=656' height='175' width='300'><br>", 
 		"answer":" <html> <head> <body> <h1> </h1> </body> </head> </html>",
 		"answer2":"<p> </p>",
-		"feedback":"Feedback for Answer 1 Task 2",
-		"feedback2":"Feedback for Answer 2 Task 2",
-                "incorrect_feedback":"",
-                "incorrect_feedback2":""
-        },
+		"feedback":"Feedback 1",
+                "feedback2": "Feedback 2",
+                "incorrect_feedback":"Did you follow the Element structure Correctly?",
+                "incorrect_feedback2":"Did you remember to apply the closing tag?"		
+	},
 	{
                 "course_id": 11111,
                 "lesson_id": 113,

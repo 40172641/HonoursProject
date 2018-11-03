@@ -24,7 +24,7 @@
 }
 .heading
 {
-	background-color: 183024;
+	background-color: 2d4b49;
 	padding-top:15px;
 	padding-bottom:15px;
 	padding-left:15px;
@@ -47,11 +47,13 @@
 {
 	width:75%;
 	text-align: center;
+	position: relative;
+	left:170px;
 }
 </style>
 <body>
 
-<nav class="navbar navbar-expand-sm navbar-dark" style="background-color: #193326;">
+<nav class="navbar navbar-expand-sm navbar-dark" style="background-color: #233b39;">
   <a class="navbar-brand" href="#"><img src="/static/img/logo_transparent.png" height="27.5" class="logo"> LEARN</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -82,8 +84,10 @@
 	{% with messages = get_flashed_messages() %}
         {% if messages %}
                 {% for message in messages %}
-                <p>{{ message }}</p>
-		<p>Return to <a href='/dashboard/{{username.username}}/course/{{courseid.courseid}}/'>Course Page</a></p>
+		<div class="alert alert-info alert-dismissible">
+    		<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+		<strong>Quiz Result!</strong> {{ message }} <p>Return to <a href='/dashboard/{{username.username}}/course/{{courseid.courseid}}/'>Course Page</a></p>
+  		</div>
                 {% endfor %}
         {% endif %}
         {% endwith %}

@@ -238,7 +238,7 @@ def template(username, courseid, lessonid):
         #else:
          #   return render_template('template.html', form=form, username=username, courseid=courseid, lesson=lessonData, paragraphData="Example")
 
-
+#For AJAX POST requests to work in flask, they have to split into two routes. The information in this route including the users form data is converted to a JSON which is sent to the templated lesson page. The JSON from this route is then displayed on the templated lesson page through JQuery. This route was created by essentially splitting the functionality of the initial template lesson page which used a simple redirect to run the code into two different routes so AJAX would work.
 @app.route('/dashboard/template/post/', methods=['POST'])
 @login_required
 def templatePost(): 
@@ -252,26 +252,32 @@ def templatePost():
         user_feedback_Q2 = str(feedback2)
         user_incorrect_feedback = str(incorrect_feedback)
         user_incorrect_feedbackQ2 = str(incorrect_feedback2)
-        #My Apologies for this truly awful programming 
+        #Although the global variables were cast as strings in the route above, I was getting errors when trying to use them. The fix was casting them a second time and assigning them to another variable
         final_answer = template_answer.split() #Splits the String so the tags can be accessed for the answer
-        final_answer2 = template_answer2.split()
+        final_answer2 = template_answer2.split() #Splits the String so the tags can be accessed for the answer
         print len(final_answer)
-        non_tag_array = []
-        tag_array = []
-        outer_tag_array = []
+        non_tag_array = [] #Array to store all of the heading with the removal of tags for the soup.find functionality
+        tag_array = [] 
+        non_tag_array_A2 = []
+        tag_array_A2 = []
         if len(final_answer) > 2:
             for x in final_answer:
                 if "/" not in x:
                     tag_array.append(x)
-                    ex = x.replace("<","").replace(">","")
-                    non_tag_array.append(ex)
-                else:
-                    outer_tag_array.append(x)
+                    array = x.replace("<","").replace(">","")
+                    non_tag_array.append(array)
+        if len(final_answer2) > 2:
+            for x in final_answer2:
+                if "/" not in x:
+                    tag_array_A2.append(x)
+                    array = x.replace("<","").replace(">","")
+                    non_tag_array_A2.append(array)
+        #For the beatiful soup library to scrape through the HTML, the tags must have <> removed. These values are then appended into an array for the answers which have more than one HTML element as the correct answer. The if statement ensures it only appends opening tags and not closing 
         tag_search_answer = final_answer[0].replace("<","").replace(">","") #In order to pass a variable through soup.find, characters < & > had to be replaced
         tag_search_answer2 = final_answer2[0].replace("<","").replace(">","")
         soup = BeautifulSoup(userInput, 'html.parser') #BeautifulSoup Library is used to Parse the HTML Input to find the desired user input
         task1 = None
-        task2= None
+        task2 = None
         if len(final_answer) > 2:
             if not all(soup.find(tag) for tag in (non_tag_array)):
                 print "Did not enter headings"
@@ -283,12 +289,18 @@ def templatePost():
                 task1 = True
                 print answer1
                 print userInput
-                #if answer1 == str(test):
-                    #task1= True
-                    #print "Task 1 Completed"
-                #else:
-                    #task1 = False
-                    #print "Task 1 Incomplete"
+        if len(final_answer2) > 2:
+            if not all(soup.find(tag) for tag in (non_tag_array_A2)):
+                print "Did not enter headings"
+                task2 = False
+            else:
+                print "Heading Entered"
+                find_answer = soup.find(non_tag_array_A2)
+                answer2 = str(find_answer)
+                task2 = True
+                print answer2
+                print userInput
+        #The search through the headings aspect of the beautiful soup functionality for returning false values for not matching all of the headings in the heading array because the code would not display without it.
         if len(final_answer) == 2:
             if soup.find(tag_search_answer) is None:
                 print "Heading not entered"
@@ -303,6 +315,7 @@ def templatePost():
                 else:
                     task1 = False
                     print "Task 1 Incomplete" 
+        if len(final_answer2) == 2:
             if soup.find(tag_search_answer2) is None:
                 print "Heading not entered"
                 task2=False
@@ -310,12 +323,14 @@ def templatePost():
                 print "Heading Entered"
                 text2 = soup.find(tag_search_answer2)
                 answer2 = final_answer2[0] + text2.text + final_answer2[1]
-                #print answer2
+            #print answer2
                 if answer2 in userInput:
                     task2= True
                     print "Task 2 Completed"
                 else:
                     task2 = False
+        #This is the Datbase functionality, if both the tasks are true, The users entry is added to the DB, however first there's a check to see if the user already has a DB entry for that lesson. If they don't an entry is created, if they do then their entry is updated with the code they have just entered
+        #It was initially programmed simpler, with less nested if statements, however for user feedback functionality, feedback has to be returned to the user whether both tasks are completed, only one is, or none are. This is done through the return jsonify statements. This converts the values to a JSON array which is sent to the template route. The data sent is the user input, and the feedback taken from the JSON file for that lessonid
         if task1 == True:
             if task2 == True:
                 print "Task Complete"
@@ -348,7 +363,7 @@ def dashboard(username):
     user = User.query.filter_by(username=username).first()
     if username != current_user.username:
         return redirect(url_for('.dashboard', username=current_user.username))
-    return render_template('dashboard.html', user=user, courses=Course.query.all())
+    return render_template('dashboard.html', user=user, courses=Course.query.filter_by(coursename='HTML:Introduction'))
 
 @app.route('/dashboard/<username>/course/<courseid>/excercise/<lessonid>/')
 @login_required
@@ -464,7 +479,7 @@ def quizTemplate(username, courseid, lessonid):
                 correct_questions += 1
             else:
                 wrong_questions.append(question)
-        flash_correct_question = ("\n".join(arrayQuestion))
+        flash_correct_question = (", ".join(arrayQuestion))
         flash_wrong_question = (", ".join(wrong_questions))
         print "Wrong Question" + flash_wrong_question
         quiz = Quiz(lessonData.lessonid, courseid.courseid, current_user.username, correct_questions, '')
@@ -495,7 +510,7 @@ def quizTemplate(username, courseid, lessonid):
                 update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
                 update.feedback = feedback
                 db.session.commit()
-                flash("You Got 1/7 For the Quiz, The question you answered correctly were: " +  "\n" + flash_correct_question)
+                flash("You Got 1/7 For the Quiz, The question you answered correctly was: " +  "\n" + flash_correct_question)
                 return redirect(url_for('.quizTemplate', lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
                 print "You scored " +  str(correct_questions) + " out of 7"
             else:
@@ -506,7 +521,7 @@ def quizTemplate(username, courseid, lessonid):
                 update.feedback = "On the "+ lessonData.lessonname +  ", you scored 1 out of 7." + "\n" + "Based on your score we recommend you try all of the lessons in this course, alongside the problem solving excercises. Once you feel confident enough try the quiz again!"
                 db.session.commit()
                 print "You scored " +  str(correct_questions) + " out of 7"
-                flash("You Got 1/7 For the Quiz, The question you answered correctly were: " +  "\n" + flash_correct_question)
+                flash("You Got 1/7 For the Quiz, The question you answered correctly was:" +  "\n" + flash_correct_question)
                 return redirect(url_for('.quizTemplate', lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
         if correct_questions == 2:
             if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
@@ -515,7 +530,7 @@ def quizTemplate(username, courseid, lessonid):
                 update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
                 update.feedback = feedback
                 db.session.commit()
-                flash("You Got 2/7 For the Quiz, The Questions you answered correctly were "+ flash_correct_question)
+                flash("You Got 2/7 For the Quiz, The Questions you answered correctly were: "+ flash_correct_question)
                 return redirect(url_for('.quizTemplate', lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
                 print "You scored " +  str(correct_questions) + " out of 7"
             else:
@@ -526,7 +541,7 @@ def quizTemplate(username, courseid, lessonid):
                 update.feedback = "On the "+ lessonData.lessonname +  ", you scored 2 out of 7." + "\n" + "Based on your score we recommend you try all of the lessons in this course, alongside the problem solving excercises. Once you feel confident enough try the quiz again!"
                 db.session.commit()
                 print "You scored " +  str(correct_questions) + " out of 7"
-                flash("You Got 2/7 For the Quiz, The Questions you answered correctly were "+ flash_correct_question)
+                flash("You Got 2/7 For the Quiz, The Questions you answered correctly were: "+ flash_correct_question)
                 return redirect(url_for('.quizTemplate', lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
         if correct_questions == 3:
             if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
@@ -535,7 +550,7 @@ def quizTemplate(username, courseid, lessonid):
                 update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
                 update.feedback = feedback
                 db.session.commit()
-                flash("You Got 3/7 For the Quiz, The Questions you answered correctly were "+ flash_correct_question)
+                flash("You Got 3/7 For the Quiz, The Questions you answered correctly were: "+ flash_correct_question)
                 return redirect(url_for('.quizTemplate', lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
                 print "You scored " +  str(correct_questions) + " out of 7"
             else:
@@ -546,7 +561,7 @@ def quizTemplate(username, courseid, lessonid):
                 update.feedback = "On the " + lessonData.lessonname +", you scored 3 out of 7." + "\n" + "Based on your score we recommend you retry lessons relating to the questions you answered incorrectly. If you cannot remember the questions you answered in correctly." + "\n" + "They were:               " + "\n" + flash_wrong_question
                 db.session.commit()
                 print "You scored " +  str(correct_questions) + " out of 7"
-                flash("You Got 3/7 For the Quiz, The Questions you answered correctly were "+ flash_correct_question)
+                flash("You Got 3/7 For the Quiz, The Questions you answered correctly were: "+ flash_correct_question)
                 return redirect(url_for('.quizTemplate', lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
         if correct_questions == 4:
             if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
@@ -555,7 +570,7 @@ def quizTemplate(username, courseid, lessonid):
                 update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
                 update.feedback = feedback
                 db.session.commit()
-                flash("You Got 4/7 For the Quiz, The Questions you answered correctly were "+ flash_correct_question)
+                flash("You Got 4/7 For the Quiz, The Questions you answered correctly were: "+ flash_correct_question)
                 return redirect(url_for('.quizTemplate', lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
                 print "You scored " +  str(correct_questions) + " out of 7"
             else:
@@ -566,7 +581,7 @@ def quizTemplate(username, courseid, lessonid):
                 update.feedback = "On the " + lessonData.lessonname +", you scored 4 out of 7." + "\n" + "Based on your score we recommend you retry lessons relating to the questions you answered incorrectly. If you cannot remember the questions you answered in correctly." + "\n" + "They were:               " + "\n" + flash_wrong_question
                 db.session.commit()
                 print "You scored " +  str(correct_questions) + " out of 7"
-                flash("You Got 4/7 For the Quiz, The Questions you answered correctly were "+ flash_correct_question)
+                flash("You Got 4/7 For the Quiz, The Questions you answered correctly were: "+ flash_correct_question)
                 return redirect(url_for('.quizTemplate', lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
         if correct_questions == 5:
             if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
@@ -575,7 +590,7 @@ def quizTemplate(username, courseid, lessonid):
                 update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
                 update.feedback = feedback
                 db.session.commit()
-                flash("You Got 5/7 For the Quiz, The Questions you answered correctly were "+ flash_correct_question)
+                flash("You Got 5/7 For the Quiz, The Questions you answered correctly were: "+ flash_correct_question)
                 return redirect(url_for('.quizTemplate', lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
                 print "You scored " +  str(correct_questions) + " out of 7"
             else:
@@ -586,7 +601,7 @@ def quizTemplate(username, courseid, lessonid):
                 update.feedback = "On the " + lessonData.lessonname +", you scored 5 out of 7." + "\n" + "Based on your score we recommend you retry lessons relating to the questions you answered incorrectly. If you cannot remember the questions you answered in correctly." + "\n" + "They were:               " + "\n" + flash_wrong_question
                 db.session.commit()
                 print "You scored " +  str(correct_questions) + " out of 7"
-                flash("You Got 5/7 For the Quiz, The Questions you answered correctly were "+ flash_correct_question)
+                flash("You Got 5/7 For the Quiz, The Questions you answered correctly were: "+ flash_correct_question)
                 return redirect(url_for('.quizTemplate', lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
         if correct_questions == 6:
             if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
@@ -595,7 +610,7 @@ def quizTemplate(username, courseid, lessonid):
                 update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
                 update.feedback = feedback
                 db.session.commit()
-                flash("You Got 6/7 For the Quiz, The Questions you answered correctly were "+ flash_correct_question)
+                flash("You Got 6/7 For the Quiz, The Questions you answered correctly were: "+ flash_correct_question)
                 return redirect(url_for('.quizTemplate', lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
                 print "You scored " +  str(correct_questions) + " out of 7"
             else:
@@ -603,19 +618,20 @@ def quizTemplate(username, courseid, lessonid):
                 update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
                 print update.quizscore
                 update.quizscore = correct_questions
-                update.feedback = "You scored " + str(correct_questions)
+                update.feedback = "On the " + lessonData.lessonname +", you scored 6 out of 7." + "\n" + "Based on your score we feel that you have gained a good understanding and knowledge for the matieral presented in this course. However remember you can always review and reflect on the learning matieral in this course!"
+
                 db.session.commit()
-                print "On the " + lessonData.lessonname +", you scored 6 out of 7." + "\n" + "Based on your score we feel that you have gained a good understanding and knowledge for the matieral presented in this course. However remember you can always review amd reflect on the learning matieral in this course!"
-                flash("You Got 6/7 For the Quiz, The Questions you answered correctly were "+ flash_correct_question)
+                print "On the " + lessonData.lessonname +", you scored 6 out of 7." + "\n" + "Based on your score we feel that you have gained a good understanding and knowledge for the matieral presented in this course. However remember you can always review and reflect on the learning matieral in this course!"
+                flash("You Got 6/7 For the Quiz, The Questions you answered correctly were: "+ flash_correct_question)
                 return redirect(url_for('.quizTemplate', lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
         if correct_questions == 7:
             if Quiz.query.filter_by(username=current_user.username, lessonid=lessonData.lessonid).scalar() is None:
-                feedback = "You scored" + str(correct_questions)
+                feedback = "On the " + lessonData.lessonname +", you scored 7 out of 7." + "\n" + "Based on your score we feel that you have gained a good understanding and knowledge for the matieral presented in this course. However remember you can always review and reflect on the learning matieral in this course!"
                 db.session.add(quiz)
                 update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
                 update.feedback = feedback
                 db.session.commit()
-                flash("You Got 7/7 For the Quiz, The Questions you answered correctly were "+ flash_correct_question)
+                flash("You Got 7/7 For the Quiz, The Questions you answered correctly were: "+ flash_correct_question)
                 return redirect(url_for('.quizTemplate', lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
                 print "You scored " +  str(correct_questions) + " out of 7"
             else:
@@ -623,10 +639,10 @@ def quizTemplate(username, courseid, lessonid):
                 update = Quiz.query.filter_by(username=current_user.username, lessonid = lessonData.lessonid).first()
                 print update.quizscore
                 update.quizscore = correct_questions
-                update.feedback = "On the " + lessonData.lessonname +", you scored 7 out of 7." + "\n" + "Based on your score we feel that you have gained a good understanding and knowledge for the matieral presented in this course. However remember you can always review amd reflect on the learning matieral in this course!"
+                update.feedback = "On the " + lessonData.lessonname +", you scored 7 out of 7." + "\n" + "Based on your score we feel that you have gained a good understanding and knowledge for the matieral presented in this course. However remember you can always review and reflect on the learning matieral in this course!"
                 db.session.commit()
                 print "You scored " +  str(correct_questions) + " out of 7"
-                flash("You Got 7/7 For the Quiz, The Questions you answered correctly were "+ flash_correct_question)
+                flash("You Got 7/7 For the Quiz, The Questions you answered correctly were: "+ flash_correct_question)
                 return redirect(url_for('.quizTemplate', lessonid=lessonData.lessonid, courseid=courseid.courseid, username=current_user.username))
     return render_template('quiz.html', questions=questions, username=username, courseid=courseid, lesson=LessonData.query.filter_by(lessonid=lessonid, lessontype='Quiz').first())
 
