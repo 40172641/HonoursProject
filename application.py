@@ -139,8 +139,6 @@ class RegisterForm(Form):
 
 class MyForm(Form):
     source_code = CodeMirrorField(language='python', config={'lineNumbers' : 'true'})
-    #body = StringField('Text', widget=TextArea(), default='Please add content')
-    #text = TinyMceField('My WTF TinyMCEField',tinymce_options={'toolbar': 'false', 'readonly':'1', 'height':'531', 'width':'393', 'valid_elements':'*[*]', 'allow_script_urls': 'true', 'extended_valid_elements': 'script[language|src=https://cloud.tinymce.com/stable/tinymce.min.js]'})
 
 @app.route("/")
 def main():
@@ -357,6 +355,7 @@ def templatePost():
         return jsonify(data={'output':(form.source_code.data)})
     return jsonify(data=form.errors)
 
+#This route's functionality is that it returns the available courses to the user, there is also some error checking. If the user tries to access the dashboard of another user, they will be redirected to their own dashboard page
 @app.route('/dashboard/<username>/')
 @login_required
 def dashboard(username):
@@ -365,6 +364,7 @@ def dashboard(username):
         return redirect(url_for('.dashboard', username=current_user.username))
     return render_template('dashboard.html', user=user, courses=Course.query.filter_by(coursename='HTML:Introduction'))
 
+#The functionality for excercise page mirrors that provided by the Lesson Page, a lot of the code used here was first done in the Lesson Page and once it was working, copied over to the Excercise Page
 @app.route('/dashboard/<username>/course/<courseid>/excercise/<lessonid>/')
 @login_required
 def excerciseTemplate(username, courseid, lessonid):
@@ -405,6 +405,7 @@ def excerciseTemplate(username, courseid, lessonid):
             return render_template('excercise.html', form=form, username=username, courseid=courseid, lesson=lessonData, paragraphData=paragraph)
     #return render_template('excercise.html', form=form, username=username, courseid=courseid, lesson=LessonData.query.filter_by(lessonid=lessonid, lessontype='Excercise').first())
 
+#Again the core functionality of the Excercise Page is really similar to the Lesson Page. The excercise page does not included any of the lesson specific feedback, and the user must enter the exact same answer as what is stored in the JSON file, for their answer to be correct. While the lesson page gives the user more freedom to enter whatever these please between the HTML Tags
 @app.route('/dashboard/excercise/post/', methods=['POST'])
 def excercise():
     form = MyForm()
@@ -412,6 +413,7 @@ def excercise():
         userInput = form.source_code.data
         excercise_answer = str(answer)
         heading_search = str(heading)
+        #The global variables were cast a second time due to be returned a python error when trying to use the global variables
         print heading_search
         soup = BeautifulSoup(userInput)
         excercise = None
@@ -427,9 +429,9 @@ def excercise():
             else:
                 excercise = False
                 print "Incorrect Answer"
+        #Functionality for DB entries. If the user does not have a DB entry for this excercise, a new entry will be created, if they do have an entry, then their entry will be updated
         if excercise == True:
             print "Excercise Complete"
-            #return jsonify(data={'message':(userInput), 'task':'Correct Answer, Excercise Completed'})
             excercise1 = Lesson(excercise_lessonid, excercise_lessonname, excercise_courseid, current_user.username, excercise_answer, "Excercise Completed")
             if Lesson.query.filter_by(username=current_user.username, lessonid=excercise_lessonid).scalar() is None:
                 db.session.add(excercise1)
@@ -437,9 +439,6 @@ def excercise():
             return jsonify(data={'message':(userInput), 'task':'Correct Answer, Excercise Completed'})
             if Lesson.query.filter_by(username=current_user.username, lessonid=excercise_lessonid).scalar() is not None:
                 print "User has already completed this Excercise!!!"
-            #update = Lesson.query.filter_by(username=current_user.username, lessonid = db_lessonid).first()
-            #update.excerciseData = excercise_answer
-        #db.session.commit()
         else:
             return jsonify(data={'message':(userInput), 'task':'Incorrect Answer'})
         return jsonify(data={'message':(userInput)})
