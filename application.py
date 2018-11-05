@@ -690,5 +690,5 @@ def error_page(error):
 def internal_error(error):
     return render_template('error.html')
 
-#if __name__ == '__main__':
-    #app.run(host='0.0.0.0', debug=True)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', debug=True)
