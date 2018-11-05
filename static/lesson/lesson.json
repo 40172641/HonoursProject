@@ -13,13 +13,13 @@
 	{
                 "course_id": 11111,
                 "lesson_id": 112,
-		"para_data":"<p>In the previous lesson, the building blocks of how content is displayed on website's, HTML elements were introducted.</p> <img src='https://mdn.mozillademos.org/files/7659/anatomy-of-an-html-element.png' height='' width='400'><p>However HTML elements are only part of the overall structure of HTML webpages.</p> <H3>HTML Page Structure</h3><p>Every HTML Web Page follows the same structure. </p><img src='https://stuyhsdesign.files.wordpress.com/2015/09/basic-structure.png?w=656' height='175' width='300'><br>", 
+		"para_data":"<p>In the previous lesson, HTML elements were introducted. Incase you cannot remember how they are structured. Here is an example:</p> <img src='https://mdn.mozillademos.org/files/9347/grumpy-cat-small.png' height='' width='420'><br><br><p>However HTML elements are only part of the overall structure of HTML webpages.</p> <H3>HTML Page Structure</h3><p>Every HTML Web Page follows the same structure. </p><img src='https://stuyhsdesign.files.wordpress.com/2015/09/basic-structure.png?w=656' height='175' width='300'><br> <h4>What do these elements do?</h4><br> <h4>html:</h3><p>The html element is the root element of a HTML web page</p></h4><h4>head: </h4><p> The head element is used to store the meta data about the web page.</p> <p>This meta data can include something simple like the document title.</p> <p>However other types of meta data include style, which can change the style of HTML elements. This can change the colour or size of elements.</p> <p>Another is script. Script elements are used to apply Javascript functionality to web pages.</p> <h4>title: </h4> <p>The title element is used to specify the title of the webpage in the browser toolbar.</p> <h4>body: </h4><p>The body tag is used to display the content of a web page.</p><p> For content to be displayed on a webpage, all HTML elements, which are intended to display content, must be placed within the body. If not then content will not be displayed.</p><H4>Task:</h4 <p>Based on the content of this lesson:</p><ul><li>Use the HTML web page structure displayed above to display content.</li> <li>Using a HTML element you learnt in the previous lesson, Please create a HTML element which has the value H1, and place it within the HTML page structure</li><li>Once you have done this run the code to check the output!</li></ul><br><h4>Task:</h4><ul><li>You can create smaller headings for web pages using the h2,h3,h4,h5 tags!</li><li>Create a second HTML element using the h2 HTML element and place it within the body!</li></ul><br><br><br><br>", 
 		"answer":" <html> <head> <body> <h1> </h1> </body> </head> </html>",
-		"answer2":"<p> </p>",
+		"answer2":"<h2> </h2>",
 		"feedback":"Feedback 1",
                 "feedback2": "Feedback 2",
-                "incorrect_feedback":"Did you follow the Element structure Correctly?",
-                "incorrect_feedback2":"Did you remember to apply the closing tag?"		
+                "incorrect_feedback":"Task 1:Did you follow the page structure correctly?, Remember to use the example above!",
+                "incorrect_feedback2":"Task 2: Did you remember to use H2 as the value in the opening tag?"		
 	},
 	{
                 "course_id": 11111,

@@ -5,8 +5,8 @@
 			{
 				"What does HTML Stand For?": ["Hyper Text Markup Language", "Hyperlink Text Markup Location", "Home Text Markup Language", "Hyper Tool Markup Language"],
 				"How do you write a closing tag for a HTML element?": ["</tagname>", "<tagname>", "<!tagname>", "<tagname"],
-				"Which HTML tag will display the largest heading?": ["<h1>", "<p>", "<img>", "<body>"],
-				"HTML question 4": ["Name", "Answer2", "Answer3", "Answer4"],
+				"Which HTML tag will display the largest heading?": ["<h1>", "<p>", "<h2>", "<body>"],
+				"Which element in a HTML Page Structure is used to store the web pages metadata information?": ["head", "html", "title", "body"],
 				"HTML question 5": ["Name", "Answer2", "Answer3", "Answer4"],
 				"HTML question 6": ["Name", "Answer2", "Answer3", "Answer4"],
 				"HTML question 7": ["Name1", "Answer2", "Answer3", "Answer4"]
