@@ -7,7 +7,7 @@
 		"answer2":"<p> </p>",		
 		"feedback":"Well Done! You have created your first HTML element",
 		"feedback2": "Provided you have applied the correct closing tags. You can see the p tag renders normal text!",
-		"incorrect_feedback":"Task 1 Feedback: Did you follow the Element structure Correctly? Please use the example if you need help!",
+		"incorrect_feedback":"Task 1 Feedback: Did you follow the Element structure Correctly?",
 		"incorrect_feedback2":"Task 2 Feedback : Did you remember to apply the closing tag?"
 	},
 	{
@@ -18,15 +18,15 @@
 		"answer2":"<h2> </h2>",
 		"feedback":"Feedback 1",
                 "feedback2": "Feedback 2",
-                "incorrect_feedback":"Task 1:Did you follow the page structure correctly?, Remember to use the example above!",
+                "incorrect_feedback":"Task 1:Did you follow the page structure correctly?",
                 "incorrect_feedback2":"Task 2: Did you remember to use H2 as the value in the opening tag?"		
 	},
 	{
                 "course_id": 11111,
                 "lesson_id": 113,
                 "para_data": "<p> Welcome to lesson 3, the contents of this lesson is...</p>",
-                "answer":"<script> </script>",
-                "answer2":"<h3> </h3>",
+                "answer":"<h1> </h1> <h3 style='color:red;'> </h3>",
+                "answer2":"<h3 style='color:red;'> </h3>",
                 "feedback":"Feedback for Answer 1 Task 2",
                 "feedback2":"Feedback for Answer 2 Task 2",
                 "incorrect_feedback":"?",
@@ -37,7 +37,7 @@
                 "lesson_id": 114,
                 "para_data": "<p> Welcome to lesson 4, the contents of this lesson is...</p>",
                 "answer":"<script> </script>",
-                "answer2":"<h3> </h3>",
+                "answer2":"<h3 style='color:red;'> </h3>",
                 "feedback":"Feedback for Answer 1 Task 2",
                 "feedback2":"Feedback for Answer 2 Task 2"
         },

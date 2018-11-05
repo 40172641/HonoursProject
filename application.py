@@ -229,7 +229,7 @@ def template(username, courseid, lessonid):
             feedback2 = str(json_feedback_Q2)
             incorrect_feedback = str(json_incorrect)
             incorrect_feedback2 = str(json_incorrect_Q2)
-            print json_answer
+            #print json_answer
             second_answer = str(json_answer)
     for paragraph in para_data:
         #if paragraph['course_id'] == courseid.courseid:
@@ -255,6 +255,7 @@ def templatePost():
         #Although the global variables were cast as strings in the route above, I was getting errors when trying to use them. The fix was casting them a second time and assigning them to another variable
         final_answer = template_answer.split() #Splits the String so the tags can be accessed for the answer
         final_answer2 = template_answer2.split() #Splits the String so the tags can be accessed for the answer
+        print final_answer[0]
         print len(final_answer)
         non_tag_array = [] #Array to store all of the heading with the removal of tags for the soup.find functionality
         tag_array = [] 
@@ -266,6 +267,7 @@ def templatePost():
                     tag_array.append(x)
                     array = x.replace("<","").replace(">","")
                     non_tag_array.append(array)
+
         if len(final_answer2) > 2:
             for x in final_answer2:
                 if "/" not in x:
@@ -276,8 +278,10 @@ def templatePost():
         tag_search_answer = final_answer[0].replace("<","").replace(">","") #In order to pass a variable through soup.find, characters < & > had to be replaced
         tag_search_answer2 = final_answer2[0].replace("<","").replace(">","")
         soup = BeautifulSoup(userInput, 'html.parser') #BeautifulSoup Library is used to Parse the HTML Input to find the desired user input
+        print str(non_tag_array)
         task1 = None
         task2 = None
+        print str(soup.find_all(non_tag_array))
         if len(final_answer) > 2:
             if not all(soup.find(tag) for tag in (non_tag_array)): #searches through user input, if all the headings in the JSON answer are not listed in the user input, then the task is not complete
                 print "Did not enter headings"
@@ -303,6 +307,7 @@ def templatePost():
         if len(final_answer) == 2: #This was the original functionality, however i found out late in development it did not work for nested HTML elements, these if statements only work for answers which have two elements, so are suited to answers which are not nested within other HTML elements such as a page structure
             if soup.find(tag_search_answer) is None:
                 print "Heading not entered"
+                print tag_search_answer2
                 task1 = False
             else:
                 print "Heading Entered"
@@ -317,6 +322,7 @@ def templatePost():
         if len(final_answer2) == 2: #same functionality as above is applied to the second answer
             if soup.find(tag_search_answer2) is None:
                 print "Heading not entered"
+                print "heading 2" + str(soup.find(tag_search_answer2))
                 task2=False
             else:
                 print "Heading Entered"
@@ -479,8 +485,7 @@ def quizTemplate(username, courseid, lessonid):
             else:
                 wrong_questions.append(question) #incorrect questions added to the array for incorrect questions, this is used for the feedback displayed to the users in the course page depdening on the quiz score they recieved
         flash_correct_question = (", ".join(arrayQuestion)) #puts all the values in the array in form of a string seperated by commas
-        flash_wrong_question = (", ".join(wrong_questions)) #puts all the values in the array in form of a string sep
-erated by commas
+        flash_wrong_question = (", ".join(wrong_questions)) #puts all the values in the array in form of a string seperated by commas
         print "Wrong Question" + flash_wrong_question
         quiz = Quiz(lessonData.lessonid, courseid.courseid, current_user.username, correct_questions, '') #db entry for the quiz isn't 100% correct, for some reason it would not work when i tried entering all the values, so this was the compromise, the issue will be stemmed in how the table was created
         #Bunch of if statements which return different outputs depending on the users quiz score, they will be flashed their quiz score, and the score and feedback for the quiz will be stored to the DB

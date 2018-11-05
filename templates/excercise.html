@@ -119,13 +119,13 @@ body, html
 {
 	position:relative;
 	background-color: 223641;
-	width:2600px;
-	right:100px;
+	width:2800px;
+	right:135px;
 }
 .output
 {
 	position:absolute;
-	right:-80px;
+	right:-100px;
 	top:10px;
 }
 .top
@@ -168,47 +168,49 @@ body, html
 .message
 {
 	position:absolute;
-	left:750px;
-	bottom:525px;
+	left:800px;
+	bottom:515px;
 }
 .lessonButton
 {
 	background-color: 4c4cff;
         border: none;
     color: white;
-    padding: 10px;
+	padding: 5px 32px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 17px;
     margin: 4px 2px;
     cursor: pointer;
-	   position:absolute;
-           left:620px;
-        top:500px;
+	 
+    position:absolute;
+           left:550px;
+        top:350px;
 
 }
 .previousButton
 {
 	background-color: 4c4cff;
-        border: none;
-    color: white;
-    padding: 10px;
-    text-align: center;
+	border: none;
+    	color: white;
+    	padding: 5px 32px;
+   	 text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 17px;
     margin: 4px 2px;
     cursor: pointer;
-    position:absolute;
-	   left:605px;
-	top:550px;
+    position: absolute;   
+	left:545px;
+	top:420px;
+	
 }
 .output1
 {
 	position: absolute;
 	top:110px;
-	right:605px;
+	right:585px;
 	width:50%;
 }
 .edit
@@ -268,14 +270,15 @@ body, html
                 <div>
 			<input type="submit" class="button" value="Run Code >>" />
 		</div>
+		<button type="submit" class="previousButton" id="previousButton" form="nameform" value="Submit">Previous Lesson</button>
+<button type="submit" class="lessonButton" id="lessonButton" form="nameform" value="Submit">Next Lesson</button>
+
         </form>
 </div>
-<button type="submit" class="previousButton" id="previousButton" form="nameform" value="Submit">Previous Lesson</button>
-<button type="submit" class="lessonButton" id="lessonButton" form="nameform" value="Submit">Next Lesson</button>
 <div class="test" contenteditable="true" style="display:none;">{{ paragraphData['para_data'] }}</div>
         <div class="output1"></div>
 <div class="right">
-<iframe class="output" id="output"style="height:485px; width:450px; background-color:white;"></iframe>
+<iframe class="output" id="output"style="height:482px; width:450px; background-color:white;"></iframe>
 </div>
 </div>
 </body>
