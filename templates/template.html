@@ -1,7 +1,7 @@
 {% import 'wtf_tinymce/editor.html' as tinymce with context %}
-<html>
+<!DOCTYPE html>
 	<head>
-		<title>Lesson | {{ lesson.lessonname}}</title>
+	<title>Lesson | {{ lesson.lessonname}}</title>
 	{{ codemirror.include_codemirror() }}
 	<meta charset="utf-8">
   	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -137,7 +137,7 @@
         });
     });
 </script>
-	    </head>
+</head>
 <style>
 body, html
 {
@@ -161,17 +161,15 @@ body, html
 	}
 .container 
 {
-	width: 100%;
-	height: 100%
-	top:20px;
-	right:20px;
+	margin: 0 auto;
+	width:960px;
 }
 .left
 {
-	width:42%;
+	width:420px;
 	height:100%;
 	float:left;
-	right:70px;
+	right:150px;
 	position:relative;
 	font-family: Helvetica;
 	overflow:auto;
@@ -181,23 +179,22 @@ body, html
 }
 .middle
 {
-	width:36.5%;
+	width:40.5%;
 	position:relative;
-	right:70px;	
+	right:150px;	
 	height:100%;
 	float:left;
 }
 .right
 {
-	width:20.5%;
-	position:relative;
-	right:86px;
-	height:100%;
+	width:20%;
+	position:absolute;
+	right:229px;
 	float:right
 }
 .CodeMirror
 {
-        height:78.5%;
+	height:520px;
 }
 .message
 {
@@ -229,8 +226,7 @@ body, html
     font-size: 17px;
     margin: 4px 2px;
     cursor: pointer;
-	   left: 275px;
-	   bottom: 53px;
+	   left: 175px;
 	position: relative;
 
 
@@ -268,7 +264,7 @@ background-color: 4c4cff;
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 		<a class="dropdown-item" href="/dashboard/{{username.username}}">Dashboard</a>
-		<a class="dropdown-item" href="/dashboard/{{username.username}}/course/{{courseid.courseid}}">{{courseid.coursename}}</a>
+		<a class="dropdown-item" href="/dashboard/{{username.username}}/course/{{courseid.courseid}}">Course Page</a>
           <a class="dropdown-item" href="/logout/">Logout</a>
         </div>
       </li>

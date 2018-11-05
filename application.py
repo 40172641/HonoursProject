@@ -138,7 +138,7 @@ class RegisterForm(Form):
     confirm = PasswordField('Please re-enter your Password', validators=[InputRequired(), Length(min=3, max=20)])
 
 class MyForm(Form):
-    source_code = CodeMirrorField(language='python', config={'lineNumbers' : 'true'})
+    source_code = CodeMirrorField(language='python', config={'lineNumbers' : 'true', 'height':'500'})
 
 @app.route("/")
 def main():
