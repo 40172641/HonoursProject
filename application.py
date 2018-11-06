@@ -256,7 +256,6 @@ def templatePost():
         final_answer = template_answer.split() #Splits the String so the tags can be accessed for the answer
         final_answer2 = template_answer2.split() #Splits the String so the tags can be accessed for the answer
         print (final_answer[0])
-        print len(final_answer)
         non_tag_array = [] #Array to store all of the heading with the removal of tags for the soup.find functionality
         tag_array = [] 
         non_tag_array_A2 = [] #Array to store all of the heading with the removal of tags for the soup.find functionality for the second answer
