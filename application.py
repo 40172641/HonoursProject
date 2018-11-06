@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, flash, session, redirect, abort, url_for,jsonify, json
 import json
 import random
-from flask_wtf import FlaskForm
+from flask_wtf import Form
 import requests
 from werkzeug.security import generate_password_hash, check_password_hash
 import copy
