@@ -210,7 +210,7 @@ def template(username, courseid, lessonid):
     global incorrect_feedback
     global incorrect_feedback2
     if  Lesson.query.filter_by(username=current_user.username, lessonid=db_lessonid).scalar() is not None: #if there is a DB entry for this lesson and the username, then their previous data will be loaded an placed in the text editor
-        print "User has already done this tutorial"
+        # "User has already done this tutorial"
         loadData = Lesson.query.filter_by(username=current_user.username, lessonid=db_lessonid).first()
         form.source_code.data = loadData.excerciseData
     #else:
