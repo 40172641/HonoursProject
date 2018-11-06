@@ -213,8 +213,8 @@ def template(username, courseid, lessonid):
         print "User has already done this tutorial"
         loadData = Lesson.query.filter_by(username=current_user.username, lessonid=db_lessonid).first()
         form.source_code.data = loadData.excerciseData
-    else:
-        print "User has not done this tutorial" #error checking
+    #else:
+        #print "User has not done this tutorial" #error checking
     for json_answer in para_data:
         if json_answer['lesson_id'] == lessonData.lessonid:
             json_feedback = json_answer['feedback']
