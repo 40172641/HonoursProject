@@ -3,7 +3,6 @@ import json
 import random
 from flask_wtf import FlaskForm
 import requests
-import difflib
 from werkzeug.security import generate_password_hash, check_password_hash
 import copy
 from flask_codemirror import CodeMirror
