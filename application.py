@@ -277,60 +277,44 @@ def templatePost():
         tag_search_answer = final_answer[0].replace("<","").replace(">","") #In order to pass a variable through soup.find, characters < & > had to be replaced
         tag_search_answer2 = final_answer2[0].replace("<","").replace(">","")
         soup = BeautifulSoup(userInput, 'html.parser') #BeautifulSoup Library is used to Parse the HTML Input to find the desired user input
-        print str(non_tag_array)
         task1 = None
         task2 = None
-        print str(soup.find_all(non_tag_array))
         if len(final_answer) > 2:
             if not all(soup.find(tag) for tag in (non_tag_array)): #searches through user input, if all the headings in the JSON answer are not listed in the user input, then the task is not complete
-                print "Did not enter headings"
                 task1 = False
             else:
                 print "Heading Entered"
                 find_answer = soup.find(non_tag_array) #answer is the user input with all the tags
                 answer1 = str(find_answer) #answer needed to be cast to work
                 task1 = True
-                print answer1 #error checking
         if len(final_answer2) > 2:
             if not all(soup.find(tag) for tag in (non_tag_array_A2)): #searches through user input, if all the headings in the JSON answer are not listed in the user input, then the task is not complete
-                print "Did not enter headings"
                 task2 = False
             else:
                 print "Heading Entered"
                 find_answer = soup.find(non_tag_array_A2)
                 answer2 = str(find_answer)
                 task2 = True
-                print (answer2)
-                print (userInput)
         #The search through the headings aspect of the beautiful soup functionality for returning false values for not matching all of the headings in the heading array because the code would not display without it.
         if len(final_answer) == 2: #This was the original functionality, however i found out late in development it did not work for nested HTML elements, these if statements only work for answers which have two elements, so are suited to answers which are not nested within other HTML elements such as a page structure
             if soup.find(tag_search_answer) is None:
-                print "Heading not entered"
-                print (tag_search_answer2)
-                task1 = False
             else:
                 print "Heading Entered"
                 text1 = soup.find(tag_search_answer)
                 answer1 = final_answer[0] + text1.text + final_answer[1]
                 if answer1 in userInput:
                     task1= True
-                    print "Task 1 Completed"
                 else:
                     task1 = False
-                    print "Task 1 Incomplete" 
         if len(final_answer2) == 2: #same functionality as above is applied to the second answer
             if soup.find(tag_search_answer2) is None:
-                print "Heading not entered"
-                print "heading 2" + str(soup.find(tag_search_answer2))
                 task2=False
             else:
-                print "Heading Entered"
                 text2 = soup.find(tag_search_answer2)
                 answer2 = final_answer2[0] + text2.text + final_answer2[1]
             #print answer2
                 if answer2 in userInput:
                     task2= True
-                    print ("Task 2 Completed")
                 else:
                     task2 = False
         #This is the Database functionality, if both the tasks are true, The users entry is added to the DB, however first there's a check to see if the user already has a DB entry for that lesson. If they don't an entry is created, if they do then their entry is updated with the code they have just entered
