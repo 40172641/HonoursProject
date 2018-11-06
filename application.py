@@ -295,7 +295,9 @@ def templatePost():
                 task2 = True
         #The search through the headings aspect of the beautiful soup functionality for returning false values for not matching all of the headings in the heading array because the code would not display without it.
         if len(final_answer) == 2: #This was the original functionality, however i found out late in development it did not work for nested HTML elements, these if statements only work for answers which have two elements, so are suited to answers which are not nested within other HTML elements such as a page structure
-            if soup.find(tag_search_answer) is not None:
+            if soup.find(tag_search_answer) is None:
+                print ("example user")
+            else:
                 text1 = soup.find(tag_search_answer)
                 answer1 = final_answer[0] + text1.text + final_answer[1]
                 if answer1 in userInput:
@@ -636,5 +638,5 @@ def error_page(error):
 def internal_error(error):
     return render_template('error.html')
 
-#if __name__ == '__main__':
- #   app.run(host='0.0.0.0', debug=True)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', debug=True)
