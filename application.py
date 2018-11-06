@@ -320,7 +320,7 @@ def templatePost():
                 print ("Task Complete")
                 db_answer = answer1 + "\n" + answer2
                 lesson = Lesson(db_lessonid, db_lessonname, db_courseid, current_user.username, db_answer, "Task Completed")
-                print lesson
+                print (lesson)
                 if Lesson.query.filter_by(username=current_user.username, lessonid=db_lessonid).scalar() is None: #if there is no db entries for this user
                     db.session.add(lesson) #create new db entry
                     db.session.commit() #commit to db
@@ -374,7 +374,7 @@ def excerciseTemplate(username, courseid, lessonid):
     excercise_lessonname = lessonData.lessonname 
     #IF statement which means if the User has completed the Excercise successfully previously, it will load their correct data
     if  Lesson.query.filter_by(username=current_user.username, lessonid=excercise_lessonid).scalar() is not None:
-        print "User has already done this tutorial" # error checking
+        print ("User has already done this tutorial") # error checking
         loadData = Lesson.query.filter_by(username=current_user.username, lessonid=excercise_lessonid).first()
         form.source_code.data = loadData.excerciseData #loads users previous data
     else:
