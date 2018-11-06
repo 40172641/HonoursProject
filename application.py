@@ -174,7 +174,7 @@ def register():
             return redirect(url_for('.register'))
         else:
             user = User(form.firstname.data, form.lastname.data, form.email.data, form.username.data, generate_password_hash(form.password.data)) #getting all the values from the input forms so they can be added to the DB table
-            print generate_password_hash(form.password.data)
+            #print generate_password_hash(form.password.data)
             db.session.add(user) #user is added to DB table
             db.session.commit() #changes to DB table are committed
             login_user(user) #user is logged into the application and redirected to the dashboard page
@@ -690,5 +690,5 @@ def error_page(error):
 def internal_error(error):
     return render_template('error.html')
 
-#if __name__ == '__main__':
- #   app.run(host='0.0.0.0', debug=True)
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', debug=True)
