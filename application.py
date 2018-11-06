@@ -22,7 +22,7 @@ app = Flask(__name__)
 wtf_tinymce.init_app(app)
 app.config['CODEMIRROR_LANGUAGES'] = ['python', 'htmlmixed']
 app.config['CODEMIRROR_THEME'] = 'ambiance'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite://///home/kevin/database.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 app.config['SECRET_KEY'] = 'SecretKey'
 db = SQLAlchemy(app)
 codemirror = CodeMirror(app)
