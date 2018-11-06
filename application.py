@@ -399,7 +399,7 @@ def excercise():
         excercise_answer = str(answer)
         heading_search = str(heading)
         #The global variables were cast a second time due to be returned a python error when trying to use the global variables
-        print heading_search
+        print (heading_search)
         soup = BeautifulSoup(userInput)
         excercise = None
         if soup.find(heading_search) is None:
