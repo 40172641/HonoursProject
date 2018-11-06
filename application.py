@@ -283,7 +283,6 @@ def templatePost():
             if not all(soup.find(tag) for tag in (non_tag_array)): #searches through user input, if all the headings in the JSON answer are not listed in the user input, then the task is not complete
                 task1 = False
             else:
-                print "Heading Entered"
                 find_answer = soup.find(non_tag_array) #answer is the user input with all the tags
                 answer1 = str(find_answer) #answer needed to be cast to work
                 task1 = True
@@ -291,7 +290,6 @@ def templatePost():
             if not all(soup.find(tag) for tag in (non_tag_array_A2)): #searches through user input, if all the headings in the JSON answer are not listed in the user input, then the task is not complete
                 task2 = False
             else:
-                print "Heading Entered"
                 find_answer = soup.find(non_tag_array_A2)
                 answer2 = str(find_answer)
                 task2 = True
@@ -299,7 +297,6 @@ def templatePost():
         if len(final_answer) == 2: #This was the original functionality, however i found out late in development it did not work for nested HTML elements, these if statements only work for answers which have two elements, so are suited to answers which are not nested within other HTML elements such as a page structure
             if soup.find(tag_search_answer) is None:
             else:
-                print "Heading Entered"
                 text1 = soup.find(tag_search_answer)
                 answer1 = final_answer[0] + text1.text + final_answer[1]
                 if answer1 in userInput:
