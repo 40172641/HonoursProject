@@ -76,11 +76,11 @@ class LessonData(db.Model):
 
 class Lesson(db.Model):
     __tablename__ = 'lesson'
-    id = db.Column( db.Integer, primary_key=True)
-    lessonid = db.Column('lessonid', db.Integer, index=True)
-    lessonname = db.Column('lessonname', db.String(30), index=True)
+    id = db.Column(db.Integer, primary_key=True)
+    lessonid = db.Column('lessonid', db.Integer)
+    lessonname = db.Column('lessonname', db.String(30))
     courseid = db.Column('courseid', db.Integer, db.ForeignKey('course.courseid'), index=True)
-    username = db.Column('username', db.String(20), index=True)
+    username = db.Column('username', db.String(20))
     excerciseData = db.Column('excerciseData', db.String(100))
     taskCompleted = db.Column('taskCompleted', db.String(20))
 
@@ -209,7 +209,7 @@ def template(username, courseid, lessonid):
     global feedback2
     global incorrect_feedback
     global incorrect_feedback2
-    if  Lesson.query.filter_by(username=current_user.username, lessonid=db_lessonid).scalar() is not None: #if there is a DB entry for this lesson and the username, then their previous data will be loaded an placed in the text editor
+    if Lesson.query.filter_by(username=current_user.username, lessonid=db_lessonid).scalar() is not None: #if there is a DB entry for this lesson and the username, then their previous data will be loaded an placed in the text editor
         # "User has already done this tutorial"
         loadData = Lesson.query.filter_by(username=current_user.username, lessonid=db_lessonid).first()
         form.source_code.data = loadData.excerciseData
@@ -402,7 +402,7 @@ def excercise():
         heading_search = str(heading)
         #The global variables were cast a second time due to be returned a python error when trying to use the global variables
         print (heading_search)
-        soup = BeautifulSoup(userInput)
+        soup = BeautifulSoup(userInput, 'html.parser')
         excercise = None
         if soup.find(heading_search) is None:
             print ("Correct Heading for Answer Not entered")
@@ -639,4 +639,4 @@ def internal_error(error):
     return render_template('error.html')
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
+    app.run(host='0.0.0.0')

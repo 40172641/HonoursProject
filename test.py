@@ -16,8 +16,8 @@ class TestApplication(unittest.TestCase):
         db.create_all()
     
     def tearDown(self):
-        #db.session.remove()
-        #db.drop_all()
+        db.session.remove()
+        db.drop_all()
         pass
     
     def register(self, firstname, lastname, email, username, password, confirm):
@@ -82,19 +82,18 @@ class TestApplication(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'Please Register your account', response.data)
 
-
     def test_dashboard_without_login(self):
         response = self.app.get('/dashboard/ExampleUser70/', follow_redirects=True)
         self.assertIn(b'Please Login to your account', response.data)
 
-    #def test_dashboard_page(self):
-        #response = self.register('Kevin', 'Falconer', 'ExampleUSER1234@gmail.com', 'ExampleUser12', 'password', 'password')
-        #self.assertEqual(response.status_code, 200)
-        #self.app.get('/logout/', follow_redirects=True)
-        #self.app.get('/login/', follow_redirects=True)
-        #response = self.login('ExampleUser12', 'password')
-        #self.assertEqual(response.status_code, 200)
-        #self.assertIn(b'ExampleUser12', response.data)
+    def test_dashboard_page(self):
+        response = self.register('Kevin', 'Falconer', 'ExampleUSER1234@gmail.com', 'ExampleUser12', 'password', 'password')
+        self.assertEqual(response.status_code, 200)
+        self.app.get('/logout/', follow_redirects=True)
+        self.app.get('/login/', follow_redirects=True)
+        response = self.login('ExampleUser12', 'password')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'ExampleUser12', response.data)
 
     def test_course_page(self):
          self.app.get('/register/', follow_redirects=True)
@@ -141,6 +140,34 @@ class TestApplication(unittest.TestCase):
         db.session.commit()
         response1 = self.app.get('dashboard/ExampleUser70/course/11111/quiz/131/', follow_redirects=True)
         self.assertIn('Which HTML tag will display the largest heading?', response1.data)
+    
+    #def test_lesson_post(self):
+     #   self.app.get('/register/', follow_redirects=True)
+      #  response = self.register('Kevin', 'Falconer', 'ExampleEmail1234@gmail.com', 'ExampleUser70', 'examplepassword', 'examplepassword')
+      #  self.assertEqual(response.status_code, 200)
+      #  response1 = self.app.post('/dashboard/excercise/post/', follow_redirects=True)
+      #  self.assertEqual(response1.status_code, 200)
+
+    def test_lesson_route_post(self):
+        self.app.get('/register/', follow_redirects=True)
+        response = self.register('Kevin', 'Falconer', 'ExampleEmail1234@gmail.com', 'ExampleUser70', 'examplepassword', 'examplepassword')
+        self.assertEqual(response.status_code, 200)
+        response1 = self.app.post('dashboard/ExampleUser70/course/11111/lesson/111', follow_redirects=True)
+        self.assertEqual(response1.status_code, 405)
+
+    def test_post_route_method(self):
+         self.app.get('/register/', follow_redirects=True)
+         response = self.register('Kevin', 'Falconer', 'ExampleEmail1234@gmail.com', 'ExampleUser70', 'examplepassword', 'examplepassword')
+         self.assertEqual(response.status_code, 200)
+         response1 = self.app.post('dashboard/ExampleUser70/course/11111/excercise/121/', follow_redirects=True)
+         self.assertEqual(response1.status_code, 405)
+
+    def test_quiz_post_route_method(self):
+         self.app.get('/register/', follow_redirects=True)
+         response = self.register('Kevin', 'Falconer', 'ExampleEmail1234@gmail.com', 'ExampleUser70', 'examplepassword', 'examplepassword')
+         self.assertEqual(response.status_code, 200)
+         response1 = self.app.post('dashboard/ExampleUser1/course/11111/quiz/131/', follow_redirects=True)
+         self.assertEqual(response1.status_code, 200)
 
     def test_course_without_login(self):
         response = self.app.get('dashboard/ExampleUser70/course/11111/', follow_redirects=True)
@@ -172,16 +199,22 @@ class TestApplication(unittest.TestCase):
         #db.session.commit()
         self.assertRaises(IntegrityError, db.session.commit)
 
+    def test_database_incorrect_entry_quiz(self):
+        quiz = Quiz('Course Name',111,'CourseID', 1111, None)
+        db.session.add(quiz)
+        #db.session.commit()
+        self.assertRaises(IntegrityError, db.session.commit)
+ 
     def test_database_incorrect_entry_register(self):
-        user=User(112, 'KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKlllllllllll', 'Hello', 111111, 222222)
+        user=User(112, 'KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKlllllllllll', True, False, 121342)
         db.session.add(user)
         #self.assertRaises(IntegrityError, db.session.commit)
         db.session.commit()
 
-    def test_database_incorrect_entry_template(self):
-        lesson = Lesson('11111', 111, 'CourseID', '11111', 1111, 2222)
-        db.session.add(lesson)
-        db.session.commit()
+    #def test_database_incorrect_entry_template(self):
+        #lesson = Lesson(None, None, True, 'Faaaaaaaaaaaaaaaaalseeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', 1111, 2222)
+        #db.session.add(lesson)
+        #db.session.commit()
         #self.assertRaises(IntegrityError, db.session.commit)
 
 if __name__ == '__main__':
