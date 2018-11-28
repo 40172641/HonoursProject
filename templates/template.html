@@ -255,36 +255,35 @@ background-color: 4c4cff;
 
 <br>
 <div class="container">
-<div class='left' style="overflow-y:scroll;">
+<div class='left' style="overflow-y:scroll; height:800px;">
 	<h2>Lesson: {{ lesson.lessonname }}</h2>
 	<p>Welcome {{username.firstname}}</p>
-	
+
 	<div class="test" contenteditable="true" style="display:none;">{{ paragraphData['para_data'] }}</div>
 	<div class="output"></div>
-	<form method='POST' action ="">
-	</form>
 
 </div>
 <div class="middle">
 	<form method='POST' action="">
                 {{ form.csrf_token }}
-                {{ form.source_code }}
-                <div>
+
+
+
+		{{ form.source_code(class_="textEditor")}}
+
+
 			<input type="submit" class="button" value="Run Code >>" />
+    </form>
 		<div class="message" id='message'>
 
 	</div>
 	<div class="task2" id='task2'></div>
-
 		</div>
-        </form>
-
-
-</div>
 <div class="right">
-<iframe id="result" style="height:541px; width:405px; background-color:white;"></iframe>	
+<iframe id="result" style="height: 80vh; width:55vh; background-color:white;"></iframe>
 <button type="submit" class="previousButton" id="previousButton" form="nameform" value="Submit">Previous Lesson</button>
 <button type="submit" class="lessonButton" id="lessonButton" form="nameform" value="Submit">Next Lesson</button>
+</div>
 </div>
 </body>
 </html>

@@ -3,13 +3,14 @@
 		"lesson_id":131,
 		"quiz":
 			{
-				"What does HTML Stand For?": ["Hyper Text Markup Language", "Hyperlink Text Markup Location", "Home Text Markup Language", "Hyper Tool Markup Language"],
+			"What is the correct structure of a HTML element?": ["<tagname>Content</tagname>", "<tagname>Content<tagname>", "<tagname>Content<!tagname>", "</tagname>Content<tagname>"],
 				"How do you write a closing tag for a HTML element?": ["</tagname>", "<tagname>", "<!tagname>", "<tagname"],
-				"Which HTML tag will display the largest heading?": ["<h1>", "<p>", "<h2>", "<body>"],
+				"Which HTML element will display the largest heading?": ["<h1>", "<p>", "<h2>", "<body>"],
 				"Which element in a HTML Page Structure is used to store the web pages metadata information?": ["head", "html", "title", "body"],
-				"HTML question 5": ["Name", "Answer2", "Answer3", "Answer4"],
-				"HTML question 6": ["Name", "Answer2", "Answer3", "Answer4"],
-				"HTML question 7": ["Name1", "Answer2", "Answer3", "Answer4"]
+				"Which element in a HTML Page Structure is used to store the content of the web page": ["body", "script", "head", "html"],
+				"Which HTML element will create a line break in the web page?": ["br", "h1", "p", "html"],
+				"Are HTML elements case sensitive?": ["HTML Elements are not case-sensitive", "HTML Elements are case-sensitive"]
+			
 			}
 	}
 ]
